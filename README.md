@@ -9,10 +9,12 @@ Github仓库网页文档 + 注释生成文档
 ### 1.安装
 
 ```bash
-pip install zood 
+pip install zood
 ```
 
 ### 2.运行
+
+进入当前项目根目录
 
 - 生成文档
 
@@ -27,3 +29,21 @@ pip install zood
   ```
 
 ### 3.更多信息查阅[配置文档](https://luzhixing12345.github.io/zood/)
+
+```bash
+zood -h
+```
+
+## 开发
+
+```bash
+poetry build
+```
+
+```bash
+poetry config pypi-token.pypi my-token
+```
+
+```bash
+poetry publish
+```
