@@ -16,19 +16,21 @@ pip install zood
 
 进入当前项目根目录
 
-- 生成文档
+- 根据markdown文档生成网页
 
   ```bash
-  zood -g
+  zood -g ./docs
   ```
 
-- 部署(需配合.git信息)
+  > `docs` 为markdown文档文件夹名
+
+- 根据代码注释生成网页文档
 
   ```bash
-  zood -d
+  zood -c
   ```
 
-### 3.更多信息查阅[配置文档](https://luzhixing12345.github.io/zood/)
+### 3.查阅[配置文档](https://luzhixing12345.github.io/zood/)
 
 ```bash
 zood -h

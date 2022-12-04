@@ -1,8 +1,8 @@
 
+
 import argparse
 
 def main():
-    
     parser = argparse.ArgumentParser(
         description='zood: web page documentation & comment generation documentation'
     )
@@ -18,9 +18,6 @@ def main():
     args = parser.parse_args()
 
 
-def run():
-    main()
-
-
+    
 if __name__ == "__main__":
     main()
