@@ -40,7 +40,7 @@ def checkHeader(md_tree,file_name):
 
 def parseDocs(dir_name):
     
-    directory_tree = {'_root_':[]}
+    directory_tree = {'root':[]}
     # 只支持二级目录
     for root, dirs, files in os.walk(dir_name):
         
@@ -50,7 +50,7 @@ def parseDocs(dir_name):
             for file in files:
                 if file.endswith('md'):
                     md_files.append(file)
-            directory_tree['_root_'] = md_files
+            directory_tree['root'] = md_files
             for dir in dirs:
                 directory_tree[dir] = []
         else:
@@ -70,7 +70,7 @@ def parseDocs(dir_name):
     for dir, files in directory_tree.items():
         for i in range(len(files)):
             file = files[i]
-            if dir == '_root_':
+            if dir == 'root':
                 dir = ''
             file_path = os.path.join(dir_name,dir,file)
             with open(file_path,'r',encoding='utf-8') as f:
