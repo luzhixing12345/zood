@@ -30,8 +30,8 @@ class Markdown:
         tree = self.tree_parser(root)
         
         # 输出到屏幕 / 导出html文件
-        html = self.export_processor(tree)
-        return html
+        # html = self.export_processor(tree)
+        return tree
 
 def parse(text:str):
     
