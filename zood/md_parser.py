@@ -100,10 +100,9 @@ def generateDocs(directory_tree,config_file):
         f.write(html_template)
     
     for dir, files in directory_tree.items():
-        dir_name = os.path.join("docs","articles",dir)
-        os.makedirs(dir_name)
-        
         for md_info in files:
-            file_path = os.path.join(dir_name,md_info['name'].replace('.md','.html'))
+            dir_name = os.path.join("docs","articles",dir,md_info['name'].replace('.md',''))
+            os.makedirs(dir_name)
+            file_path = os.path.join(dir_name,'index.html')
             with open(file_path,'w',encoding='utf-8') as f:
                 f.write(html_template.replace('html-scope',md_info['content']))
