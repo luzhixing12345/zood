@@ -1,2 +1,3 @@
 
-from .Parser import *
+from .MarkdownParser import *
+from .main import main
