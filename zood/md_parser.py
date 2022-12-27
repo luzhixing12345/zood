@@ -40,37 +40,27 @@ def checkHeader(md_tree,file_name):
 
 def parseDocs(dir_name):
     
-    directory_tree = {'root':[]}
+    directory_tree = {}
     # 只支持二级目录
     for root, dirs, files in os.walk(dir_name):
         
-        if dirs != []:
-            # md-docs根目录
-            md_files = []
-            for file in files:
-                if file.endswith('md'):
-                    md_files.append(file)
-            directory_tree['root'] = md_files
-            for dir in dirs:
-                directory_tree[dir] = []
-        else:
-            dir = root.split(os.sep)[-1]
-            md_files = []
-            for file in files:
-                if file.endswith('md'):
-                    md_files.append(file)
-            directory_tree[dir] = md_files
+        dir = root.split(os.sep)[-1]
+        md_files = []
+        for file in files:
+            if file.endswith('md'):
+                md_files.append(file)
+        directory_tree[dir] = md_files
     
     config_file_path = os.path.join(dir_name,'_config.yml')
     if not os.path.exists(config_file_path):
         raise FileNotFoundError(config_file_path)
     
     config_file = ReadConfigFile(config_file_path)
-    
+    # print(directory_tree)
     for dir, files in directory_tree.items():
         for i in range(len(files)):
             file = files[i]
-            if dir == 'root':
+            if dir == 'md-docs':
                 dir = ''
             file_path = os.path.join(dir_name,dir,file)
             with open(file_path,'r',encoding='utf-8') as f:
