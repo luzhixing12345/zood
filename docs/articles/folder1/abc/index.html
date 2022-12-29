@@ -6,11 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel='stylesheet' href='../../../css/index.css' />
-    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script> -->
+    <link rel="icon" href="https://raw.githubusercontent.com/learner-lu/picbed/master/logo.png">
 </head>
-<body>
-    <div class='markdown-body'><h1>abc</h1><p>kaka</p></div>
+<body class="light">
+    <div id='markdown' class='markdown-body markdown-light'><h1>abc</h1><p>kaka</p></div>
+    <button onclick="changeMode(this)" class="changeMode">切换颜色</button>
+
+    <script type="text/javascript">
+
+        function changeMode(box) {
+            let body = document.body;
+            let markdown_part = document.getElementById('markdown')
+            if (box.state == null) {
+                box.state = false;
+            }
+            if (box.state) {
+                body.className = 'light';
+                markdown_part.className = 'markdown-body markdown-light'
+            } else {
+                body.className = 'dark';
+                markdown_part.className = 'markdown-body markdown-dark'
+            }
+            box.state = !box.state;
+        }
+    </script>
+
 </body>
 </html>

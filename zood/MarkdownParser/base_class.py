@@ -162,7 +162,7 @@ class Block:
         content = ''
         for block in self.sub_blocks:
             content += block.toHTML()
-        return f"<div class='markdown-body'>{content}</div>"
+        return f"<div id='markdown' class='markdown-body markdown-light'>{content}</div>"
       
                     
 class Handler:

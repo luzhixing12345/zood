@@ -5,6 +5,7 @@ import re
 import shutil
 from .MarkdownParser import parse
 from .util import *
+from .zood import parseConfig
 
 
 def checkHeader(md_tree,file_name):
@@ -80,14 +81,10 @@ def generateDocs(directory_tree):
     os.makedirs('docs/css')
     os.makedirs('docs/img')
     
-    html_tempate_path = os.path.join(os.path.dirname(__file__),'config','template.html')
-    css_template_path = os.path.join(os.path.dirname(__file__),'config','index.css')
+    zood_config_path = os.path.join(os.path.dirname(__file__),'config','_config.yml')
+    zood_config = ReadConfigFile(zood_config_path)
     
-    copyFile(html_tempate_path,'docs/index.html')
-    copyFile(css_template_path,'docs/css/index.css')
-    
-    with open(html_tempate_path,'r',encoding='utf-8') as f:
-        html_template = f.read()
+    html_template = parseConfig(zood_config)
     
     for dir, files in directory_tree.items():
         for md_info in files:

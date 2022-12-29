@@ -21,13 +21,7 @@
 favicon: https://raw.githubusercontent.com/learner-lu/picbed/master/logo.png
 
 # 标题的名字
-title: zood
-
-# 描述信息
-description: Github仓库网页文档
-
-# 渲染主题样式(可css自定义)
-theme: zood
+title: Document
 
 # 代码块的增强配置
 # Enhancements to code blocks
@@ -81,35 +75,19 @@ color:
   # Color in dark mode, the same below
   body_bg_color_dark: "#181c27"
 
-  # 顶部菜单背景色
-  # Color of navigation bar background
-  navbar_bg_color: "#4a00e0"
-  navbar_bg_color_dark: "#4286f4"
-
-  # 顶部菜单字体色
-  # Color of navigation bar text
-  navbar_text_color: "#fff"
-  navbar_text_color_dark: "#d0d0d0"
+  # markdown部分的背景色
+  markdown_bg_color: "#fff"
+  markdown_bg_color_dark: "#252D38"
 
   # 全局字体色
   # Color of global text
   text_color: "#3c4858"
   text_color_dark: "#c4c6c9"
 
-  # 全局次级字体色（摘要、简介等位置）
-  # Color of global secondary text (excerpt, introduction, etc.)
-  sec_text_color: "#718096"
-  sec_text_color_dark: "#a7a9ad"
-
-  # 文章正文字体色
-  # Color of post text
-  post_text_color: "#2c3e50"
-  post_text_color_dark: "#c4c6c9"
-
   # 文章正文字体色（h1 h2 h3...）
   # Color of Article heading (h1 h2 h3...)
-  post_heading_color: "#1a202c"
-  post_heading_color_dark: "#c4c6c9"
+  hash_header_color: "#000"
+  hash_header_color_dark: "#c4c6c9"
 
   # 文章超链接字体色
   # Color of post link
@@ -121,31 +99,12 @@ color:
   link_hover_color: "#30a9de"
   link_hover_color_dark: "#30a9de"
 
-  # 超链接悬浮背景色
-  # Color of link background when hovering
-  link_hover_bg_color: "#f8f9fa"
-  link_hover_bg_color_dark: "#364151"
-
-  # 主面板背景色
-  # Color of main board
-  board_color: "#fff"
-  board_color_dark: "#252d38"
-
-  # 滚动条颜色
-  # Color of scrollbar
-  scrollbar_color: "#c4c6c9"
-  scrollbar_color_dark: "#687582"
-  scrollbar_hover_color: "#a6a6a6"
-  scrollbar_hover_color_dark: "#9da8b3"
-
 # 主题字体配置
 # Font
 font:
   font_size: 16px
-  # stackoveflow 的字体
-  font_family: ui-monospace,"Cascadia Mono","Segoe UI Mono","Liberation Mono",Menlo,Monaco,Consolas,monospace;
+  font_family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
   letter_spacing: 0.02em
-  code_font_size: 85%
 
 # 对页面中的图片和评论插件进行懒加载处理，可见范围外的元素不会提前加载
 # Lazy loading of images and comment plugin on the page

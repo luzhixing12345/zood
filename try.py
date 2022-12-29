@@ -1,6 +1,4 @@
 
 
-a = "123"
-
-a -= '3'
+a = '<%favicon%>'
 print(a)
