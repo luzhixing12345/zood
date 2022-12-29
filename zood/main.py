@@ -46,7 +46,7 @@ def main():
             with open('.gitignore','a+',encoding='utf-8') as f:
                 text = f.read()
                 if not text.find(md_dir_name):
-                    f.write('\nmd-docs/')
+                    f.write('\n/md-docs/')
 
             # if os.path.exists('README.md'):
             #     with open('README.md','r',encoding='utf-8') as f:
