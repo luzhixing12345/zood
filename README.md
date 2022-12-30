@@ -2,41 +2,24 @@
 
 Github仓库网页文档 + 注释生成文档
 
-## [主题预览](https://luzhixing12345.github.io/zood/)
+## 主题预览
 
-## 快速开始
-
-### 1.安装
+## 安装与使用
 
 ```bash
 pip install zood
 ```
 
-### 2.运行
+参见 [用户使用文档](https://luzhixing12345.github.io/zood/)
 
-进入当前项目根目录
+## 特性
 
-- 根据markdown文档生成网页
+- [x] markdown->html文档生成
+- [x] markdown语法解析库
+- [ ] 代码注释提取生成文档
+- [ ] API说明
 
-  ```bash
-  zood -g ./docs
-  ```
-
-  > `docs` 为markdown文档文件夹名
-
-- 根据代码注释生成网页文档
-
-  ```bash
-  zood -c
-  ```
-
-### 3.查阅[配置文档](https://luzhixing12345.github.io/zood/)
-
-```bash
-zood -h
-```
-
-## 开发
+<!-- ## 开发
 
 ```bash
 poetry build
@@ -48,4 +31,4 @@ poetry config pypi-token.pypi my-token
 
 ```bash
 poetry publish
-```
+``` -->

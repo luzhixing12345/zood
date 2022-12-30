@@ -1,6 +1,5 @@
 
 import os
-import time
 import re
 import shutil
 from .MarkdownParser import parse
@@ -20,12 +19,12 @@ def checkHeader(md_tree,file_name):
             match_groups = re.findall('(.*?): (.*)',zood_header)
             try:
                 title = match_groups[0][1]
-                date = match_groups[1][1]
+                sort = match_groups[1][1]
                 md_tree.sub_blocks = md_tree.sub_blocks[3:]
                 # modify_time = time.localtime(os.stat(file_name).st_mtime)
                 # md_info['modify_time'] = time.strftime("%Y-%m-%d %H:%M:%S",modify_time)
                 md_info['title'] = title
-                md_info['date'] = date
+                md_info['sort'] = int(sort)
                 md_info['content'] = md_tree.toHTML()
                 return md_info
             except:
@@ -50,12 +49,6 @@ def parseDocs(dir_name):
                 md_files.append(file)
         directory_tree[dir] = md_files
     
-    # config_file_path = os.path.join(dir_name,'_config.yml')
-    # if not os.path.exists(config_file_path):
-    #     raise FileNotFoundError(config_file_path)
-    
-    # config_file = ReadConfigFile(config_file_path)
-    # print(directory_tree)
     for dir, files in directory_tree.items():
         for i in range(len(files)):
             file = files[i]
@@ -67,24 +60,29 @@ def parseDocs(dir_name):
             md_info = checkHeader(md_tree,file_path)
             md_info['name'] = file
             files[i] = md_info
-        files.sort(key=lambda item:item['date'])
+        files.sort(key=lambda item:item['sort'])
         
     generateDocs(directory_tree)
     
     
 def generateDocs(directory_tree):
     if os.path.exists('docs'):
-        print("重新生成/docs")
+        printInfo("删除原 docs/",color='green')
         shutil.rmtree("docs")
     os.makedirs('docs/articles')
     os.makedirs('docs/js')
     os.makedirs('docs/css')
     os.makedirs('docs/img')
     
+    for root,_,files in os.walk(os.path.join(os.path.dirname(__file__),'img')):
+        for img in files:
+            shutil.copy(os.path.join(root,img),'docs/img')
+    
     zood_config_path = os.path.join(os.path.dirname(__file__),'config','_config.yml')
-    zood_config = ReadConfigFile(zood_config_path)
+    zood_config = readConfigFile(zood_config_path)
     
     html_template = parseConfig(zood_config)
+    createIndexHtml(directory_tree,html_template)
     
     for dir, files in directory_tree.items():
         for md_info in files:
@@ -93,3 +91,8 @@ def generateDocs(directory_tree):
             file_path = os.path.join(dir_name,'index.html')
             with open(file_path,'w',encoding='utf-8') as f:
                 f.write(html_template.replace('html-scope',md_info['content']))
+    printInfo("已生成 docs/",color='green')            
+    
+def createIndexHtml(directory_tree,html_template):
+    # print(directory_tree)
+    ...

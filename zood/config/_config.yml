@@ -79,6 +79,18 @@ color:
   markdown_bg_color: "#fff"
   markdown_bg_color_dark: "#252D38"
 
+  # markdown部分阴影
+  # 其他阴影参考: https://getcssscan.com/css-box-shadow-examples
+  markdown_box_shadow: "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px"
+
+  # 图片阴影
+  # 其他阴影参考: https://getcssscan.com/css-box-shadow-examples
+  markdown_picture_box_shadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
+
+  # 代码段阴影
+  # 其他阴影参考: https://getcssscan.com/css-box-shadow-examples
+  markdown_code_box_shadow: "rgba(17, 17, 26, 0.1) 0px 0px 16px"
+
   # 全局字体色
   # Color of global text
   text_color: "#3c4858"
@@ -105,30 +117,6 @@ font:
   font_size: 16px
   font_family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
   letter_spacing: 0.02em
-
-# 对页面中的图片和评论插件进行懒加载处理，可见范围外的元素不会提前加载
-# Lazy loading of images and comment plugin on the page
-lazyload:
-  enable: true
-  hot_key: "ctrl+k"
-  # 加载时的占位图片
-  # The placeholder image when loading
-  loading_img: /img/loading.gif
-
-  # 开启后懒加载仅在文章页生效，如果自定义页面需要使用，可以在 Front-matter 里指定 `lazyload: true`
-  # If true, only enable lazyload on the post page. For custom pages, you can set 'lazyload: true' in front-matter
-  onlypost: false
-
-  # 触发加载的偏移倍数，基数是视窗高度，可根据部署环境的请求速度调节
-  # The factor of viewport height that triggers loading
-  offset_factor: 2
-
-search:
-  enable: true
-
-  # 搜索是否扫描正文
-  # If true, search will scan the post content
-  content: true
 
 
 #---------------------------
