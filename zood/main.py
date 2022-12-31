@@ -5,26 +5,7 @@ import shutil
 
 from .util import *
 from .md_parser import parseDocs
-
-def initZood(md_dir_name):
-    
-    if os.path.exists(md_dir_name):
-        printInfo(f"{md_dir_name} 已存在,请删除文件夹后重试")
-        return
-    else:
-        
-        os.mkdir(md_dir_name)
-        
-        initZoodInfo()
-        dir_sort = getSortNumber('md-docs')
-        dir_yml = {'DIR':{'md-docs':dir_sort}}
-        # with open('.gitignore','a+',encoding='utf-8') as f:
-        #     text = f.read()
-        #     if not text.find(md_dir_name):
-        #         f.write('\n/md-docs/')
-        writeConfigFile(dir_yml,os.path.join(md_dir_name,'dir.yml'))
-        
-        printInfo(f"已初始化 [{md_dir_name}]",'green')
+from .zood import *
 
 
 def main():
@@ -37,13 +18,23 @@ def main():
     parser.add_argument('-s','--save',action='store_true',help='save _config.yml and use in every environment')
     args = parser.parse_args()
     
-    md_dir_name = 'md-docs'
+    config_path = os.path.join(os.path.dirname(__file__),'config','_config.yml')
+    config = readConfigFile(config_path)
+    md_dir_name = config['options']['markdown_folder']
     
     if args.generate:
         if not os.path.exists(md_dir_name):
             printInfo("请先使用 zood init 初始化")
             return
         parseDocs(md_dir_name)
+        return
+    
+    if args.save:
+        if not os.path.exists(os.path.join(md_dir_name,'_config.yml')):
+            printInfo(f"未找到 {md_dir_name}/_config.yml")
+            return
+        shutil.copy(os.path.join(md_dir_name,'_config.yml'),config_path)
+        printInfo("已更新全局配置文件")
         return
 
     if len(args.cmd) == 0:
@@ -56,13 +47,13 @@ def main():
         
     elif args.cmd[0] == 'new':
         if len(args.cmd) == 2:
-            dir_name = 'md-docs'
+            dir_name = '.'
             file_name = args.cmd[1]
         elif len(args.cmd) == 3:
             dir_name = args.cmd[1]
             file_name = args.cmd[2]
-            if dir_name == 'md-docs':
-                printInfo(f"您不能创建一个和md-docs同名的子文件夹")
+            if dir_name == md_dir_name:
+                printInfo(f"您不能创建一个和 {md_dir_name} 同名的子文件夹")
                 return
         else:
             printInfo(f"创建新文件的命令为 zood new [目录] [文件名]")
@@ -71,26 +62,15 @@ def main():
         if not os.path.exists(md_dir_name):
             initZood(md_dir_name)
 
-        file_path = os.path.join('md-docs',dir_name,file_name+'.md')
-        if os.path.exists(file_path):
-            printInfo(f'{file_path} 已存在')
-            return
-        if not os.path.exists(os.path.join('md-docs',dir_name)):
-            os.makedirs(os.path.join('md-docs',dir_name))
-        
-        sort = getSortNumber(dir_name)
-        
-        updateDirYml(dir_name,md_dir_name)
-        title = file_name
-        with open(file_path,'w',encoding='utf-8') as f:
-            basic_info = f'---\ntitle: {title}\nsort: {sort}\n---\n\n# {file_name}\n'
-            f.write(basic_info)
-        
-        printInfo(f"创建文件 {file_path}",color='green')
+        createNewFile(md_dir_name,dir_name,file_name)
     
     elif args.cmd[0] == 'clean':
         shutil.rmtree('docs')
         printInfo(f"已删除 docs")
+        
+    elif args.cmd[0] == 'config':
+        shutil.copy(config_path,os.path.join(md_dir_name,'_config.yml'))
+        printInfo(f"生成配置文件 md-docs/_config.yml",color='green')
 
 if __name__ == "__main__":
     main()

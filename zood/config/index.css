@@ -19,8 +19,8 @@ body {
 
 .markdown-body {
   margin-top: 2%;
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-left: "<%markdown_body_left%>";
+  margin-right: "<%markdown_body_right%>";
   padding: 20px 50px;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -303,6 +303,10 @@ blockquote {
   position: absolute;
   right: 50px;
   top: 50px;
+  padding: 5px;
+  border-radius: 50%;
+  background-color: #e3e3e3;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 .markdown-body pre #code_copy {

@@ -75,19 +75,14 @@ def generateDocs(directory_tree):
     os.makedirs('docs/img')
     
     # 复制图片
-    for root,_,files in os.walk(os.path.join(os.path.dirname(__file__),'img')):
+    for root,_,files in os.walk(os.path.join(os.path.dirname(__file__),'config','img')):
         for img in files:
             shutil.copy(os.path.join(root,img),'docs/img')
-    
-    # 复制prismjs
-    shutil.copy(os.path.join(os.path.dirname(__file__),'prismjs','prism.css'),'docs/css')
-    shutil.copy(os.path.join(os.path.dirname(__file__),'prismjs','prism.js'),'docs/js')
     
     zood_config_path = os.path.join(os.path.dirname(__file__),'config','_config.yml')
     zood_config = readConfigFile(zood_config_path)
     
     html_template = parseConfig(zood_config)
-    createIndexHtml(directory_tree,html_template)
     
     for dir, files in directory_tree.items():
         for md_info in files:
@@ -98,6 +93,3 @@ def generateDocs(directory_tree):
                 f.write(html_template.replace('html-scope',md_info['content']))
     printInfo("已生成 docs/",color='green')            
     
-def createIndexHtml(directory_tree,html_template):
-    # print(directory_tree)
-    ...

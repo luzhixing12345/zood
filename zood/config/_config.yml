@@ -23,12 +23,23 @@ favicon: https://raw.githubusercontent.com/learner-lu/picbed/master/logo.png
 # 标题的名字
 title: Document
 
-# 代码块的增强配置
-# Enhancements to code blocks
-code:
+options:
+
+  # 是否启用dark主题
+  enable_dark: true
+
   # 是否开启复制代码的按钮
   # Enable copy code button
   copy_btn: true
+
+  # 启用代码高亮
+  enable_highlight: true
+
+  # 生成的markdown文件夹名
+  markdown_folder: md-docs
+
+  # 生成的html文件夹名
+  html_folder: docs
 
 # 主题颜色配置，其他不生效的地方请使用自定义 css 解决，配色可以在下方链接中获得启发
 # Theme color, please use custom CSS to solve other colors, color schema can be inspired by the links below
@@ -121,6 +132,15 @@ color:
   # Color of link when hovering
   link_hover_color: "#30a9de"
   link_hover_color_dark: "#30a9de"
+
+# 页面布局
+position:
+
+  # markdown左侧距离
+  markdown_body_left: "25%"
+  
+  # markdown右侧距离
+  markdown_body_right: "25%"
 
 # 主题字体配置
 # Font
