@@ -1,0 +1,472 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f8f9fa;
+}
+
+.light {
+  background-color: #eee;
+  color: #3c4858;
+}
+
+.dark {
+  background-color: #181c27;
+  color: #c4c6c9;
+}
+
+.markdown-body {
+  margin-top: 2%;
+  margin-left: 25%;
+  margin-right: 25%;
+  padding: 20px 50px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  line-height: 1.5;
+  /* color: #24292e; */
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  word-wrap: break-word;
+  border-radius: 10px;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+  /* background-color: rgb(255, 255, 255); */
+}
+
+.markdown-light {
+  background-color: #fff;
+}
+
+.markdown-light h1,
+.markdown-light h2,
+.markdown-light h3,
+.markdown-light h4,
+.markdown-light h5,
+.markdown-light h6 
+{
+  color: #000;
+}
+
+.markdown-light a {
+  color: #0366d6;
+  transition: all 0.8s;
+}
+
+.markdown-light a:hover {
+  color: #30a9de;
+  transition: all 0.8s;
+}
+
+
+.markdown-dark {
+  background-color: #252D38;
+}
+
+.markdown-dark a {
+  color: #1589e9;
+  transition: all 0.8s;
+}
+
+.markdown-dark a:hover {
+  color: #30a9de;
+  transition: all 0.8s;
+}
+
+.markdown-dark h1,
+.markdown-dark h2,
+.markdown-dark h3,
+.markdown-dark h4,
+.markdown-dark h5,
+.markdown-dark h6 
+{
+  color: #c4c6c9;
+}
+
+.markdown-body strong {
+  font-weight: inherit;
+  font-weight: bolder;
+}
+
+.markdown-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.markdown-body img {
+  border-style: none;
+}
+
+a {
+  color: rgb(4, 105, 221);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+blockquote {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 16px;
+  padding: 0 1em;
+  color: #6a737d;
+  border-left: 0.25em solid #dfe2e5;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre {
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+  font-size: 15px;
+}
+
+.markdown-body strong {
+  font-weight: 600;
+}
+
+.markdown-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #dfe2e5;
+}
+
+.markdown-body hr:after,
+.markdown-body hr:before {
+  display: table;
+  content: "";
+}
+
+
+.markdown-body blockquote,
+.markdown-body details,
+.markdown-body dl,
+.markdown-body ol,
+.markdown-body p,
+.markdown-body table,
+.markdown-body ul {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body pre {
+  margin-top: 5px;
+  margin-bottom: 16px;
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f6f8fa;
+  border-radius: 3px;
+  word-wrap: normal;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+}
+
+.markdown-body code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(27, 31, 35, 0.05);
+  border-radius: 3px;
+}
+
+.markdown-body pre > code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+
+.markdown-body pre code {
+  display: inline;
+  max-width: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: initial;
+  border: 0;
+}
+
+.markdown-body ul {
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ol ol ol,
+.markdown-body ol ul ol,
+.markdown-body ul ol ol,
+.markdown-body ul ul ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body ul {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body ol,
+.markdown-body ul {
+  padding-left: 2em;
+}
+
+.markdown-body ol ol,
+.markdown-body ol ul,
+.markdown-body ul ol,
+.markdown-body ul ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body li {
+  word-wrap: break-all;
+}
+
+.markdown-body li > p {
+  margin-top: 16px;
+}
+
+.markdown-body li + li {
+  margin-top: 0.25em;
+}
+
+.markdown-body table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.markdown-body table th {
+  font-weight: 600;
+}
+
+.markdown-body table td,
+.markdown-body table th {
+  padding: 6px 13px;
+  border: 1px solid #dfe2e5;
+}
+
+.markdown-body table tr {
+  background-color: #fff;
+  border-top: 1px solid #c6cbd1;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f6f8fa;
+}
+
+.markdown-body table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.markdown-body p img {
+  margin-left: 10%;
+  width: 80%;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 5px;
+}
+
+.markdown-body pre {
+  position: relative;
+}
+
+.changeMode {
+  position: absolute;
+  right: 50px;
+  top: 50px;
+  padding: 5px;
+  border-radius: 50%;
+  background-color: #e3e3e3;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.markdown-body pre #code_copy {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  margin-top: -16px;
+  padding: 3px;
+  opacity: 0.5;
+  border: 1px solid rgba(149, 157, 165, 0.2);
+  transition: all 0.5s;
+  border-radius: 5px;
+}
+
+.markdown-light pre #code_copy {
+  background-color: white;
+}
+
+.markdown-body pre #code_copy:hover {
+  transition: all 0.5s;
+  background-color: #e3e3e3;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 5px;
+}
+
+.markdown-light :not(pre) > code[class*="language-"],
+.markdown-light pre[class*="language-"] {
+  background: #161823;
+}
+
+.markdown-dark :not(pre) > code[class*="language-"],
+.markdown-dark pre[class*="language-"] {
+  background: #f0f0f4;
+}
+
+.markdown-light .token.cdata,
+.markdown-light .token.comment,
+.markdown-light .token.doctype,
+.markdown-light .token.prolog {
+  color: #808080;
+}
+
+.markdown-dark .token.cdata,
+.markdown-dark .token.comment,
+.markdown-dark .token.doctype,
+.markdown-dark .token.prolog {
+  color: #008643;
+}
+
+.markdown-light code[class*="language-"],
+.markdown-light pre[class*="language-"] {
+  color: #fff;
+}
+
+.markdown-dark code[class*="language-"],
+.markdown-dark pre[class*="language-"] {
+  color: #000;
+}
+
+code[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection,
+pre[class*="language-"] ::-moz-selection,
+pre[class*="language-"]::-moz-selection {
+  text-shadow: none;
+  background: #318FFE;
+  color: #fff;
+}
+code[class*="language-"] ::selection,
+code[class*="language-"]::selection,
+pre[class*="language-"] ::selection,
+pre[class*="language-"]::selection {
+  text-shadow: none;
+  background: #318FFE;
+  color: #fff;
+}
+
+.token.punctuation {
+  color: #E3C91C;
+}
+
+.markdown-light .token.boolean,
+.markdown-light .token.constant,
+.markdown-light .token.deleted,
+.markdown-light .token.number,
+.markdown-light .token.property,
+.markdown-light .token.symbol,
+.markdown-light .token.tag {
+  color: #e1e1e1;
+}
+
+.markdown-dark .token.boolean,
+.markdown-dark .token.constant,
+.markdown-dark .token.deleted,
+.markdown-dark .token.number,
+.markdown-dark .token.property,
+.markdown-dark .token.symbol,
+.markdown-dark .token.tag {
+  color: #e1e1e1;
+}
+
+.markdown-light .token.attr-name,
+.markdown-light .token.builtin,
+.markdown-light .token.char,
+.markdown-light .token.inserted,
+.markdown-light .token.selector,
+.markdown-light .token.string {
+  color: #D89B6F;
+}
+
+.markdown-dark .token.attr-name,
+.markdown-dark .token.builtin,
+.markdown-dark .token.char,
+.markdown-dark .token.inserted,
+.markdown-dark .token.selector,
+.markdown-dark .token.string {
+  color: #D89B6F;
+}
+
+.markdown-light .language-css .token.string,
+.markdown-light .style .token.string,
+.markdown-light .token.entity,
+.markdown-light .token.operator,
+.markdown-light .token.url {
+  color: #fff;
+  /* background: hsla(0, 0%, 100%, 0.5); */
+}
+
+.markdown-dark .language-css .token.string,
+.markdown-dark .style .token.string,
+.markdown-dark .token.entity,
+.markdown-dark .token.operator,
+.markdown-dark .token.url {
+  color: #fff;
+  /* background: hsla(0, 0%, 100%, 0.5); */
+}
+
+.markdown-light .token.atrule,
+.markdown-light .token.attr-value,
+.markdown-light .token.keyword {
+  color: #B980AD;
+}
+
+.markdown-dark .token.atrule,
+.markdown-dark .token.attr-value,
+.markdown-dark .token.keyword {
+  color: #B980AD;
+}
+
+.markdown-light .token.function {
+  color: #EAE378;
+}
+
+.markdown-dark .token.function {
+  color: #EAE378;
+}
+
+.markdown-light .token.class-name {
+  color: #59B294;
+}
+
+.markdown-dark .token.class-name {
+  color: #59B294;
+}

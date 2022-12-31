@@ -14,7 +14,7 @@ class ExportParser(Parser):
     def __call__(self, tree:Block):
         # tree.info()
         html_content = tree.toHTML()
-        self.writeToHTML(html_content,)
+        # self.writeToHTML(html_content,)
         return html_content
         
     def writeToHTML(self, html_content, css_content='', js_content = ''):

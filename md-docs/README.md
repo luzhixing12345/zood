@@ -1,8 +1,3 @@
----
-title: README
-sort: 1
----
-
 # zood
 
 Github仓库网页文档 + 注释生成文档

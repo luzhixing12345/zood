@@ -69,7 +69,7 @@ color:
   markdown_code_bg_color_dark: "#f0f0f4"
 
   # 代码段的注释颜色
-  markdown_code_comment: '#008643'
+  markdown_code_comment: '#808080'
   markdown_code_comment_dark: '#008643'
 
   # 代码段的文字颜色

@@ -1,7 +1,7 @@
 
 import shutil
 import os
-
+from .MarkdownParser import parse
 from .util import *
 
 def initZood(md_dir_name):
@@ -13,24 +13,18 @@ def initZood(md_dir_name):
     else:
         
         os.mkdir(md_dir_name)
-        
-        initZoodInfo()
-        initDirYml(md_dir_name)
-        
-        readme = '---\ntitle: README\nsort: 1\n---\n\n'
+
+        readme = ''
         if os.path.exists('README.md'):
             with open('README.md','r',encoding='utf-8') as f:
-                readme += f.read()
+                readme = f.read()
+
+        initDirYml(md_dir_name)
 
         with open(os.path.join(md_dir_name,'README.md'),'w',encoding='utf-8') as f:
             f.write(readme)
 
         printInfo(f"已初始化 [{md_dir_name}]",'green')
-
-def initDirYml(md_dir_name):
-    # 生成目录记录
-    dir_yml = {'Sort':{'README.md':1}}
-    writeConfigFile(dir_yml,os.path.join(md_dir_name,'dir.yml'))
 
 def createNewFile(md_dir_name,dir_name,file_name):
     
@@ -43,75 +37,61 @@ def createNewFile(md_dir_name,dir_name,file_name):
     if not os.path.exists(os.path.join(md_dir_name,dir_name)):
         os.makedirs(os.path.join(md_dir_name,dir_name))
     
-    file_sort_number, dir_sort_number = getSortNumber(dir_name)
-    
-    if dir_sort_number:
-        updateDirYml(file_name,dir_name,dir_sort_number,md_dir_name)
+    updateDirYml(file_name,dir_name,md_dir_name)
 
-    title = file_name
     with open(file_path,'w',encoding='utf-8') as f:
-        basic_info = f'---\ntitle: {title}\nsort: {file_sort_number}\n---\n\n# {file_name}\n'
+        basic_info = f'\n# {file_name}\n'
         f.write(basic_info)
     
     printInfo(f"创建文件 {file_path}",color='green')
 
+def initDirYml(md_dir_name):
+    # 生成目录记录
+    dir_yml = {'.':[{'README':1}]}
+    writeConfigFile(dir_yml,os.path.join(md_dir_name,'dir.yml'))
 
-def initZoodInfo():
-    # 将当前路径加入到 zood.yml
-    
-    zood_path = os.path.join(os.path.dirname(__file__),'config','zood.yml')
-    zood = readConfigFile(zood_path)
-    current_dir = os.getcwd()
-
-    if current_dir not in zood['MD_DOC_PATH']:
-        zood['MD_DOC_PATH'].append(current_dir)
-    zood[current_dir] = {}
-    zood[current_dir]['SORT_NUMBER'] = 1
-    zood[current_dir]['DIR'] = {}
-    writeConfigFile(zood,zood_path)
-    
-def getSortNumber(dir_name):
-    # 得到当前文件在所在文件夹中的排序
-    # 并且更新 zood.yml
-    
-    zood_path = os.path.join(os.path.dirname(__file__),'config','zood.yml')
-    zood = readConfigFile(zood_path)
-    current_dir = os.getcwd()
-    
-    file_sort_number = None
-    dir_sort_number = None
-    
-    if dir_name in zood[current_dir]['DIR']:
-        file_sort_number = zood[current_dir]['DIR'][dir_name] + 1
-        zood[current_dir]['DIR'][dir_name] += 1
-    else:
-        if dir_name == '.':
-            file_sort_number = zood[current_dir]['SORT_NUMBER'] + 1
-            dir_sort_number = file_sort_number
-            zood[current_dir]['SORT_NUMBER'] += 1
-        else:
-            file_sort_number = 1
-            dir_sort_number = zood[current_dir]['SORT_NUMBER'] + 1
-            zood[current_dir]['SORT_NUMBER'] += 1
-            zood[current_dir]['DIR'][dir_name] = 1
-            
-    writeConfigFile(zood,zood_path)
-    return file_sort_number, dir_sort_number
-
-def updateDirYml(file_name,dir_name,sort_number,md_dir_name):
+def updateDirYml(file_name,dir_name,md_dir_name):
     # 更新当前路径下的 dir.yml
 
     current_dir = os.getcwd()
     dir_yml_path = os.path.join(current_dir,md_dir_name,'dir.yml')
     dir_yml = readConfigFile(dir_yml_path)
-    if dir_name == '.':
-        dir_yml['Sort'][file_name] = sort_number
+    
+    sort(dir_yml)
+    
+    if dir_name in dir_yml.keys():
+        number = list(dir_yml[dir_name][-1].values())[0] + 1
+        dir_yml[dir_name].append({file_name:number})
     else:
-        dir_yml['Sort'][dir_name] = sort_number
+        dir_yml[dir_name] = []
+        dir_yml[dir_name].append({file_name:1})
+    
     writeConfigFile(dir_yml,dir_yml_path)
 
-
-
+def parseMarkdownFiles(md_dir_name):
+    
+    current_dir = os.getcwd()
+    dir_yml_path = os.path.join(current_dir,md_dir_name,'dir.yml')
+    dir_yml = readConfigFile(dir_yml_path)
+    sort(dir_yml)
+    directory_tree = []
+    markdown_htmls = {}
+    for dir_name, files in dir_yml.items():
+        file_names = []
+        for i in files:
+            file_name = list(i.keys())[0]
+            file_path = os.path.join(md_dir_name,dir_name,file_name+'.md')
+            if not os.path.exists(file_path):
+                printInfo('找不到文件 ' + file_path)
+                exit(0)
+            else:
+                with open(file_path,'r',encoding='utf-8') as f:
+                    markdown_htmls[file_path] = parse(f.read())
+                file_names.append(file_name)
+        directory_tree.append({dir_name:file_names})
+        
+    return directory_tree,markdown_htmls
+            
 
 def parseConfig(config):
     
