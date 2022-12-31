@@ -223,7 +223,8 @@ class CodeBlock(Block):
         code = self.input['code']
         code = re.sub('<','&lt;',code)
         code = re.sub('>','&gt;',code)
-        return f'<pre><code>{code}</code></pre>'
+        language = self.input['language']
+        return f'<pre><code class=\"language-{language}\">{code}</code></pre>'
 
 class HashHeaderHandler(Handler):
     # 匹配标题
@@ -463,8 +464,10 @@ class ReferenceBlock(Block):
     def toHTML(self):
 
         url = self.input['url']
-        word = self.input['word']
-        return f"<a href=\"{url}\" target=\"{self.target}\">{word}</a>"
+        content = ''
+        for block in self.sub_blocks:
+            content += block.toHTML()
+        return f"<a href=\"{url}\" target=\"{self.target}\">{content}</a>"
 
 class SpecialTextHandler(Handler):
     # 处理特殊字符
@@ -621,6 +624,7 @@ class TextHandler(Handler):
                 try:
                     class_object:Block = CONTAINER[id]
                     class_object.restore(TextBlock)
+                    root.input['text'] = root.input['text'].replace(string,class_object.input['text'])
                     root.addBlock(class_object)
                 except:
                     # print(id)
@@ -644,9 +648,9 @@ def buildBlockParser():
     # block parser 用于逐行处理文本, 并将结果解析为一颗未优化的树
     block_parser = BlockParser()
     block_parser.register(EmptyBlockHandler(block_parser), 100)
-    block_parser.register(ExtensionBlockHandler(block_parser), 98)
     block_parser.register(SplitBlockHandler(block_parser), 95)
     block_parser.register(HierarchyIndentHandler(block_parser), 90)
+    block_parser.register(ExtensionBlockHandler(block_parser), 85)
     block_parser.register(HashHeaderHandler(block_parser), 80)
     block_parser.register(TaskListHandler(block_parser), 70)
     block_parser.register(OListHandler(block_parser), 60)

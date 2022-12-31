@@ -65,6 +65,7 @@ class HierarchyMerge(Optimizer):
                             activite_block.sub_blocks.append(block)
                     # 层次相同,合并
                     elif current_space_number == activite_space_number:
+                        activite_block.input['text'] += '\n' + block.input['text']
                         activite_block.sub_blocks.extend(block.sub_blocks)
                     else:
                         # 层次缩进改变

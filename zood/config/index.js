@@ -1,18 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel='stylesheet' href='../../../css/prism.css' />
-    <link rel='stylesheet' href='../../../css/index.css' />
-    <link rel="icon" href="https://raw.githubusercontent.com/learner-lu/picbed/master/logo.png">
-
-</head>
-<body class="light">
-    <div id='markdown' class='markdown-body markdown-light'><h1>简介</h1><p>zood 是一个用于文档生成的Python库</p><p>它兼具了命令行执行的功能 和 库的调用功能</p><p><a href="http://louisbarranqueiro.github.io/hexo-theme-tranquilpeak" target="_blank"><img src="http://d1u9biwaxjngwg.cloudfront.net/showcases/showcase-v2.jpg" alt="Tranquilpeak"></a></p></div>
-    <script type="text/javascript">function changeMode() {
+function changeMode() {
     let body = document.body;
     let markdown_part = document.getElementById('markdown')
     let box = document.getElementsByClassName('changeMode')
@@ -60,7 +46,4 @@ var button = document.createElement('button')
 button.className = 'changeMode'
 button.innerText = '切换颜色'
 button.onclick = changeMode
-document.body.appendChild(button)</script>
-    <script type="text/javascript" src="../../../js/prism.js"></script>
-</body>
-</html>
+document.body.appendChild(button)

@@ -30,40 +30,6 @@ code:
   # Enable copy code button
   copy_btn: true
 
-  # 代码高亮
-  # Code highlight
-  highlight:
-    enable: true
-
-    # 代码块是否显示行号
-    # If true, the code block display line numbers
-    line_number: false
-
-    # 实现高亮的库，对应下面的设置
-    # Highlight library
-    # Options: highlightjs | prismjs
-    lib: "highlightjs"
-
-    highlightjs:
-      # 在链接中挑选 style 填入
-      # Select a style in the link
-      # See: https://highlightjs.org/static/demo/
-      style: "Github Gist"
-
-      # 是否根据 style 改变代码背景色（如果 style 是深色背景别忘了开启此项）
-      # If true, the code background will change color based on the style (If style has a dark background, don't forget to true)
-      bg_color: false
-
-    prismjs:
-      # 在下方链接页面右侧的圆形按钮挑选 style 填入，也可以直接填入 css 链接
-      # Select the style button on the right side of the link page, you can also set the CSS link
-      # See: https://prismjs.com/
-      style: "default"
-
-      # 设为 true 高亮将本地静态生成（并只支持部分 prismjs 插件），设为 false 高亮将在浏览器通过 js 生成
-      # If true, it will be generated locally (but some prismjs plugins are not supported). If false, it will be generated via JS in the browser
-      preprocess: true
-
 # 主题颜色配置，其他不生效的地方请使用自定义 css 解决，配色可以在下方链接中获得启发
 # Theme color, please use custom CSS to solve other colors, color schema can be inspired by the links below
 # See: https://www.webdesignrankings.com/resources/lolcolors/
@@ -86,6 +52,51 @@ color:
   # 图片阴影
   # 其他阴影参考: https://getcssscan.com/css-box-shadow-examples
   markdown_picture_box_shadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
+
+  # 代码段的背景颜色
+  markdown_code_bg_color: "#161823"
+  markdown_code_bg_color_dark: "#f0f0f4"
+
+  # 代码段的注释颜色
+  markdown_code_comment: '#008643'
+  markdown_code_comment_dark: '#008643'
+
+  # 代码段的文字颜色
+  markdown_code_text : '#fff'
+  markdown_code_text_dark : '#000'
+
+  # 代码段被选中时的背景颜色
+  markdown_code_selected : "#318FFE"
+
+  # 代码段被选中时的文本颜色
+  markdown_code_color_selected : "#fff"
+
+  # 代码段括号颜色
+  markdown_code_punctuation: "#E3C91C"
+
+  # 代码段常量,标签颜色
+  markdown_code_constant :  "#e1e1e1"
+  markdown_code_constant_dark :  "#e1e1e1"
+
+  # 代码段字符串颜色
+  markdown_code_string: "#D89B6F"
+  markdown_code_string_dark: "#D89B6F"
+
+  # 代码段运算符颜色
+  markdown_code_operator: "#fff"
+  markdown_code_operator_dark: "#fff"
+
+  # 代码段关键字颜色
+  markdown_code_keyword: "#B980AD"
+  markdown_code_keyword_dark: "#B980AD"
+
+  # 代码段函数颜色
+  markdown_code_function: "#EAE378"
+  markdown_code_function_dark: "#EAE378"
+
+  # 代码段类颜色
+  markdown_code_class: "#59B294"
+  markdown_code_class_dark: "#59B294"
 
   # 代码段阴影
   # 其他阴影参考: https://getcssscan.com/css-box-shadow-examples

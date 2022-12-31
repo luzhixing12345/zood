@@ -74,9 +74,14 @@ def generateDocs(directory_tree):
     os.makedirs('docs/css')
     os.makedirs('docs/img')
     
+    # 复制图片
     for root,_,files in os.walk(os.path.join(os.path.dirname(__file__),'img')):
         for img in files:
             shutil.copy(os.path.join(root,img),'docs/img')
+    
+    # 复制prismjs
+    shutil.copy(os.path.join(os.path.dirname(__file__),'prismjs','prism.css'),'docs/css')
+    shutil.copy(os.path.join(os.path.dirname(__file__),'prismjs','prism.js'),'docs/js')
     
     zood_config_path = os.path.join(os.path.dirname(__file__),'config','_config.yml')
     zood_config = readConfigFile(zood_config_path)

@@ -6,9 +6,15 @@ def parseConfig(config):
     
     html_tempate_path = os.path.join(os.path.dirname(__file__),'config','template.html')
     css_template_path = os.path.join(os.path.dirname(__file__),'config','index.css')
+    js_path = os.path.join(os.path.dirname(__file__),'config','index.js')
     
     with open(html_tempate_path,'r',encoding='utf-8') as f:
         basic_html_template = f.read()
+    
+    with open(js_path,'r',encoding='utf-8') as f:
+        js = f.read()
+    
+    basic_html_template = basic_html_template.replace('js-scope',js)
     
     with open(css_template_path,'r',encoding='utf-8') as f:
         basic_css_template = f.read()

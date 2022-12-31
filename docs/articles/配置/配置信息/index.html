@@ -11,7 +11,28 @@
 
 </head>
 <body class="light">
-    <div id='markdown' class='markdown-body markdown-light'><h1>简介</h1><p>zood 是一个用于文档生成的Python库</p><p>它兼具了命令行执行的功能 和 库的调用功能</p><p><a href="http://louisbarranqueiro.github.io/hexo-theme-tranquilpeak" target="_blank"><img src="http://d1u9biwaxjngwg.cloudfront.net/showcases/showcase-v2.jpg" alt="Tranquilpeak"></a></p></div>
+    <div id='markdown' class='markdown-body markdown-light'><h1>配置信息</h1><pre><code class="language-c">// 注释信息
+#include &lt;stdio.h&gt;
+
+int main() {
+    int x = 10;
+    for (int i=0;i&lt;10;i++) {
+        printf("x+i = %d\n",x+i);
+    }
+    return 0;
+}</code></pre><pre><code class="language-python">import argparse
+import os
+import shutil
+class Markdown:
+    def __init__(self) -&gt; None:
+        # print("Activate MarkdownParser")
+        self.tabsize = 4
+        self.build_parser()        
+    def build_parser(self):
+        self.preprocess_parser = buildPreprocessParser(self.tabsize)
+        self.block_parser = buildBlockParser()
+        self.tree_parser = buildTreeParser()
+        self.export_processor = buildExportProcessor()</code></pre><p>当前支持高亮的语言</p><ul><li>bash</li></ul><ul><li>c</li></ul><ul><li>cpp</li></ul><ul><li>git</li></ul><ul><li>makefile</li></ul><ul><li>python</li></ul><ul><li>yaml</li></ul><p>如果您想要支持其他语法高亮,请前往<a href="https://prismjs.com/download.html#themes=prism" target="_blank">prismjs</a>官网,选择您想要支持的语言,然后在其最下方点击下载js和css</p></div>
     <script type="text/javascript">function changeMode() {
     let body = document.body;
     let markdown_part = document.getElementById('markdown')

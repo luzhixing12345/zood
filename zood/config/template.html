@@ -5,54 +5,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%title%></title>
+    <link rel='stylesheet' href='../../../css/prism.css' />
     <link rel='stylesheet' href='../../../css/index.css' />
     <link rel="icon" href="<%favicon%>">
+
 </head>
 <body class="light">
     html-scope
-    <button onclick="changeMode(this)" class="changeMode">切换颜色</button>
-
-    <script type="text/javascript">
-
-        function changeMode(box) {
-            let body = document.body;
-            let markdown_part = document.getElementById('markdown')
-            if (box.state == null) {
-                box.state = false;
-            }
-            if (box.state) {
-                body.className = 'light';
-                markdown_part.className = 'markdown-body markdown-light'
-            } else {
-                body.className = 'dark';
-                markdown_part.className = 'markdown-body markdown-dark'
-            }
-            box.state = !box.state;
-        }
-
-        function addCodeCopy(block) {
-            var clip_board = document.createElement('img');
-            clip_board.id = 'code_copy';
-            clip_board.src = "../../../img/code_copy.png"
-            clip_board.onclick = function() {
-                clip_board.src = "../../../img/copyed.png"
-                navigator.clipboard.writeText(block.firstChild.innerHTML);
-            }
-            block.appendChild(clip_board)
-        }
-
-        function removeCodeCopy(block) {
-            var clip_board = document.getElementById('code_copy')
-            block.removeChild(clip_board)
-        }
-
-        var code_blocks = document.getElementsByTagName('pre')
-        for(var i=0;i<code_blocks.length;i++) {
-            const code_block = code_blocks[i];
-            code_block.addEventListener("mouseenter",()=>addCodeCopy(code_block))
-            code_block.addEventListener("mouseleave",()=>removeCodeCopy(code_block))
-        }
-    </script>
-
+    <script type="text/javascript">js-scope</script>
+    <script type="text/javascript" src="../../../js/prism.js"></script>
 </body>
 </html>
