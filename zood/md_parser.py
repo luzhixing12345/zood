@@ -2,7 +2,7 @@
 import os
 import shutil
 from .util import *
-from .zood import parseConfig,parseMarkdownFiles,caculateFrontNext,directoryTreeList,urlReplace
+from .zood import parseConfig,parseMarkdownFiles,caculateFrontNext,getDirTree,urlReplace
 
 def parseDocs(md_dir_name):
     
@@ -36,9 +36,7 @@ def generateDocs(directory_tree,markdown_htmls,md_dir_name):
     
     html_template = parseConfig(config)
     index_html_path = os.path.join(html_dir_name,'index.html')
-    html_template = html_template.replace('directory-tree-scope',directoryTreeList(directory_tree))
-
-
+    
     flat_paths = [] # 扁平化之后的所有文件的路径
     for item in directory_tree:
         dir_name = list(item.keys())[0]
@@ -48,14 +46,22 @@ def generateDocs(directory_tree,markdown_htmls,md_dir_name):
         for file in files:
             flat_paths.append(os.path.join(dir_name,file))
     
+    # 目录树
+    dir_tree_html = getDirTree(directory_tree,md_dir_name)
+    
     front_url, next_url = caculateFrontNext(flat_paths,index_README_path,md_dir_name)
     
     with open(index_html_path,'w',encoding='utf-8') as f:
+        # index 的地址做一些修改
         index_html_template = html_template.replace('../../.','')
         next_url = next_url.replace('../..','./articles')
+        index_dir_tree_html = dir_tree_html.replace('../..','./articles')
+        
+        index_html_template = index_html_template.replace('directory-tree-scope',index_dir_tree_html)
         index_html_template = urlReplace(index_html_template,front_url,next_url,'b')
         f.write(index_html_template.replace('html-scope',markdown_htmls[index_README_path]))
     
+    html_template = html_template.replace('directory-tree-scope',dir_tree_html)
     for file_path, markdown_html in markdown_htmls.items():
         dir_name = file_path.split(os.sep)[1]
         file_name = file_path.split(os.sep)[2].replace('.md','')
@@ -66,7 +72,7 @@ def generateDocs(directory_tree,markdown_htmls,md_dir_name):
         html_path = os.path.join(doc_path,'index.html')
         with open(html_path,'w',encoding='utf-8') as f:
             front_url, next_url = caculateFrontNext(flat_paths,file_path,md_dir_name)
-            print(html_path,front_url,next_url)
+            # print(html_path,front_url,next_url)
             final_html = urlReplace(html_template,front_url,next_url,'ab')
             f.write(final_html.replace('html-scope',markdown_html))
             

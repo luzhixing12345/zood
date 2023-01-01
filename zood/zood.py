@@ -209,26 +209,33 @@ def htmlRelativeUrl(url:str):
     new_url = f'\"../../{new_url}\"'
     return new_url
     
-def directoryTreeList(directory_tree):
-    # print(directory_tree)
+def getDirTree(directory_tree,md_dir_name):
     tree_html = ''
     for item in directory_tree:
         dir_name = list(item.keys())[0]
         files = item[dir_name]
         if dir_name == '.':
+            dir_name = md_dir_name
             for file in files:
-                tree_html += treeItem(file)
+                dir_url_link = f'../../{dir_name}/{file}'
+                print(dir_url_link)
+                tree_html += treeItem(file,dir_url_link)
         else:
             sub_tree_html = ''
             for file in files:
-                sub_tree_html += treeItem(file)
-            tree_html += treeItem(dir_name + sub_tree_html)
+                dir_url_link = f'../../{dir_name}/{file}'
+                print(dir_url_link)
+                sub_tree_html += treeItem(file,dir_url_link)
+                
+            first_dir_url_link = f'../../{dir_name}/{files[0]}'
+            tree_html += treeItem(dir_name + sub_tree_html,first_dir_url_link)
                 
     # print(tree_html)
-    return tree_html
+    return f'<div class=\"dir-tree\">{tree_html}</div>'
 
-def treeItem(name):
-    return f'<ul><li>{name}</li></ul>'
+def treeItem(name,dir_url_link):
+    link = f"<a href=\"{dir_url_link}\" >{name}</a>"
+    return f'<ul><li>{link}</li></ul>'
 
 def urlReplace(html_template,front_url,next_url,control):
     
