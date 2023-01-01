@@ -180,12 +180,58 @@ def zoodJSOptions(config):
         shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','next_front.js'),f'{html_dir_name}/js')
         src = "../../../js/next_front.js"
         next_front = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
-        next_front += f"<script>addLink(<%front_url%>,<%next_url%>)</script>"
+        next_front += f"<script>addLink(<%front_url%>,<%next_url%>,<%control%>)</script>"
         js_scope += next_front
         
     return js_scope
 
-def caculateFrontNext(directory_tree,name):
+def caculateFrontNext(flat_paths:list,path,md_dir_name):
+
+    dir_name = path.split(os.sep)[1]
+    file_name = path.split(os.sep)[2].replace('.md','')
+    if dir_name == '.':
+        dir_name = md_dir_name
+    path = os.path.join(dir_name,file_name)
+    pos = flat_paths.index(path)
     
-    print(directory_tree)
-    exit()
+    front_url = '\".\"'
+    next_url = '\".\"'
+    
+    if pos != 0 :
+        front_url = htmlRelativeUrl(flat_paths[pos-1])
+    if pos != len(flat_paths)-1:
+        next_url = htmlRelativeUrl(flat_paths[pos+1])
+
+    return front_url,next_url
+    
+def htmlRelativeUrl(url:str):
+    new_url = url.replace(os.sep,'/')
+    new_url = f'\"../../{new_url}\"'
+    return new_url
+    
+def directoryTreeList(directory_tree):
+    # print(directory_tree)
+    tree_html = ''
+    for item in directory_tree:
+        dir_name = list(item.keys())[0]
+        files = item[dir_name]
+        if dir_name == '.':
+            for file in files:
+                tree_html += treeItem(file)
+        else:
+            sub_tree_html = ''
+            for file in files:
+                sub_tree_html += treeItem(file)
+            tree_html += treeItem(dir_name + sub_tree_html)
+                
+    # print(tree_html)
+    return tree_html
+
+def treeItem(name):
+    return f'<ul><li>{name}</li></ul>'
+
+def urlReplace(html_template,front_url,next_url,control):
+    
+    html_template = html_template.replace('<%front_url%>',front_url).replace('<%next_url%>',next_url)
+    html_template = html_template.replace('<%control%>',f'\"{control}\"')
+    return html_template

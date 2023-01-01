@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel='stylesheet' href=../../../css/prism.css /><link rel='stylesheet' href=../../../css/index.css />
+    <link rel="icon" href="https://raw.githubusercontent.com/learner-lu/picbed/master/logo.png">
+
+</head>
+<body class="light">
+    <div id='markdown' class='markdown-body markdown-light'><h1>配置信息</h1><pre><code class="language-c">// 注释信息
+#include &lt;stdio.h&gt;
+
+int main() {
+    int x = 10;
+    for (int i=0;i&lt;10;i++) {
+        printf("x+i = %d\n",x+i);
+    }
+    return 0;
+}</code></pre><pre><code class="language-python">import argparse
+import os
+import shutil
+class Markdown:
+    def __init__(self) -&gt; None:
+        # print("Activate MarkdownParser")
+        self.tabsize = 4
+        self.build_parser()        
+    def build_parser(self):
+        self.preprocess_parser = buildPreprocessParser(self.tabsize)
+        self.block_parser = buildBlockParser()
+        self.tree_parser = buildTreeParser()
+        self.export_processor = buildExportProcessor()</code></pre><p>当前支持高亮的语言</p><ul><li>bash</li></ul><ul><li>c</li></ul><ul><li>cpp</li></ul><ul><li>git<ul><li>1</li></ul></li></ul><ul><li>makefile</li></ul><ul><li>python</li></ul><ul><li>yaml</li></ul><p>如果您想要支持其他语法高亮,请前往<a href="https://prismjs.com/download.html#themes=prism" target="_blank">prismjs</a>官网,选择您想要支持的语言,然后在其最下方点击下载js和css</p></div>
+    <ul><li>README</li></ul><ul><li>其他</li></ul><ul><li>快速开始<ul><li>安装与使用</li></ul><ul><li>简介</li></ul></li></ul><ul><li>配置<ul><li>配置信息</li></ul></li></ul>
+    <script type="text/javascript" src="../../../js/change_mode.js"></script><script type="text/javascript" src="../../../js/copy_code.js"></script><script type="text/javascript" src="../../../js/prism.js"></script><script type="text/javascript" src="../../../js/next_front.js"></script><script>addLink("../../快速开始/简介",".","ab")</script>
+</body>
+</html>

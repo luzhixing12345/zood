@@ -2,7 +2,7 @@
 import os
 import shutil
 from .util import *
-from .zood import parseConfig,parseMarkdownFiles,caculateFrontNext
+from .zood import parseConfig,parseMarkdownFiles,caculateFrontNext,directoryTreeList,urlReplace
 
 def parseDocs(md_dir_name):
     
@@ -35,14 +35,25 @@ def generateDocs(directory_tree,markdown_htmls,md_dir_name):
             shutil.copy(os.path.join(root,img),os.path.join(html_dir_name,'img'))
     
     html_template = parseConfig(config)
-
     index_html_path = os.path.join(html_dir_name,'index.html')
+    html_template = html_template.replace('directory-tree-scope',directoryTreeList(directory_tree))
+
+
+    flat_paths = [] # 扁平化之后的所有文件的路径
+    for item in directory_tree:
+        dir_name = list(item.keys())[0]
+        files = item[dir_name]
+        if dir_name == '.':
+            dir_name = md_dir_name
+        for file in files:
+            flat_paths.append(os.path.join(dir_name,file))
     
-    front_url, next_url = caculateFrontNext(directory_tree,index_README_path)
+    front_url, next_url = caculateFrontNext(flat_paths,index_README_path,md_dir_name)
     
     with open(index_html_path,'w',encoding='utf-8') as f:
         index_html_template = html_template.replace('../../.','')
-        index_html_template = index_html_template.replace('<%front_url%>',f'{front_url}').replace('<%next_url%>',f'{next_url}')
+        next_url = next_url.replace('../..','./articles')
+        index_html_template = urlReplace(index_html_template,front_url,next_url,'b')
         f.write(index_html_template.replace('html-scope',markdown_htmls[index_README_path]))
     
     for file_path, markdown_html in markdown_htmls.items():
@@ -52,11 +63,12 @@ def generateDocs(directory_tree,markdown_htmls,md_dir_name):
             dir_name = md_dir_name
         doc_path = os.path.join(html_dir_name,"articles",dir_name,file_name)
         os.makedirs(doc_path)
-        file_path = os.path.join(doc_path,'index.html')
-        with open(file_path,'w',encoding='utf-8') as f:
-            front_url, next_url = caculateFrontNext(directory_tree,doc_path)
-            html_template = html_template.replace('<%front_url%>',f'{front_url}').replace('<%next_url%>',f'{next_url}')
-            f.write(html_template.replace('html-scope',markdown_html))
+        html_path = os.path.join(doc_path,'index.html')
+        with open(html_path,'w',encoding='utf-8') as f:
+            front_url, next_url = caculateFrontNext(flat_paths,file_path,md_dir_name)
+            print(html_path,front_url,next_url)
+            final_html = urlReplace(html_template,front_url,next_url,'ab')
+            f.write(final_html.replace('html-scope',markdown_html))
             
     printInfo("已生成 docs/",color='green')            
     
