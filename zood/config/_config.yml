@@ -145,6 +145,24 @@ position:
   # markdown右侧距离
   markdown_body_right: "25%"
 
+  # 目录左侧距离
+  dir_left: "10%"
+
+  # 目录顶部距离
+  dir_top: "15%"
+
+  # 目录宽度
+  dir_width: "10%"
+
+  # 目录条目上间距
+  dir_item_margin_top: "40px"
+
+  # 目录条目下间距
+  dir_item_margin_bottom: "40px"
+
+  # 目录条目左间距
+  dir_item_margin_left: "-10px"
+
 # 主题字体配置
 # Font
 font:

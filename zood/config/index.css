@@ -498,18 +498,18 @@ pre[class*="language-"]::selection {
 .dir-tree {
   font-family: "<%font_family%>";
   position: fixed;
-  left: 10%;
-  top: 15%;
-  width: 10%;
+  left: "<%dir_left%>";
+  top: "<%dir_top%>";
+  width: "<%dir_width%>";
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   background-color: #f6f8fa;
   border-radius: 10px;
 }
 
 .dir-tree ul {
-  margin-top: 40px;
-  margin-bottom: 40px;
-  margin-left: -10px;
+  margin-top: "<%dir_item_margin_top%>";
+  margin-bottom: "<%dir_item_margin_bottom%>";
+  margin-left: "<%dir_item_margin_left%>";
   list-style:none;
   /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
 }
