@@ -473,6 +473,7 @@ pre[class*="language-"]::selection {
 }
 
 .change-article {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
   border: 0;
   width: 100%;
   margin-right: 20%;
@@ -484,6 +485,7 @@ pre[class*="language-"]::selection {
 }
 
 .change-article:hover {
+  font-weight: bolder;
   transition: all 0.5s;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
@@ -511,8 +513,25 @@ pre[class*="language-"]::selection {
   margin-bottom: 40px;
   margin-left: -10px;
   list-style:none;
+  position: relative;
   /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
 }
+
+/* .dir-tree ul ul li::after {
+  content: "";
+  width: 0;
+  height: 3px;
+  position: absolute;
+  background: #000;
+  top: 100%;
+  right: 50%;
+  transition: all .5s;
+}
+
+.dir-tree ul ul li:hover::after{
+  width: 30%;
+  right: 0;
+} */
 
 .dir-tree ul ul li {
   margin-left: -10px;
@@ -525,9 +544,9 @@ pre[class*="language-"]::selection {
   /* padding-right: -10px; */
 }
 
-.dir-tree ul ul li:hover {
+/* .dir-tree ul ul li:hover {
   background-color: #eee;
-}
+} */
 
 .dir-tree a {
   text-decoration: none;
@@ -535,5 +554,7 @@ pre[class*="language-"]::selection {
 }
 
 .dir-tree a:hover {
-  text-decoration: underline;
+  font-weight: bold;
+  color: #0366d6;
+  /* text-decoration: underline; */
 }

@@ -131,10 +131,16 @@ color:
   post_link_color: "#0366d6"
   post_link_color_dark: "#1589e9"
 
-  # 超链接悬浮时字体色
+  # 文章超链接悬浮时(被选中)字体色
   # Color of link when hovering
   link_hover_color: "#30a9de"
   link_hover_color_dark: "#30a9de"
+
+  # 目录超链接字体色
+  dir_tree_color: "#000"
+
+  # 目录超链接悬浮时(被选中)字体色
+  dir_tree_hover_color: "#0366d6"
 
 # 页面布局
 position:
