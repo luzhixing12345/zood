@@ -5,6 +5,7 @@ body {
   width: 100%;
   height: 100%;
   background-color: #f8f9fa;
+  position: absolute;
 }
 
 .light {
@@ -353,7 +354,7 @@ blockquote {
 .markdown-dark .token.comment,
 .markdown-dark .token.doctype,
 .markdown-dark .token.prolog {
-  color: #008643;
+  color: #808080;
 }
 
 .markdown-light code[class*="language-"],
@@ -469,4 +470,28 @@ pre[class*="language-"]::selection {
 
 .markdown-dark .token.class-name {
   color: #59B294;
+}
+
+.change-article {
+  border: 0;
+  width: 100%;
+  margin-right: 20%;
+  height: 100px;
+  margin-top: 50px;
+  border-radius: 10px;
+  transition: all 0.5s;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+.change-article:hover {
+  transition: all 0.5s;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.next-front {
+  position: fixed;
+  right: 10%;
+  top: 40%;
+  width: 10%;
+  /* margin-top: -2.5em; */
 }

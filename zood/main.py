@@ -18,9 +18,11 @@ def main():
     parser.add_argument('-s','--save',action='store_true',help='save _config.yml and use in every environment')
     args = parser.parse_args()
     
-    config_path = os.path.join(os.path.dirname(__file__),'config','_config.yml')
-    config = readConfigFile(config_path)
+    config = getZoodConfig()
     md_dir_name = config['options']['markdown_folder']
+    
+    local_config_path = os.path.join(md_dir_name,'_config.yml')
+    global_config_path = os.path.join(os.path.dirname(__file__),'config','_config.yml')
     
     if args.generate:
         if not os.path.exists(md_dir_name):
@@ -30,10 +32,10 @@ def main():
         return
     
     if args.save:
-        if not os.path.exists(os.path.join(md_dir_name,'_config.yml')):
-            printInfo(f"未找到 {md_dir_name}/_config.yml")
+        if not os.path.exists(local_config_path):
+            printInfo(f"未找到 {local_config_path}")
             return
-        shutil.copy(os.path.join(md_dir_name,'_config.yml'),config_path)
+        shutil.copy(local_config_path,global_config_path)
         printInfo("已更新全局配置文件")
         return
 
@@ -69,8 +71,8 @@ def main():
         printInfo(f"已删除 docs")
         
     elif args.cmd[0] == 'config':
-        shutil.copy(config_path,os.path.join(md_dir_name,'_config.yml'))
-        printInfo(f"生成配置文件 md-docs/_config.yml",color='green')
+        shutil.copy(global_config_path,local_config_path)
+        printInfo(f"生成配置文件 {local_config_path}",color='green')
 
 if __name__ == "__main__":
     main()

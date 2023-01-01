@@ -95,25 +95,36 @@ def parseMarkdownFiles(md_dir_name):
 
 def parseConfig(config):
     
+    html_dir_name = config['options']['html_folder']
     html_tempate_path = os.path.join(os.path.dirname(__file__),'config','template.html')
     css_template_path = os.path.join(os.path.dirname(__file__),'config','index.css')
     
     with open(html_tempate_path,'r',encoding='utf-8') as f:
         basic_html_template = f.read()
     
-    js_scope = zoodJSOptions(config)
     
+    # js 部分
+    js_scope = zoodJSOptions(config)
     basic_html_template = basic_html_template.replace('js-scope',js_scope)
+    
+    # css 部分
+
+    prism_src = '../../../css/prism.css'
+    index_src = '../../../css/index.css'
+
+    css_scope = ''
+    css_scope += f"<link rel='stylesheet' href={prism_src} />"
+    css_scope += f"<link rel='stylesheet' href={index_src} />"
+    basic_html_template = basic_html_template.replace('css-scope',css_scope)
     
     with open(css_template_path,'r',encoding='utf-8') as f:
         basic_css_template = f.read()
-        
     favicon_url = config['favicon']
     if favicon_url[:4] == 'http':
         basic_html_template = basic_html_template.replace('<%favicon%>',favicon_url)
     else:
         img_name = favicon_url.split(os.sep)[-1]
-        shutil.copy(favicon_url,'./docs/img/'+img_name)
+        shutil.copy(favicon_url,f'./{html_dir_name}/img/'+img_name)
         basic_html_template = basic_html_template.replace('<%favicon%>','../../../img/'+img_name)
         
     title = config['title']
@@ -122,10 +133,12 @@ def parseConfig(config):
     custom_options = getCustomOptions(config,['color','font','position'])
     
     for k,v in custom_options:
-        # print(k,v)
         basic_css_template = basic_css_template.replace(f'\"<%{k}%>\"',v)
+        
     
-    with open('./docs/css/index.css','w',encoding='utf-8') as f:
+    basic_html_template = basic_html_template.replace('css-scope',css_scope)
+    
+    with open(f'./{html_dir_name}/css/index.css','w',encoding='utf-8') as f:
         f.write(basic_css_template)
     
     return basic_html_template
@@ -140,26 +153,39 @@ def getCustomOptions(config,keys):
 def zoodJSOptions(config):
     
     js_scope = ''
+    html_dir_name = config['options']['html_folder']
     if config['options']['enable_dark']:
     
-        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','change_mode.js'),'docs/js')
+        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','change_mode.js'),f'{html_dir_name}/js')
         src = "../../../js/change_mode.js"
         change_mode = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
         js_scope += change_mode
         
     if config['options']['copy_btn']:
         
-        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','copy_code.js'),'docs/js')
+        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','copy_code.js'),f'{html_dir_name}/js')
         src = "../../../js/copy_code.js"
         change_mode = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
         js_scope += change_mode
         
     if config['options']['enable_highlight']:
         # 复制prismjs
-        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','prismjs','prism.css'),'docs/css')
-        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','prismjs','prism.js'),'docs/js')
+        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','prismjs','prism.css'),f'{html_dir_name}/css')
+        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','prismjs','prism.js'),f'{html_dir_name}/js')
         src = "../../../js/prism.js"
         highlight = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
         js_scope += highlight
         
+    if config['options']['enable_next_front']:
+        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','next_front.js'),f'{html_dir_name}/js')
+        src = "../../../js/next_front.js"
+        next_front = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
+        next_front += f"<script>addLink(<%front_url%>,<%next_url%>)</script>"
+        js_scope += next_front
+        
     return js_scope
+
+def caculateFrontNext(directory_tree,name):
+    
+    print(directory_tree)
+    exit()

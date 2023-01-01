@@ -1,7 +1,5 @@
 
 
-a = {1:2,2:3,3:4}
-b = {1:2,2:3,3:4}
-
-c = list(a.items())+list(b.items())
-print(c)
+a = "../../../js/change_mode.js"
+b = a[7:]
+print(b)

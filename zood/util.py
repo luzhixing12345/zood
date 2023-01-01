@@ -29,3 +29,17 @@ def printInfo(msg,color='red'):
     elif color == 'green':
         print(f'\033[1;32m{msg}\033[0m')
         
+def getZoodConfig():
+    
+    global_config_path = os.path.join(os.path.dirname(__file__),'config','_config.yml')
+    
+    global_zood_config = readConfigFile(global_config_path)
+    md_dir_name = global_zood_config['options']['markdown_folder']
+    
+    local_config_path = os.path.join(md_dir_name,'_config.yml')
+    if os.path.exists(local_config_path):
+        config_path = local_config_path
+    else:
+        config_path = global_config_path
+        
+    return readConfigFile(config_path)

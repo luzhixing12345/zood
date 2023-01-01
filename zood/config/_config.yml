@@ -29,17 +29,20 @@ options:
   enable_dark: true
 
   # 是否开启复制代码的按钮
-  # Enable copy code button
   copy_btn: true
 
-  # 启用代码高亮
+  # 是否启用代码高亮
   enable_highlight: true
+
+  # 是否启用底部上一个下一个
+  enable_next_front: true
 
   # 生成的markdown文件夹名
   markdown_folder: md-docs
 
   # 生成的html文件夹名
   html_folder: docs
+
 
 # 主题颜色配置，其他不生效的地方请使用自定义 css 解决，配色可以在下方链接中获得启发
 # Theme color, please use custom CSS to solve other colors, color schema can be inspired by the links below
@@ -70,7 +73,7 @@ color:
 
   # 代码段的注释颜色
   markdown_code_comment: '#808080'
-  markdown_code_comment_dark: '#008643'
+  markdown_code_comment_dark: '#808080'
 
   # 代码段的文字颜色
   markdown_code_text : '#fff'
