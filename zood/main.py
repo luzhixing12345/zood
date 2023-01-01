@@ -32,11 +32,21 @@ def main():
         return
     
     if args.save:
-        if not os.path.exists(local_config_path):
-            printInfo(f"未找到 {local_config_path}")
-            return
-        shutil.copy(local_config_path,global_config_path)
-        printInfo("已更新全局配置文件")
+        if os.path.exists(local_config_path):
+            shutil.copy(local_config_path,global_config_path)
+            printInfo("已更新全局配置文件 _config.yml",color='green')
+        else:
+            print('未找到',local_config_path)
+        
+        if os.path.exists(os.path.join(md_dir_name,'prismjs')):
+            global_prism_css_path = os.path.join(os.path.dirname(__file__),'config','js','prismjs','prism.css')
+            global_prism_js_path = os.path.join(os.path.dirname(__file__),'config','js','prismjs','prism.js')
+            shutil.copy(os.path.join(md_dir_name,'prismjs','prism.css'),global_prism_css_path)
+            shutil.copy(os.path.join(md_dir_name,'prismjs','prism.js'),global_prism_js_path)
+            printInfo("已更新全局配置文件 prismjs")
+        else:
+            print('未找到',os.path.join(md_dir_name,'prismjs'))
+
         return
 
     if len(args.cmd) == 0:
