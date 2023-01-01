@@ -218,13 +218,13 @@ def getDirTree(directory_tree,md_dir_name):
             dir_name = md_dir_name
             for file in files:
                 dir_url_link = f'../../{dir_name}/{file}'
-                print(dir_url_link)
+                # print(dir_url_link)
                 tree_html += treeItem(file,dir_url_link)
         else:
             sub_tree_html = ''
             for file in files:
                 dir_url_link = f'../../{dir_name}/{file}'
-                print(dir_url_link)
+                # print(dir_url_link)
                 sub_tree_html += treeItem(file,dir_url_link)
                 
             first_dir_url_link = f'../../{dir_name}/{files[0]}'

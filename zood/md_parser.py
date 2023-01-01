@@ -21,7 +21,7 @@ def generateDocs(directory_tree,markdown_htmls,md_dir_name):
         exit()
 
     if os.path.exists(html_dir_name):
-        printInfo(f"删除原 {html_dir_name}",color='green')
+        printInfo(f"删除原 {html_dir_name}/",color='green')
         shutil.rmtree(html_dir_name)
     os.makedirs(os.path.join(html_dir_name,'articles'))
     os.makedirs(os.path.join(html_dir_name,'js'))
