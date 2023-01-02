@@ -594,3 +594,10 @@ pre[class*="language-"]::selection {
   background-color: "<%picture_preview_bg_color%>";
   z-index: 100;
 }
+
+.zood {
+  text-decoration: none;
+  color: grey;
+  text-align: center;
+  display: block;
+}

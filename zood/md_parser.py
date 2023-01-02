@@ -13,7 +13,7 @@ def parseDocs(md_dir_name):
 def generateDocs(directory_tree,markdown_htmls,md_dir_name):
 
     config = getZoodConfig()
-    html_dir_name = config['options']['html_folder']
+    html_dir_name = config['html_folder']
     
     index_README_path = os.path.join(md_dir_name,'.','README.md')
     if not os.path.exists(index_README_path):

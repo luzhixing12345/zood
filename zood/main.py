@@ -19,7 +19,7 @@ def main():
     args = parser.parse_args()
     
     config = getZoodConfig()
-    md_dir_name = config['options']['markdown_folder']
+    md_dir_name = config['markdown_folder']
     
     local_config_path = os.path.join(md_dir_name,'_config.yml')
     global_config_path = os.path.join(os.path.dirname(__file__),'config','_config.yml')

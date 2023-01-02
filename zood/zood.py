@@ -96,7 +96,7 @@ def parseMarkdownFiles(md_dir_name):
 
 def parseConfig(config):
     
-    html_dir_name = config['options']['html_folder']
+    html_dir_name = config['html_folder']
     html_tempate_path = os.path.join(os.path.dirname(__file__),'config','template.html')
     css_template_path = os.path.join(os.path.dirname(__file__),'config','index.css')
     
@@ -154,22 +154,19 @@ def getCustomOptions(config,keys):
 def zoodJSOptions(config):
     
     js_scope = ''
-    html_dir_name = config['options']['html_folder']
-    if config['options']['enable_dark']:
+    html_dir_name = config['html_folder']
+
+    if config['options']['enable_change_mode']:
     
-        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','change_mode.js'),f'{html_dir_name}/js')
-        src = "../../../js/change_mode.js"
-        change_mode = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
-        change_mode += f"<script>addChangeModeButton(\"../../../img/sun-line.png\",\"../../../img/moon-line.png\")</script>"
-        js_scope += change_mode
+        js_code = insertJScode('enable_change_mode',html_dir_name)
+        js_code += f"<script>addChangeModeButton(\"../../../img/sun.png\",\"../../../img/moon.png\")</script>"
+        js_scope += js_code
         
-    if config['options']['copy_btn']:
+    if config['options']['enable_copy_code']:
         
-        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','copy_code.js'),f'{html_dir_name}/js')
-        src = "../../../js/copy_code.js"
-        code_copy = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
-        code_copy += f"<script>addCodeCopy(\"../../../img/code_copy.png\",\"../../../img/copyed.png\")</script>"
-        js_scope += code_copy
+        js_code = insertJScode('enable_copy_code',html_dir_name)
+        js_code += f"<script>addCodeCopy(\"../../../img/before_copy.png\",\"../../../img/after_copy.png\")</script>"
+        js_scope += js_code
         
     if config['options']['enable_highlight']:
         # 复制prismjs
@@ -180,25 +177,28 @@ def zoodJSOptions(config):
         js_scope += highlight
         
     if config['options']['enable_next_front']:
-        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','next_front.js'),f'{html_dir_name}/js')
-        src = "../../../js/next_front.js"
-        next_front = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
-        next_front += f"<script>addLink(<%front_url%>,<%next_url%>,<%control%>)</script>"
-        js_scope += next_front
+        js_code = insertJScode('enable_next_front',html_dir_name)
+        js_code += f"<script>addLink(<%front_url%>,<%next_url%>,<%control%>)</script>"
+        js_scope += js_code
         
     if config['options']['enable_picture_title']:
-        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','add_picture_title.js'),f'{html_dir_name}/js')
-        src = "../../../js/add_picture_title.js"
-        add_picture_title = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
-        js_scope += add_picture_title
+        js_code = insertJScode('enable_picture_title',html_dir_name)
+        js_scope += js_code
         
     if config['options']['enable_picture_preview']:
-        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','picture_preview.js'),f'{html_dir_name}/js')
-        src = "../../../js/picture_preview.js"
-        picture_preview = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
-        js_scope += picture_preview
-        
+        js_code = insertJScode('enable_picture_preview',html_dir_name)
+        js_scope += js_code
+
+
     return js_scope
+
+def insertJScode(file_name,html_dir_name):
+    file_name = file_name[7:]
+    shutil.copy(os.path.join(os.path.dirname(__file__),'config','js',f'{file_name}.js'),f'{html_dir_name}/js')
+    src = f"../../../js/{file_name}.js"
+    js_code = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
+    return js_code
+        
 
 def caculateFrontNext(flat_paths:list,path,md_dir_name):
 

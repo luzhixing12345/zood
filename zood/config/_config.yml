@@ -23,13 +23,19 @@ favicon: https://raw.githubusercontent.com/learner-lu/picbed/master/logo.png
 # 标题的名字
 title: Document
 
+# 生成的markdown文件夹名
+markdown_folder: md-docs
+
+# 生成的html文件夹名
+html_folder: docs
+
 options:
 
   # 是否启用dark主题
-  enable_dark: true
+  enable_change_mode: true
 
   # 是否开启复制代码的按钮
-  copy_btn: true
+  enable_copy_code: true
 
   # 是否启用代码高亮
   enable_highlight: true
@@ -42,12 +48,6 @@ options:
 
   # 图片是否可以被放大预览
   enable_picture_preview: true
-
-  # 生成的markdown文件夹名
-  markdown_folder: md-docs
-
-  # 生成的html文件夹名
-  html_folder: docs
 
 
 # 主题颜色配置，其他不生效的地方请使用自定义 css 解决，配色可以在下方链接中获得启发
@@ -197,13 +197,9 @@ font:
 # Footer
 #---------------------------
 footer:
-  # 页脚第一行文字的 HTML，建议保留 Fluid 的链接，用于向更多人推广本主题
-  # HTML of the first line of the footer, it is recommended to keep the Fluid link to promote this theme to more people
-  content: '
-    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
-    <i class="iconfont icon-love"></i>
-    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>
-  '
+  # 页脚第一行文字的 HTML，建议保留 Zood 的链接，用于向更多人推广本主题
+  # HTML of the first line of the footer, it is recommended to keep the Zood link to promote this theme to more people
+  content: '<a href="https://github.com/luzhixing12345/zood" target="_blank" >zood</a>'
 
 markdown:
   # 数学公式，开启之前需要更换 Markdown 渲染器，否则复杂公式会有兼容问题，具体请见：https://hexo.fluid-dev.com/docs/guide/##latex-数学公式
