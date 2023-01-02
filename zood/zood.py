@@ -82,6 +82,7 @@ def parseMarkdownFiles(md_dir_name):
             file_name = list(i.keys())[0]
             file_path = os.path.join(md_dir_name,dir_name,file_name+'.md')
             if not os.path.exists(file_path):
+                printInfo('[zood解析失败]: 请检查 dir.yml')
                 printInfo('找不到文件 ' + file_path)
                 exit(0)
             else:
@@ -159,6 +160,7 @@ def zoodJSOptions(config):
         shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','change_mode.js'),f'{html_dir_name}/js')
         src = "../../../js/change_mode.js"
         change_mode = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
+        change_mode += f"<script>addChangeModeButton(\"../../../img/sun-line.png\",\"../../../img/moon-line.png\")</script>"
         js_scope += change_mode
         
     if config['options']['copy_btn']:
@@ -182,6 +184,12 @@ def zoodJSOptions(config):
         next_front = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
         next_front += f"<script>addLink(<%front_url%>,<%next_url%>,<%control%>)</script>"
         js_scope += next_front
+        
+    if config['options']['enable_picture_title']:
+        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','add_picture_title.js'),f'{html_dir_name}/js')
+        src = "../../../js/add_picture_title.js"
+        add_picture_title = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
+        js_scope += add_picture_title
         
     return js_scope
 

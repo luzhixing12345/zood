@@ -481,13 +481,14 @@ pre[class*="language-"]::selection {
   margin-top: 50px;
   border-radius: 10px;
   transition: all 0.5s;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .change-article:hover {
+  cursor: pointer;
   font-weight: bolder;
   transition: all 0.5s;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .next-front {
@@ -506,6 +507,15 @@ pre[class*="language-"]::selection {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   background-color: #f6f8fa;
   border-radius: 10px;
+  max-height: 80%;
+  overflow: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+/* 隐藏滚动条 */
+::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
 }
 
 .dir-tree ul {
@@ -557,4 +567,13 @@ pre[class*="language-"]::selection {
   font-weight: bold;
   color: "<%dir_tree_hover_color%>";
   /* text-decoration: underline; */
+}
+
+/* 图片下的文字的样式 */
+
+.markdown-body p > p {
+  color: "<%picture_text_color%>";
+  margin-top: 10px;
+  text-align: center;
+  line-height: 100%;
 }
