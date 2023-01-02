@@ -167,8 +167,9 @@ def zoodJSOptions(config):
         
         shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','copy_code.js'),f'{html_dir_name}/js')
         src = "../../../js/copy_code.js"
-        change_mode = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
-        js_scope += change_mode
+        code_copy = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
+        code_copy += f"<script>addCodeCopy(\"../../../img/code_copy.png\",\"../../../img/copyed.png\")</script>"
+        js_scope += code_copy
         
     if config['options']['enable_highlight']:
         # 复制prismjs
@@ -190,6 +191,12 @@ def zoodJSOptions(config):
         src = "../../../js/add_picture_title.js"
         add_picture_title = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
         js_scope += add_picture_title
+        
+    if config['options']['enable_picture_preview']:
+        shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','picture_preview.js'),f'{html_dir_name}/js')
+        src = "../../../js/picture_preview.js"
+        picture_preview = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
+        js_scope += picture_preview
         
     return js_scope
 
