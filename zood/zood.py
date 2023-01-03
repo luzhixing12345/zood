@@ -18,6 +18,12 @@ def initZood(md_dir_name):
         if os.path.exists('README.md'):
             with open('README.md','r',encoding='utf-8') as f:
                 readme = f.read()
+        if os.path.exists('.gitignore'):
+            with open('.gitignore','a+',encoding='utf-8') as f:
+                gitignore_files = f.read()
+                if gitignore_files.find(f'/{md_dir_name}/') != -1:
+                    gitignore_files += f'\n/{md_dir_name}/\n'
+                    f.write(gitignore_files)
 
         initDirYml(md_dir_name)
 
@@ -189,6 +195,7 @@ def zoodJSOptions(config):
         js_code = insertJScode('enable_picture_preview',html_dir_name)
         js_scope += js_code
 
+    js_scope += insertJScode('enable_check_box',html_dir_name)
 
     return js_scope
 

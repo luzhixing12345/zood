@@ -40,7 +40,7 @@ options:
   # 是否启用代码高亮
   enable_highlight: true
 
-  # 是否启用底部上一个下一个
+  # 是否启用右侧上一个下一个
   enable_next_front: true
 
   # 是否保留图片的标题
@@ -173,10 +173,10 @@ position:
   dir_width: "10%"
 
   # 目录条目上间距
-  dir_item_margin_top: "40px"
+  dir_item_margin_top: "30px"
 
   # 目录条目下间距
-  dir_item_margin_bottom: "40px"
+  dir_item_margin_bottom: "30px"
 
   # 目录条目左间距
   dir_item_margin_left: "-10px"
@@ -190,71 +190,3 @@ font:
   font_size: 16px
   font_family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji
   letter_spacing: 0.02em
-
-
-#---------------------------
-# 页脚
-# Footer
-#---------------------------
-footer:
-  # 页脚第一行文字的 HTML，建议保留 Zood 的链接，用于向更多人推广本主题
-  # HTML of the first line of the footer, it is recommended to keep the Zood link to promote this theme to more people
-  content: '<a href="https://github.com/luzhixing12345/zood" target="_blank" >zood</a>'
-
-markdown:
-  # 数学公式，开启之前需要更换 Markdown 渲染器，否则复杂公式会有兼容问题，具体请见：https://hexo.fluid-dev.com/docs/guide/##latex-数学公式
-  # Mathematical formula. If enable, you need to change the Markdown renderer, see: https://hexo.fluid-dev.com/docs/en/guide/#math
-  math:
-    # 开启后文章默认可用，自定义页面如需使用，需在 Front-matter 中指定 `math: true`
-    # If you want to use math on the custom page, you need to set `math: true` in Front-matter
-    enable: true
-
-    # 开启后，只有在文章 Front-matter 里指定 `math: true` 才会在文章页启动公式转换，以便在页面不包含公式时提高加载速度
-    # If true, only set `math: true` in Front-matter will enable math, to load faster when the page does not contain math
-    specific: false
-
-    # Options: mathjax | katex
-    engine: katex
-
-  # 流程图，基于 mermaid-js，具体请见：https://hexo.fluid-dev.com/docs/guide/#mermaid-流程图
-  # Flow chart, based on mermaid-js, see: https://hexo.fluid-dev.com/docs/en/guide/#mermaid
-  mermaid:
-    # 开启后文章默认可用，自定义页面如需使用，需在 Front-matter 中指定 `mermaid: true`
-    # If you want to use mermaid on the custom page, you need to set `mermaid: true` in Front-matter
-    enable: true
-
-    # 开启后，只有在文章 Front-matter 里指定 `mermaid: true` 才会在文章页启动公式转换，以便在页面不包含公式时提高加载速度
-    # If true, only set `mermaid: true` in Front-matter will enable mermaid, to load faster when the page does not contain mermaid
-    specific: true
-
-    # See: http://mermaid-js.github.io/mermaid/
-    options: { theme: 'default' }
-
-  # 在文章开头显示文章更新时间，该时间默认是 md 文件更新时间，可通过 front-matter 中 `updated` 手动指定（和 date 一样格式）
-  # Update date is displayed at the beginning of the post. The default date is the update date of the md file, which can be manually specified by `updated` in front-matter (same format as date)
-  updated:
-    enable: true
-
-    # 描述文字
-    # Descriptive text before date
-    content: 本文最后更新于：
-
-    # 是否使用相对时间表示，比如："3 天前"
-    # If true, it will be a relative time, such as: "3 days ago"
-    relative: true
-
-  # 文章右侧目录
-  # Table of contents (TOC)
-  toc:
-    enable: true
-    # 目录会选择这些节点作为标题
-    # TOC will select these nodes as headings
-    headingSelector: "h1,h2,h3,h4,h5,h6"
-    # 层级的折叠深度，0 是全部折叠，大于 0 后如果存在下级标题则默认展开
-    # Collapse depth. If 0, all headings collapsed. If greater than 0, it will be expanded by default if there are sub headings
-    collapseDepth: 0
-
-  # 文章底部上一篇下一篇功能
-  # Link to previous/next post
-  prev_next:
-    enable: true

@@ -516,8 +516,8 @@ pre[class*="language-"]::selection {
 }
 
 .dir-tree ul {
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   margin-left: -10px;
   list-style: none;
   position: relative;
@@ -600,4 +600,9 @@ pre[class*="language-"]::selection {
   color: grey;
   text-align: center;
   display: block;
+}
+
+.markdown-body input {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

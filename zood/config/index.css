@@ -601,3 +601,8 @@ pre[class*="language-"]::selection {
   text-align: center;
   display: block;
 }
+
+.markdown-body input {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

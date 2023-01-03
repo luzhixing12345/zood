@@ -8,7 +8,7 @@ function add(block) {
     clip_board.src = global_before_copy_url;
     clip_board.onclick = function () {
         clip_board.src = global_after_copy_url;
-        navigator.clipboard.writeText(block.firstChild.innerHTML);
+        navigator.clipboard.writeText(block.firstChild.innerText);
     }
     block.appendChild(clip_board)
 }
