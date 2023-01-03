@@ -76,5 +76,6 @@ def generateDocs(directory_tree,markdown_htmls,md_dir_name):
             final_html = urlReplace(html_template,front_url,next_url,'ab')
             f.write(final_html.replace('html-scope',markdown_html))
             
-    printInfo("已生成 docs/",color='green')            
+    printInfo(f"已生成 {html_dir_name}/ , 打开 {html_dir_name}/index.html 预览",color='green')
+          
     

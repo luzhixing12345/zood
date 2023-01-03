@@ -495,6 +495,10 @@ pre[class*="language-"]::selection {
   width: 10%;
 }
 
+.dir-tree::-webkit-scrollbar{
+  display:none /* Chrome Safari */
+}
+
 .dir-tree {
   font-family: "<%font_family%>";
   position: fixed;
@@ -510,10 +514,6 @@ pre[class*="language-"]::selection {
   -ms-overflow-style: none; /* IE 10+ */
 }
 
-/* 隐藏滚动条 */
-::-webkit-scrollbar {
-  display: none; /* Chrome Safari */
-}
 
 .dir-tree ul {
   margin-top: "<%dir_item_margin_top%>";
