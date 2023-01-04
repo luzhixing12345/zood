@@ -313,21 +313,25 @@ blockquote {
   top: 50%;
   margin-top: -16px;
   padding: 3px;
-  opacity: 0.5;
+  opacity: 0.9;
   border: 1px solid rgba(149, 157, 165, 0.2);
   transition: all 0.5s;
   border-radius: 5px;
 }
 
 .markdown-light pre #code_copy {
-  background-color: white;
+  background-color: rgb(196, 196, 196);
 }
 
 .markdown-body pre #code_copy:hover {
   transition: all 0.5s;
-  background-color: #e3e3e3;
+  background-color: #ffffff;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 5px;
+}
+
+.markdown-body pre #code_copy:active {
+  padding: 2px;
 }
 
 .markdown-light :not(pre) > code[class*="language-"],
@@ -485,7 +489,12 @@ pre[class*="language-"]::selection {
   cursor: pointer;
   font-weight: bolder;
   transition: all 0.5s;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 29px 0px;
+}
+
+.change-article:active {
+  width: 95%;
+  height: 90px;
 }
 
 .next-front {
@@ -516,8 +525,11 @@ pre[class*="language-"]::selection {
 
 
 .dir-tree ul {
-  margin-top: "<%dir_item_margin_top%>";
-  margin-bottom: "<%dir_item_margin_bottom%>";
+  font-family: "<%font_family%>";
+  font-size: "<%dir_item_font_size%>";
+  letter-spacing: "<%letter_spacing%>";
+  margin-top: "<%dir_item_margin%>";
+  margin-bottom: "<%dir_item_margin%>";
   margin-left: "<%dir_item_margin_left%>";
   list-style: none;
   position: relative;
@@ -541,12 +553,15 @@ pre[class*="language-"]::selection {
 } */
 
 .dir-tree ul ul li {
+  font-family: "<%font_family%>";
+  letter-spacing: "<%letter_spacing%>";
+  font-size: "<%dir_second_item_font_size%>";
   margin-left: -10px;
   margin-top: -10px;
-  margin-bottom: 10px;
-  padding-left: 5px;
+  /* margin-bottom: 10px; */
+  padding-left: "<%dir_second_item_margin_left%>";
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: "<%dir_second_item_margin%>";
   border-radius: 10px;
   /* padding-right: -10px; */
 }
@@ -564,6 +579,14 @@ pre[class*="language-"]::selection {
   font-weight: bold;
   color: "<%dir_tree_hover_color%>";
   /* text-decoration: underline; */
+}
+
+.dir-tree ul ul li a {
+  color: "<%dir_second_tree_color%>";
+}
+
+.dir-tree ul ul li a:hover {
+  color: "<%dir_second_tree_hover_color%>";
 }
 
 /* 图片下的文字的样式 */

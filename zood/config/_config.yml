@@ -142,11 +142,17 @@ color:
   link_hover_color: "#30a9de"
   link_hover_color_dark: "#30a9de"
 
-  # 目录超链接字体色
+  # 一级目录字体颜色
   dir_tree_color: "#000"
 
-  # 目录超链接悬浮时(被选中)字体色
+  # 一级目录悬浮时(被选中)字体颜色
   dir_tree_hover_color: "#0366d6"
+
+  # 二级目录字体颜色
+  dir_second_tree_color: "#000"
+
+  # 二级目录悬浮时(被选中)字体颜色
+  dir_second_tree_hover_color: "#0366d6"
 
   # 图片下方文字颜色(需要在options中开启)
   picture_text_color: "#a3a1a1"
@@ -172,14 +178,17 @@ position:
   # 目录宽度
   dir_width: "10%"
 
-  # 目录条目上间距
-  dir_item_margin_top: "30px"
+  # 一级条目上下间距
+  dir_item_margin: "25px"
 
-  # 目录条目下间距
-  dir_item_margin_bottom: "30px"
-
-  # 目录条目左间距
+  # 一级条目左间距
   dir_item_margin_left: "-10px"
+
+  # 二级条目上下间距
+  dir_second_item_margin: "0px"
+
+  # 二级条目左间距
+  dir_second_item_margin_left: "5px"
 
   # 图片被放大后的宽度
   image_preview_width: "60%"
@@ -190,3 +199,9 @@ font:
   font_size: 16px
   font_family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji
   letter_spacing: 0.02em
+
+  # 一级条目字体大小
+  dir_item_font_size: 18px
+
+  # 二级条目字体大小
+  dir_second_item_font_size: 16px
