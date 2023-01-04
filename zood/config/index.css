@@ -502,6 +502,7 @@ pre[class*="language-"]::selection {
   right: 10%;
   top: 40%;
   width: 10%;
+  /* white-space:nowrap; */
 }
 
 .dir-tree::-webkit-scrollbar{
@@ -514,6 +515,7 @@ pre[class*="language-"]::selection {
   left: "<%dir_left%>";
   top: "<%dir_top%>";
   width: "<%dir_width%>";
+  min-width: 100px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   background-color: #f6f8fa;
   border-radius: 10px;
@@ -521,6 +523,9 @@ pre[class*="language-"]::selection {
   overflow: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
+  /*  过长文字... */
+  text-overflow:ellipsis;
+  white-space:nowrap /*禁止文字折行*/
 }
 
 
