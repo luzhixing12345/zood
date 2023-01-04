@@ -249,6 +249,7 @@ blockquote {
 
 .markdown-body table th {
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .markdown-body table td,

@@ -1,5 +1,5 @@
 
 
-a = "../../../js/change_mode.js"
-b = a[7:]
-print(b)
+a = "1234"
+
+print(a.find('8'))
