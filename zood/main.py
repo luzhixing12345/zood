@@ -7,7 +7,7 @@ from .util import *
 from .md_parser import parseDocs
 from .zood import *
 
-version = "0.1.6"
+version = "0.2.2"
 
 def main():
     
@@ -24,6 +24,8 @@ def main():
     
     local_config_path = os.path.join(md_dir_name,'_config.yml')
     global_config_path = os.path.join(os.path.dirname(__file__),'config','_config.yml')
+    
+    global version
     
     if args.generate:
         if not os.path.exists(md_dir_name):
@@ -86,7 +88,6 @@ def main():
         printInfo(f"生成配置文件 {local_config_path}",color='green')
         
     elif args.cmd[0] == 'update':
-        global version
         print(f"当前zood版本为 {version}, 正在查询最新zood版本...")
         latest_zood_version = versions('zood')[0]
         print(f'最新zood版本为', latest_zood_version)
@@ -104,3 +105,9 @@ def main():
                 
             else:
                 print('退出更新程序')
+                
+    elif args.cmd[0] == 'version':
+        print(f"当前zood版本为 {version}")
+
+    else:
+        print(f'未找到指令 zood {args.cmd[0]}')

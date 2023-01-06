@@ -1,7 +1,7 @@
 
 import shutil
 import os
-from .MarkdownParser import parse
+import MarkdownParser
 from .util import *
 
 def initZood(md_dir_name):
@@ -92,7 +92,7 @@ def parseMarkdownFiles(md_dir_name):
                 exit(0)
             else:
                 with open(file_path,'r',encoding='utf-8') as f:
-                    markdown_htmls[file_path] = parse(f.read())
+                    markdown_htmls[file_path] = MarkdownParser.parse(f.read())
                 file_names.append(file_name)
         directory_tree.append({dir_name:file_names})
         
