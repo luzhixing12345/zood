@@ -170,7 +170,7 @@ position:
   markdown_body_right: "25%"
 
   # 目录左侧距离
-  dir_left: "10%"
+  dir_left: "5%"
 
   # 目录顶部距离
   dir_top: "15%"

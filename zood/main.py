@@ -7,6 +7,7 @@ from .util import *
 from .md_parser import parseDocs
 from .zood import *
 
+version = "0.1.6"
 
 def main():
     
@@ -83,6 +84,23 @@ def main():
     elif args.cmd[0] == 'config':
         shutil.copy(global_config_path,local_config_path)
         printInfo(f"生成配置文件 {local_config_path}",color='green')
-
-if __name__ == "__main__":
-    main()
+        
+    elif args.cmd[0] == 'update':
+        global version
+        print(f"当前zood版本为 {version}, 正在查询最新zood版本...")
+        latest_zood_version = versions('zood')[0]
+        print(f'最新zood版本为', latest_zood_version)
+        if latest_zood_version == version:
+            return
+        else:
+            download = input(f'是否要下载最新版 zood=={latest_zood_version} (yes/no)[yes] ')
+            if download == '' or download == 'yes':
+                print('正在准备更新...')
+                try:
+                    os.system('pip install --upgrade zood')
+                    print('完成更新')
+                except:
+                    print('更新异常,请检查网络或代理,使用 pip install --upgrade zood 更新')
+                
+            else:
+                print('退出更新程序')

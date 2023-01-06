@@ -2,6 +2,12 @@
 import yaml
 import os
 
+import json
+from urllib import request
+from pkg_resources import parse_version
+import ssl
+
+
 def readConfigFile(file_path:str):
     if not os.path.exists(file_path):
         printInfo('找不到文件' + file_path)
@@ -43,3 +49,9 @@ def getZoodConfig():
         config_path = global_config_path
         
     return readConfigFile(config_path)
+
+def versions(pkg_name):
+    ssl._create_default_https_context = ssl._create_unverified_context
+    url = f'https://pypi.python.org/pypi/{pkg_name}/json'
+    releases = json.loads(request.urlopen(url).read())['releases']
+    return sorted(releases, key=parse_version, reverse=True)

@@ -513,7 +513,7 @@ pre[class*="language-"]::selection {
 .dir-tree {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
   position: fixed;
-  left: 10%;
+  left: 5%;
   top: 15%;
   width: 10%;
   min-width: 100px;
@@ -524,11 +524,9 @@ pre[class*="language-"]::selection {
   overflow: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
-  /*  过长文字... */
-  text-overflow:ellipsis;
+  text-overflow:ellipsis; /*  过长文字省略号 */
   white-space:nowrap /*禁止文字折行*/
 }
-
 
 .dir-tree ul {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
@@ -541,6 +539,8 @@ pre[class*="language-"]::selection {
   position: relative;
   /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
 }
+
+
 
 /* .dir-tree ul ul li::after {
   content: "";
@@ -577,6 +577,7 @@ pre[class*="language-"]::selection {
 } */
 
 .dir-tree a {
+  
   text-decoration: none;
   color: #000;
 }
