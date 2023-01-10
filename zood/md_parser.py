@@ -1,6 +1,7 @@
 
 import os
 import shutil
+import webbrowser
 from .util import *
 from .zood import parseConfig,parseMarkdownFiles,caculateFrontNext,getDirTree,urlReplace
 
@@ -21,7 +22,7 @@ def generateDocs(directory_tree,markdown_htmls,md_dir_name):
         exit()
 
     if os.path.exists(html_dir_name):
-        printInfo(f"删除原 {html_dir_name}/",color='green')
+        printInfo(f"删除原 {html_dir_name}/")
         shutil.rmtree(html_dir_name)
     os.makedirs(os.path.join(html_dir_name,'articles'))
     os.makedirs(os.path.join(html_dir_name,'js'))
@@ -76,6 +77,7 @@ def generateDocs(directory_tree,markdown_htmls,md_dir_name):
             final_html = urlReplace(html_template,front_url,next_url,'ab')
             f.write(final_html.replace('html-scope',markdown_html))
             
-    printInfo(f"已生成 {html_dir_name}/ , 打开 {html_dir_name}/index.html 预览",color='green')
+    printInfo(f"已生成 {html_dir_name}/, 正在打开 {html_dir_name}/index.html ...",color='green')
+    webbrowser.open_new_tab(f"file:///{os.getcwd()}/{html_dir_name}/index.html")
           
     
