@@ -667,10 +667,21 @@ pre[class*="language-"]::selection {
 }
 
 .zood {
+  width: 100%;
+  text-align: center;
+  vertical-align: middle;
+  margin-top: 10px;
+  /* display: flex; */
+}
+
+.zood a{
   text-decoration: none;
   color: grey;
-  text-align: center;
-  display: block;
+  /* display: block; */
+}
+
+.zood a:hover {
+  text-decoration:underline;
 }
 
 .markdown-body input {
@@ -689,13 +700,26 @@ pre[class*="language-"]::selection {
   width: 30%;
   max-height: 50%;
   z-index: 200;
-  background-color: blue;
+  background-color: grey;
+  border-radius: 10px;
 }
 
 .center-search input {
   margin: 0 auto;
   width: 90%;
   height: 30px;
-  border: #6a737d;
+  /* border: #6a737d; */
+  border:none;
+  outline: none;
   margin: 10px;
+  border-radius: 5px;
+  font-family: "<%font_family%>";
+  font-size: "<%font_size%>";
+  letter-spacing: "<%letter_spacing%>";
+  padding-inline-start:5px;
+}
+
+.center-search .search-header {
+  display: flex;
+  align-items: center;
 }
