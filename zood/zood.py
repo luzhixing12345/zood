@@ -193,13 +193,19 @@ def zoodJSOptions(config):
     if config['options']['enable_picture_preview']:
         js_code = insertJScode('enable_picture_preview',html_dir_name)
         js_scope += js_code
+        
+    if config['options']['enable_search']:
+        js_code = insertJScode('enable_search',html_dir_name)
+        js_code += f"<script>addSearchBar(\"../../../img/search.svg\",\"Ctrl+K\")</script>"
+        js_scope += js_code
 
     js_scope += insertJScode('enable_check_box',html_dir_name)
 
     return js_scope
 
 def insertJScode(file_name,html_dir_name):
-    file_name = file_name[7:]
+    file_name = file_name[7:] # 跳过enable_
+    # 文件同名
     shutil.copy(os.path.join(os.path.dirname(__file__),'config','js',f'{file_name}.js'),f'{html_dir_name}/js')
     src = f"../../../js/{file_name}.js"
     js_code = f"<script type=\"text/javascript\" src=\"{src}\"></script>"

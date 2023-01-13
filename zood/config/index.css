@@ -506,8 +506,8 @@ pre[class*="language-"]::selection {
   /* white-space:nowrap; */
 }
 
-.dir-tree::-webkit-scrollbar{
-  display:none /* Chrome Safari */
+.dir-tree::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
 }
 
 .dir-tree {
@@ -524,8 +524,8 @@ pre[class*="language-"]::selection {
   overflow: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
-  text-overflow:ellipsis; /*  过长文字省略号 */
-  white-space:nowrap /*禁止文字折行*/
+  text-overflow: ellipsis; /*  过长文字省略号 */
+  white-space: nowrap; /*禁止文字折行*/
 }
 
 .dir-tree ul {
@@ -540,7 +540,49 @@ pre[class*="language-"]::selection {
   /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
 }
 
+.search-bar::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
+}
 
+.search-bar {
+  cursor: pointer;
+  display: flex;
+  font-family: "<%font_family%>";
+  position: fixed;
+  left: "<%dir_left%>";
+  top: "<%search_top%>";
+  width: "<%dir_width%>";
+  min-width: 100px;
+  height: 40px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background-color: #f6f8fa;
+  border-radius: 10px;
+  overflow: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  align-items: center;
+}
+
+.search-bar img {
+  margin-left: 10px;
+  height: 70%;
+}
+
+.search-bar .search-keymap {
+  margin-left: 10px;
+  /* font-size: small; */
+  /* font-weight: bolder; */
+  opacity: 0.8;
+  color: #aeaeae;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-overflow: ellipsis; /*  过长文字省略号 */
+  white-space: nowrap; /*禁止文字折行*/
+}
 
 /* .dir-tree ul ul li::after {
   content: "";
@@ -577,7 +619,6 @@ pre[class*="language-"]::selection {
 } */
 
 .dir-tree a {
-  
   text-decoration: none;
   color: "<%dir_tree_color%>";
 }
@@ -635,4 +676,26 @@ pre[class*="language-"]::selection {
 .markdown-body input {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+
+.center-search {
+  display: none;
+  /* flex-direction: column; */
+  position: fixed;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  max-height: 50%;
+  z-index: 200;
+  background-color: blue;
+}
+
+.center-search input {
+  margin: 0 auto;
+  width: 90%;
+  height: 30px;
+  border: #6a737d;
+  margin: 10px;
 }

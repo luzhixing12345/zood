@@ -14,9 +14,6 @@ pip install zood
 
 参见 [用户使用文档](https://luzhixing12345.github.io/zood/)
 
-## 特性
+## 参考
 
-- [x] markdown->html文档生成
-- [x] markdown语法解析库
-- [ ] 代码注释提取生成文档
-- [ ] API说明
+- [UI](https://remixicon.com/)
