@@ -19,11 +19,11 @@ def initZood(md_dir_name):
         if os.path.exists('README.md'):
             with open('README.md','r',encoding='utf-8') as f:
                 readme = f.read()
-        with open('.gitignore','a+',encoding='utf-8') as f:
-            gitignore_files = f.read()
-            if gitignore_files.find(f'/{md_dir_name}/') == -1:
-                gitignore_files += f'\n/{md_dir_name}/\n'
-                f.write(gitignore_files)
+        # with open('.gitignore','a+',encoding='utf-8') as f:
+        #     gitignore_files = f.read()
+        #     if gitignore_files.find(f'/{md_dir_name}/') == -1:
+        #         gitignore_files += f'\n./{md_dir_name}/\n'
+        #         f.write(gitignore_files)
 
         initDirYml(md_dir_name)
 
