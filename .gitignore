@@ -3,8 +3,8 @@ update.py
 */__pycache__
 */*/__pycache__
 
-md-docs/
 try.py
 test.py
 update.py
 .vscode/
+./md-docs

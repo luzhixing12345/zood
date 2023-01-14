@@ -2,6 +2,7 @@
 import shutil
 import os
 import MarkdownParser
+import json 
 from .util import *
 
 def initZood(md_dir_name):
@@ -99,7 +100,7 @@ def parseMarkdownFiles(md_dir_name):
     return directory_tree,markdown_htmls
             
 
-def parseConfig(config):
+def parseConfig(config,markdown_htmls):
     
     html_dir_name = config['html_folder']
     html_tempate_path = os.path.join(os.path.dirname(__file__),'config','template.html')
@@ -110,11 +111,10 @@ def parseConfig(config):
     
     
     # js 部分
-    js_scope = zoodJSOptions(config)
+    js_scope = zoodJSOptions(config,markdown_htmls)
     basic_html_template = basic_html_template.replace('js-scope',js_scope)
     
     # css 部分
-
     prism_src = '../../../css/prism.css'
     index_src = '../../../css/index.css'
 
@@ -156,7 +156,7 @@ def getCustomOptions(config,keys):
         custom_options += list(config[k].items())
     return custom_options
 
-def zoodJSOptions(config):
+def zoodJSOptions(config,markdown_htmls):
     
     js_scope = ''
     html_dir_name = config['html_folder']
@@ -196,7 +196,8 @@ def zoodJSOptions(config):
         
     if config['options']['enable_search']:
         js_code = insertJScode('enable_search',html_dir_name)
-        js_code += f"<script>addSearchBar(\"../../../img/search.svg\",\"Ctrl+K\")</script>"
+        all_api_text = getAllAPIText(markdown_htmls)
+        js_code += f"<script>addSearchBar({all_api_text},\"../../../img/search.svg\",\"../../../img/enter.svg\",\"Ctrl+K\")</script>"
         js_scope += js_code
 
     js_scope += insertJScode('enable_check_box',html_dir_name)
@@ -211,61 +212,3 @@ def insertJScode(file_name,html_dir_name):
     js_code = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
     return js_code
         
-
-def caculateFrontNext(flat_paths:list,path,md_dir_name):
-
-    dir_name = path.split(os.sep)[1]
-    file_name = path.split(os.sep)[2].replace('.md','')
-    if dir_name == '.':
-        dir_name = md_dir_name
-    path = os.path.join(dir_name,file_name)
-    pos = flat_paths.index(path)
-    
-    front_url = '\".\"'
-    next_url = '\".\"'
-    
-    if pos != 0 :
-        front_url = htmlRelativeUrl(flat_paths[pos-1])
-    if pos != len(flat_paths)-1:
-        next_url = htmlRelativeUrl(flat_paths[pos+1])
-
-    return front_url,next_url
-    
-def htmlRelativeUrl(url:str):
-    new_url = url.replace(os.sep,'/')
-    new_url = f'\"../../{new_url}\"'
-    return new_url
-    
-def getDirTree(directory_tree,md_dir_name):
-    tree_html = ''
-    for item in directory_tree:
-        dir_name = list(item.keys())[0]
-        files = item[dir_name]
-        if dir_name == '.':
-            dir_name = md_dir_name
-            for file in files:
-                dir_url_link = f'../../{dir_name}/{file}'
-                # print(dir_url_link)
-                tree_html += treeItem(file,dir_url_link)
-        else:
-            sub_tree_html = ''
-            for file in files:
-                dir_url_link = f'../../{dir_name}/{file}'
-                # print(dir_url_link)
-                sub_tree_html += treeItem(file,dir_url_link)
-                
-            first_dir_url_link = f'../../{dir_name}/{files[0]}'
-            tree_html += treeItem(dir_name + sub_tree_html,first_dir_url_link)
-                
-    # print(tree_html)
-    return f'<div class=\"dir-tree\">{tree_html}</div>'
-
-def treeItem(name,dir_url_link):
-    link = f"<a href=\"{dir_url_link}\" >{name}</a>"
-    return f'<ul><li>{link}</li></ul>'
-
-def urlReplace(html_template,front_url,next_url,control):
-    
-    html_template = html_template.replace('<%front_url%>',front_url).replace('<%next_url%>',next_url)
-    html_template = html_template.replace('<%control%>',f'\"{control}\"')
-    return html_template

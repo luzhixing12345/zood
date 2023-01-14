@@ -34,7 +34,7 @@ def generateDocs(directory_tree,markdown_htmls,md_dir_name):
         for img in files:
             shutil.copy(os.path.join(root,img),os.path.join(html_dir_name,'img'))
     
-    html_template = parseConfig(config)
+    html_template = parseConfig(config,markdown_htmls)
     index_html_path = os.path.join(html_dir_name,'index.html')
     
     flat_paths = [] # 扁平化之后的所有文件的路径
@@ -56,6 +56,7 @@ def generateDocs(directory_tree,markdown_htmls,md_dir_name):
         index_html_template = html_template.replace('../../.','')
         next_url = next_url.replace('../..','./articles')
         index_dir_tree_html = dir_tree_html.replace('../..','./articles')
+        index_html_template = index_html_template.replace('../..','./articles')
         
         index_html_template = index_html_template.replace('directory-tree-scope',index_dir_tree_html)
         index_html_template = urlReplace(index_html_template,front_url,next_url,'b')
