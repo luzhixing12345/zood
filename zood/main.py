@@ -7,7 +7,7 @@ from .util import *
 from .md_parser import parseDocs
 from .zood import *
 
-version = "0.5.0"
+version = "0.5.1"
 
 def main():
     

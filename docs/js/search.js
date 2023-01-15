@@ -36,6 +36,7 @@ center_search_input.onfocus = function() {
 
 
 
+
 function displayCenterSearch() {
 
     if (!is_display) {
@@ -44,7 +45,6 @@ function displayCenterSearch() {
         center_search_input.focus();
         is_display = !is_display;
     }
-
 }
 
 
@@ -57,6 +57,7 @@ function closeCenterSearch() {
     center_search_result.innerHTML = ''
     selected_item_index = -1;
 }
+
 
 
 function startSearch(word) {
@@ -72,6 +73,10 @@ function startSearch(word) {
         var index = api_text.toLowerCase().indexOf(word);
 
         if (index != -1) {
+            // 最多搜索数8
+            if (searched_result_length == 8) {
+                break;
+            }
             searched_result_length += 1;
             const search_result = document.createElement('div');
             search_result.className = 'search-result-item';

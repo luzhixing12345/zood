@@ -104,18 +104,23 @@ def urlReplace(html_template,front_url,next_url,control):
     html_template = html_template.replace('<%control%>',f'\"{control}\"')
     return html_template
 
-def getAllAPIText(markdown_htmls):
-    # print(markdown_htmls)
+def getAllAPIText(markdown_htmls,search_scope,md_dir_name):
+         
     all_keys = markdown_htmls.keys()
-    API_keys = []
-    for key in all_keys:
-        if key.split(os.sep)[1] == 'API':
-            API_keys.append(key)
     API_text = {}
-    for key in API_keys:
-        markdown_text = re.sub(r'<.*?>','',markdown_htmls[key])
-        path = '../../API/' + key.split(os.sep)[-1].replace('.md','')
+    for key in all_keys:
+        splited_key = key.split(os.sep)
+        dir_name = splited_key[1]
+        
+        if len(search_scope) != 0:
+            if dir_name not in search_scope:
+                continue
+        if dir_name == '.':
+            dir_name = md_dir_name
+        file_name = splited_key[2].replace('.md','')
+        markdown_text = re.sub(r'<.*?>','',markdown_htmls[key]).replace('\"','').replace('\'','').replace('\\','')
+        path = f'../../{dir_name}/{file_name}'
         API_text[path] = markdown_text
     
-    json_API_text = json.dumps(API_text).replace('\"','\\\"')
+    json_API_text = json.dumps(API_text).replace('\"','\\\"').replace('\\n','')
     return f'\"{json_API_text}\"'

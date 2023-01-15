@@ -160,6 +160,7 @@ def zoodJSOptions(config,markdown_htmls):
     
     js_scope = ''
     html_dir_name = config['html_folder']
+    md_dir_name = config['markdown_folder']
 
     if config['options']['enable_change_mode']:
     
@@ -194,9 +195,9 @@ def zoodJSOptions(config,markdown_htmls):
         js_code = insertJScode('enable_picture_preview',html_dir_name)
         js_scope += js_code
         
-    if config['options']['enable_search']:
+    if config['options']['enable_search']['enable']:
         js_code = insertJScode('enable_search',html_dir_name)
-        all_api_text = getAllAPIText(markdown_htmls)
+        all_api_text = getAllAPIText(markdown_htmls,config['options']['enable_search']['search_scope'],md_dir_name)
         js_code += f"<script>addSearchBar({all_api_text},\"../../../img/search.svg\",\"../../../img/enter.svg\",\"Ctrl+K\")</script>"
         js_scope += js_code
 

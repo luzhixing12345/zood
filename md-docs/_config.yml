@@ -44,7 +44,9 @@ options:
   enable_next_front: true
 
   # 是否启用查询搜索
-  enable_search: true
+  enable_search:
+    enable: true
+    search_scope: ['API','.']
 
   # 是否保留图片的标题
   enable_picture_title: false
