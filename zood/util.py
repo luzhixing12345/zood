@@ -18,7 +18,7 @@ def readConfigFile(file_path:str):
 
 def writeConfigFile(data, file_path):
     with open(file_path, 'w', encoding='utf-8') as f:
-        yaml.dump(data, f,allow_unicode=True)
+        yaml.dump(data, f,allow_unicode=True,sort_keys=False)
 
 def sort(yml):
     
