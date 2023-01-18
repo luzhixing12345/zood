@@ -10,7 +10,7 @@
 
 </head>
 <body class="light">
-    <div class='markdown-body'><h1>配置信息</h1><p>如果您想修改zood的默认配置,你需要首先调出zood的配置文件</p><pre><code class="language-bash">zood config</code></pre><p>接下来您可以修改 md-docs/ 下生成的 <code>_config.yml</code> 文件</p><p>您可<code>_config.yml</code>的配置选项的命名及其注释自行修改</p><p>此时您的目录结构应该如下所示</p><pre><code class="language-txt">- md-docs/
+    <div class='markdown-body'><h1>配置信息</h1><p>如果您想修改zood的默认配置,你需要首先调出zood的配置文件</p><pre><code class="language-bash">zood config</code></pre><p>接下来您可以修改 md-docs/ 下生成的 <code>_config.yml</code> 文件.md-docs目录下的config文件的优先级要高于全局config配置</p><p>您可<code>_config.yml</code>的配置选项的命名及其注释自行修改</p><p>此时您的目录结构应该如下所示</p><pre><code class="language-txt">- md-docs/
   - README.md
   - dir.yml
   - _config.yml</code></pre><p>修改完成后如果您想永久保存修改需要将其重新注册回zood,<b>注意此操作为替换操作,您所做的修改将成为全局配置文件并应用于之后所有的项目</b></p><pre><code class="language-bash">zood -s</code></pre><p>如果不想修改内容作用于全局则不要使用zood -s</p><h2>可配置选项</h2><p>配置内容总共分为如下几个部分</p><ul><li>options: 相关功能的启用/关闭<div><input type="checkbox" disabled checked>启用dark主题</div><div><input type="checkbox" disabled checked>复制代码</div><div><input type="checkbox" disabled checked>代码高亮</div><div><input type="checkbox" disabled checked>上一个/下一个</div><div><input type="checkbox" disabled checked>搜索(默认不开启)</div><div><input type="checkbox" disabled checked>保留图片的标题(默认不开启)</div><div><input type="checkbox" disabled checked>图片放大预览</div></li></ul><ul><li>color: 各种颜色选项</li></ul><ul><li>position: 页面布局选项,用于调整页面中元素位置,大小</li></ul><ul><li>font: 字体</li></ul><h2>语法高亮模块</h2><p>当前支持高亮的语言</p><ul><li>bash</li></ul><ul><li>c</li></ul><ul><li>cpp</li></ul><ul><li>git</li></ul><ul><li>makefile</li></ul><ul><li>python</li></ul><ul><li>yaml</li></ul><pre><code class="language-c">// 注释信息

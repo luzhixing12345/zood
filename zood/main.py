@@ -7,8 +7,6 @@ from .util import *
 from .md_parser import parseDocs
 from .zood import *
 
-version = "0.5.2"
-
 def main():
     
     parser = argparse.ArgumentParser(
@@ -86,7 +84,8 @@ def main():
     elif args.cmd[0] == 'config':
         shutil.copy(global_config_path,local_config_path)
         printInfo(f"生成配置文件 {local_config_path}",color='green')
-        
+    
+    
     # elif args.cmd[0] == 'update':
     #     print(f"当前zood版本为 {version}, 正在查询最新zood版本...")
     #     latest_zood_version = versions('zood')[0]
