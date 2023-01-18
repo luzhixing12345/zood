@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zood"
-version = "0.5.4"
+version = "0.5.5"
 description = "web page documentation & comment generation documentation"
 license = "MIT"
 authors = ["kamilu <luzhixing12345@163.com>"]
@@ -12,7 +12,7 @@ documentation = "https://luzhixing12345.github.io/zood/"
 [tool.poetry.dependencies]
 python = "^3.7"
 PyYAML = "^6.0"
-MarkdownParser = "^0.2.0"
+MarkdownParser = "^0.3.0"
 
 [build-system]
 requires = ["poetry-core"]
