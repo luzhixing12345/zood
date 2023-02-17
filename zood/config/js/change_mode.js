@@ -6,6 +6,7 @@ function changeThemeMode() {
     let body = document.body;
     let markdown_part = document.getElementsByClassName('markdown-body')[0]
     let box = document.getElementById('changeThemeMode')
+    let change_article_boxes = document.getElementsByClassName('change-article')
     if (box.state == null) {
         box.state = false;
     }
@@ -13,10 +14,17 @@ function changeThemeMode() {
         body.className = 'light';
         markdown_part.className = 'markdown-body markdown-light'
         box.src = global_sun_src;
+        for(b of change_article_boxes) {
+            b.classList.remove('change-dark');
+        }
+        
     } else {
         body.className = 'dark';
         markdown_part.className = 'markdown-body markdown-dark'
         box.src = global_moon_src;
+        for(b of change_article_boxes) {
+            b.classList.add('change-dark');
+        }
     }
     box.state = !box.state;
 }

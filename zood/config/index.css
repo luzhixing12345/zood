@@ -157,7 +157,7 @@ blockquote {
   padding: 16px;
   overflow: auto;
   font-size: 85%;
-  max-height: 600px;
+  /* max-height: 600px; */
   line-height: 1.45;
   background-color: #f6f8fa;
   border-radius: 3px;
@@ -453,6 +453,30 @@ pre[class*="language-"]::selection {
   color: "<%markdown_code_keyword%>";
 }
 
+.markdown-light .token.directive.keyword {
+  color: "<%markdown_code_directive_keyword%>";
+}
+
+.markdown-dark .token.directive.keyword {
+  color: "<%markdown_code_directive_keyword_dark%>";
+}
+
+.markdown-light .token.directive-hash {
+  color: "<%markdown_code_directive_keyword%>";
+}
+
+.markdown-dark .token.directive-hash {
+  color: "<%markdown_code_directive_keyword_dark%>";
+}
+
+.markdown-light .token.property {
+  color: "<%markdown_code_jsonkey%>";
+}
+
+.markdown-dark .token.property {
+  color: "<%markdown_code_jsonkey_dark%>";
+}
+
 .markdown-dark .token.atrule,
 .markdown-dark .token.attr-value,
 .markdown-dark .token.keyword {
@@ -485,6 +509,11 @@ pre[class*="language-"]::selection {
   border-radius: 10px;
   transition: all 0.5s;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.change-dark {
+    background-color: #6a737d;
+    color: #f8f9fa;
 }
 
 .change-article:hover {
@@ -675,21 +704,20 @@ pre[class*="language-"]::selection {
   /* display: flex; */
 }
 
-.zood a{
+.zood a {
   text-decoration: none;
   color: grey;
   /* display: block; */
 }
 
 .zood a:hover {
-  text-decoration:underline;
+  text-decoration: underline;
 }
 
 .markdown-body input {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-
 
 .center-search {
   display: none;
@@ -710,14 +738,14 @@ pre[class*="language-"]::selection {
   width: 90%;
   height: 30px;
   /* border: #6a737d; */
-  border:none;
+  border: none;
   outline: none;
   margin: 10px;
   border-radius: 5px;
   font-family: "<%font_family%>";
   font-size: "<%font_size%>";
   letter-spacing: "<%letter_spacing%>";
-  padding-inline-start:5px;
+  padding-inline-start: 5px;
 }
 
 .center-search .search-header {
@@ -726,7 +754,7 @@ pre[class*="language-"]::selection {
   /* justify-content: space-around; */
 }
 
-.center-search .search-header img {  
+.center-search .search-header img {
   margin-right: 10px;
 }
 
@@ -761,7 +789,7 @@ pre[class*="language-"]::selection {
 }
 
 .search-selected {
-  background-color: rgb(66,184,131);
+  background-color: rgb(66, 184, 131);
   color: white;
 }
 

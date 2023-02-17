@@ -80,15 +80,15 @@ color:
 
   # 代码段的背景颜色
   markdown_code_bg_color: "#161823"
-  markdown_code_bg_color_dark: "#f0f0f4"
+  markdown_code_bg_color_dark: "#303030"
 
   # 代码段的注释颜色
-  markdown_code_comment: '#808080'
-  markdown_code_comment_dark: '#808080'
+  markdown_code_comment: '#6A9955'
+  markdown_code_comment_dark: '#6A9955'
 
   # 代码段的文字颜色
   markdown_code_text : '#fff'
-  markdown_code_text_dark : '#000'
+  markdown_code_text_dark : '#fff'
 
   # 代码段被选中时的背景颜色
   markdown_code_selected : "#318FFE"
@@ -112,8 +112,12 @@ color:
   markdown_code_operator_dark: "#fff"
 
   # 代码段关键字颜色
-  markdown_code_keyword: "#B980AD"
-  markdown_code_keyword_dark: "#B980AD"
+  markdown_code_keyword: "#569CD6"
+  markdown_code_keyword_dark: "#569CD6"
+
+  # 代码段预处理颜色
+  markdown_code_directive_keyword: "#C586C0"
+  markdown_code_directive_keyword_dark: "#C586C0"
 
   # 代码段函数颜色
   markdown_code_function: "#EAE378"
@@ -122,6 +126,10 @@ color:
   # 代码段类颜色
   markdown_code_class: "#59B294"
   markdown_code_class_dark: "#59B294"
+
+  # json key颜色
+  markdown_code_jsonkey: "#9CDCFE"
+  markdown_code_jsonkey_dark: "#9CDCFE"
 
   # 代码段阴影
   # 其他阴影参考: https://getcssscan.com/css-box-shadow-examples
