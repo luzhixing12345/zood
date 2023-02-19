@@ -1,7 +1,4 @@
 
 # zood -g
 
-```c
-
-
-```
+just a test for me?

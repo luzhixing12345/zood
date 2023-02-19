@@ -512,8 +512,8 @@ pre[class*="language-"]::selection {
 }
 
 .change-dark {
-    background-color: #6a737d;
-    color: #f8f9fa;
+  background-color: #6a737d;
+  color: #f8f9fa;
 }
 
 .change-article:hover {
@@ -665,6 +665,12 @@ pre[class*="language-"]::selection {
 
 .dir-tree ul ul li a:hover {
   color: "<%dir_second_tree_hover_color%>";
+}
+
+.link-active {
+  font-weight: bold !important;
+  border-bottom: 2px solid #555;
+  padding-bottom: 2px;
 }
 
 /* 图片下的文字的样式 */

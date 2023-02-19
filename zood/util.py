@@ -87,16 +87,20 @@ def getDirTree(directory_tree,md_dir_name):
                 dir_url_link = f'../../{dir_name}/{file}'
                 # print(dir_url_link)
                 sub_tree_html += treeItem(file,dir_url_link)
-                
+
             first_dir_url_link = f'../../{dir_name}/{files[0]}'
-            tree_html += treeItem(dir_name + sub_tree_html,first_dir_url_link)
+            tree_html += treeItem(dir_name,first_dir_url_link,sub_tree = sub_tree_html)
                 
     # print(tree_html)
     return f'<div class=\"dir-tree\">{tree_html}</div>'
 
-def treeItem(name,dir_url_link):
-    link = f"<a href=\"{dir_url_link}\" >{name}</a>"
-    return f'<ul><li>{link}</li></ul>'
+def treeItem(name,dir_url_link,sub_tree = False):
+    if sub_tree:
+        link = f"<a href=\"{dir_url_link}\" >{name}</a>"
+        return f'<ul><li>{link}{sub_tree}</li></ul>'
+    else:
+        link = f"<a href=\"{dir_url_link}\" >{name}</a>"
+        return f'<ul><li>{link}</li></ul>'
 
 def urlReplace(html_template,front_url,next_url,control):
     
