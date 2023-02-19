@@ -33,7 +33,7 @@ body {
   word-wrap: break-word;
   border-radius: 10px;
   box-shadow: "<%markdown_box_shadow%>";
-  /* background-color: rgb(255, 255, 255); */
+  background-color: "<%markdown_bg_color%>";
 }
 
 .markdown-light {
