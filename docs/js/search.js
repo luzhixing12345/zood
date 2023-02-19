@@ -128,6 +128,16 @@ function addSearchBar(API_text, search_src, enter_src, key_map) {
 
     var search_bar = document.createElement('div');
     search_bar.className = 'search-bar';
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        if (savedTheme == 'dark') {
+            search_bar.style.backgroundColor = "#252D38";
+        } else {
+            search_bar.style.backgroundColor = "#f6f8fa";
+        }
+    }
+
     var search_img = document.createElement('img');
     var search_keymap = document.createElement('div');
     search_keymap.className = 'search-keymap';

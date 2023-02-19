@@ -273,6 +273,17 @@ blockquote {
   border-collapse: collapse;
 }
 
+.markdown-dark table tr {
+  background-color: #444444;
+  border-top: 1px solid #c6cbd1;
+  color: white;
+}
+
+.markdown-dark table tr:nth-child(2n) {
+  background-color: #808080 ;
+  color: white;
+}
+
 .markdown-body h1,
 .markdown-body h2,
 .markdown-body h3,
@@ -672,6 +683,12 @@ pre[class*="language-"]::selection {
   border-bottom: 2px solid #555;
   padding-bottom: 2px;
 }
+
+.link-active-dark {
+    font-weight: bold !important;
+    border-bottom: 2px solid #f3f3f3;
+    padding-bottom: 2px;
+  }
 
 /* 图片下的文字的样式 */
 

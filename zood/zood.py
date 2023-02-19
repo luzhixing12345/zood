@@ -162,6 +162,11 @@ def zoodJSOptions(config,markdown_htmls):
     html_dir_name = config['html_folder']
     md_dir_name = config['markdown_folder']
 
+    if config['options']['enable_next_front']:
+        js_code = insertJScode('enable_next_front',html_dir_name)
+        js_code += f"<script>addLink(<%front_url%>,<%next_url%>,<%control%>)</script>"
+        js_scope += js_code
+
     if config['options']['enable_change_mode']:
     
         js_code = insertJScode('enable_change_mode',html_dir_name)
@@ -182,11 +187,7 @@ def zoodJSOptions(config,markdown_htmls):
         highlight = f"<script type=\"text/javascript\" src=\"{src}\"></script>"
         js_scope += highlight
         
-    if config['options']['enable_next_front']:
-        js_code = insertJScode('enable_next_front',html_dir_name)
-        js_code += f"<script>addLink(<%front_url%>,<%next_url%>,<%control%>)</script>"
-        js_scope += js_code
-        
+
     if config['options']['enable_picture_title']:
         js_code = insertJScode('enable_picture_title',html_dir_name)
         js_scope += js_code

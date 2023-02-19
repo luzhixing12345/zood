@@ -41,7 +41,7 @@ options:
   enable_highlight: true
 
   # 是否启用右侧上一个下一个
-  enable_next_front: true
+  enable_next_front: flase
 
   # 是否启用查询搜索
   enable_search:
