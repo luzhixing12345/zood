@@ -7,6 +7,8 @@ for(var i=0;i<inputs.length;i++) {
     }
 }
 
+var markdown_part = document.querySelector(".markdown-body");
+markdown_part.className = 'markdown-body markdown-light'
 
 var currentUrl = window.location.href.slice(0, -1);
 var dirTree = document.querySelector(".dir-tree");
