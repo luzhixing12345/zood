@@ -128,6 +128,7 @@ def parseConfig(config,markdown_htmls):
     favicon_url = config['favicon']
     if favicon_url[:4] == 'http':
         basic_html_template = basic_html_template.replace('<%favicon%>',favicon_url)
+        
     else:
         img_name = favicon_url.split(os.sep)[-1]
         shutil.copy(favicon_url,f'./{html_dir_name}/img/'+img_name)

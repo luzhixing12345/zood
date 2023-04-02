@@ -41,7 +41,7 @@ options:
   enable_highlight: true
 
   # 是否启用右侧上一个下一个
-  enable_next_front: flase
+  enable_next_front: true
 
   # 是否启用查询搜索
   enable_search:
@@ -54,6 +54,52 @@ options:
   # 图片是否可以被放大预览
   enable_picture_preview: true
 
+
+# 页面布局
+position:
+
+  # markdown左侧距离
+  markdown_body_left: "20%"
+  
+  # markdown右侧距离
+  markdown_body_right: "20%"
+
+  # 搜索栏顶部距离
+  search_top: "8%"
+
+  # 目录左侧距离
+  dir_left: "6%"
+
+  # 目录顶部距离
+  dir_top: "15%"
+
+  # 目录宽度
+  dir_width: "10%"
+
+  # 按钮的右侧距离
+  button_right: 6%;
+
+  # 按钮顶部距离
+  button_top: 40%;
+
+  # 按钮宽度
+  button_width: 10%;
+
+
+  # 一级条目上下间距
+  dir_item_margin: "25px"
+
+  # 一级条目左间距
+  dir_item_margin_left: "-10px"
+
+  # 二级条目上下间距
+  dir_second_item_margin: "0px"
+
+  # 二级条目左间距
+  dir_second_item_margin_left: "5px"
+
+  # 图片被放大后的宽度
+  image_preview_width: "60%"
 
 # 主题颜色配置，其他不生效的地方请使用自定义 css 解决，配色可以在下方链接中获得启发
 # Theme color, please use custom CSS to solve other colors, color schema can be inspired by the links below
@@ -172,42 +218,6 @@ color:
 
   # 图片被放大后的背景颜色
   picture_preview_bg_color: "rgba(0, 0, 0, 0.3)"
-
-# 页面布局
-position:
-
-  # markdown左侧距离
-  markdown_body_left: "25%"
-  
-  # markdown右侧距离
-  markdown_body_right: "25%"
-
-  # 搜索栏顶部距离
-  search_top: "8%"
-
-  # 目录左侧距离
-  dir_left: "8%"
-
-  # 目录顶部距离
-  dir_top: "15%"
-
-  # 目录宽度
-  dir_width: "10%"
-
-  # 一级条目上下间距
-  dir_item_margin: "25px"
-
-  # 一级条目左间距
-  dir_item_margin_left: "-10px"
-
-  # 二级条目上下间距
-  dir_second_item_margin: "0px"
-
-  # 二级条目左间距
-  dir_second_item_margin_left: "5px"
-
-  # 图片被放大后的宽度
-  image_preview_width: "60%"
 
 # 主题字体配置
 # Font

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zood"
-version = "0.6.4"
+version = "0.6.6"
 description = "web page documentation & comment generation documentation"
 license = "MIT"
 authors = ["kamilu <luzhixing12345@163.com>"]

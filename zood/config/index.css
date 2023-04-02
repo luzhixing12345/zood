@@ -215,7 +215,7 @@ blockquote {
 
 .markdown-body ul {
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .markdown-body ol,
@@ -242,6 +242,10 @@ blockquote {
 .markdown-body li + li {
   margin-top: 0.25em;
 }
+
+.markdown-body  ul ul li:first-child {
+    padding-top: 15px; /* 你希望的距离 */
+  }
 
 .markdown-body table {
   border-spacing: 0;
@@ -295,6 +299,17 @@ blockquote {
   font-weight: 600;
   line-height: 1.25;
 }
+
+.markdown-body > ul>li:has(input) {
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body  ul>li:has(input)>ul {
+    list-style-type: none;
+    padding-left: 8px;
+}
+
 
 .markdown-body img {
   max-width: 80%;
@@ -541,9 +556,9 @@ pre[class*="language-"]::selection {
 
 .next-front {
   position: fixed;
-  right: 10%;
-  top: 40%;
-  width: 10%;
+  right: "<%button_right%>";
+  top: "<%button_top%>";
+  width: "<%button_width%>";
   /* white-space:nowrap; */
 }
 
