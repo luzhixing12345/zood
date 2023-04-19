@@ -184,8 +184,7 @@ blockquote {
 }
 
 .markdown-body pre code {
-  display: inline;
-  max-width: auto;
+  max-width: 100%;
   padding: 0;
   margin: 0;
   overflow: visible;
@@ -343,7 +342,6 @@ blockquote {
   padding: 3px;
   opacity: 0.9;
   border: 1px solid rgba(149, 157, 165, 0.2);
-  transition: all 0.5s;
   border-radius: 5px;
 }
 
@@ -352,14 +350,9 @@ blockquote {
 }
 
 .markdown-body pre #code_copy:hover {
-  transition: all 0.5s;
   background-color: #ffffff;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 5px;
-}
-
-.markdown-body pre #code_copy:active {
-  padding: 2px;
 }
 
 .markdown-light :not(pre) > code[class*="language-"],

@@ -108,7 +108,10 @@ function deactivate_searched_items() {
 
 function activeSelectedItem() {
 
-    if (searched_result_length == 0) return;
+    if (searched_result_length == 0) {
+        selected_item_index = -1;
+        return;
+    }
 
     center_search_input.blur();
     selected_item_index = (selected_item_index + searched_result_length) % searched_result_length;
@@ -157,12 +160,14 @@ document.onkeydown = function (e) {
         ev.preventDefault()
     }
     if (ev.keyCode == 27) {
+        // ESC
         closeCenterSearch()
         ev.preventDefault()
     }
     if (ev.which === 13) {
+        // enter
         var word = center_search_input.value.trim();
-        if (word == '') {
+        if (word === '') {
             closeCenterSearch()
             return;
         }

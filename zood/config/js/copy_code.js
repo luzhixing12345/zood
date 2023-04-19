@@ -8,11 +8,15 @@ function add(block) {
     clip_board.src = global_before_copy_url;
     clip_board.onclick = function () {
         clip_board.src = global_after_copy_url;
+        var range = document.createRange();
+        range.selectNodeContents(block.firstChild);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
         navigator.clipboard.writeText(block.firstChild.innerText);
     }
     block.appendChild(clip_board)
 }
-
 function remove(block) {
     var clip_board = document.getElementById('code_copy')
     block.removeChild(clip_board)
