@@ -93,7 +93,7 @@ def parseMarkdownFiles(md_dir_name):
                 exit(0)
             else:
                 with open(file_path,'r',encoding='utf-8') as f:
-                    markdown_htmls[file_path] = MarkdownParser.parse(f.read())
+                    markdown_htmls[file_path] = MarkdownParser.parse_withtag(f.read())
                 file_names.append(file_name)
         directory_tree.append({dir_name:file_names})
         
@@ -119,7 +119,8 @@ def parseConfig(config,markdown_htmls):
     index_src = '../../../css/index.css'
 
     css_scope = ''
-    css_scope += f"<link rel='stylesheet' href={prism_src} />"
+    if config['options']['enable_highlight']:
+        css_scope += f"<link rel='stylesheet' href={prism_src} />"
     css_scope += f"<link rel='stylesheet' href={index_src} />"
     basic_html_template = basic_html_template.replace('css-scope',css_scope)
     
@@ -180,6 +181,11 @@ def zoodJSOptions(config,markdown_htmls):
         js_code += f"<script>addCodeCopy(\"../../../img/before_copy.png\",\"../../../img/after_copy.png\")</script>"
         js_scope += js_code
         
+    if config['options']['enable_navigator']:
+        js_code = insertJScode('enable_navigator',html_dir_name)
+        js_scope += js_code
+
+
     if config['options']['enable_highlight']:
         # 复制prismjs
         shutil.copy(os.path.join(os.path.dirname(__file__),'config','js','prismjs','prism.css'),f'{html_dir_name}/css')
@@ -201,6 +207,18 @@ def zoodJSOptions(config,markdown_htmls):
         js_code = insertJScode('enable_search',html_dir_name)
         all_api_text = getAllAPIText(markdown_htmls,config['options']['enable_search']['search_scope'],md_dir_name)
         js_code += f"<script>addSearchBar({all_api_text},\"../../../img/search.svg\",\"../../../img/enter.svg\",\"Ctrl+K\")</script>"
+        js_scope += js_code
+
+    if config['options']['enable_mermaid']:
+        js_code = '<script type=\"module\">\
+const codeBlocks = document.querySelectorAll(\'.language-mermaid\');\
+codeBlocks.forEach(codeBlock => {\
+    codeBlock.classList.remove(\'language-mermaid\');\
+    codeBlock.classList.add(\'mermaid\');\
+});\
+import mermaid from \'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs\';\
+mermaid.initialize({ startOnLoad: true });\
+</script>'
         js_scope += js_code
 
     js_scope += insertJScode('enable_check_box',html_dir_name)

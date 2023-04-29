@@ -17,3 +17,24 @@ hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 - gem5源码阅读
 - cxl的gem5实现
 - cxl驱动实现
+  - - gem5的编译和使用
+- gem5源码阅读
+- cxl的gem5实现
+- cxl驱动实现
+    - - gem5的编译和使用
+- gem5源码阅读
+- cxl的gem5实现
+- cxl驱动实现
+- - gem5的编译和使用
+- gem5源码阅读
+- cxl的gem5实现
+- cxl驱动实现- gem5的编译和使用
+- gem5源码阅读
+- cxl的gem5实现
+- cxl驱动实现- gem5的编译和使用
+- gem5源码阅读
+- cxl的gem5实现
+- cxl驱动实现- gem5的编译和使用
+- gem5源码阅读
+- cxl的gem5实现
+- cxl驱动实现

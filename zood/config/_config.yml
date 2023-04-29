@@ -43,6 +43,9 @@ options:
   # 是否启用右侧上一个下一个
   enable_next_front: true
 
+  # 是否启用目录导航栏
+  enable_navigator: true
+
   # 是否启用查询搜索
   enable_search:
     enable: false
@@ -54,6 +57,8 @@ options:
   # 图片是否可以被放大预览
   enable_picture_preview: true
 
+  # 支持 mermaid
+  enable_mermaid: false
 
 # 页面布局
 position:
@@ -80,11 +85,16 @@ position:
   button_right: 6%;
 
   # 按钮顶部距离
-  button_top: 40%;
+  button_top: 60%;
 
   # 按钮宽度
   button_width: 10%;
 
+  # 导航栏距离左侧距离 -> 左对齐
+  navigator_left: 83%
+
+  # 导航栏顶部距离
+  navigator_top: 10%
 
   # 一级条目上下间距
   dir_item_margin: "25px"
@@ -97,6 +107,10 @@ position:
 
   # 二级条目左间距
   dir_second_item_margin_left: "5px"
+
+  navigator_margin: "10px"
+
+  navigator_item_margin_left: "-10px"
 
   # 图片被放大后的宽度
   image_preview_width: "60%"
@@ -228,6 +242,8 @@ font:
 
   # 一级条目字体大小
   dir_item_font_size: 18px
+
+  navigator_item_font_size: 14px
 
   # 二级条目字体大小
   dir_second_item_font_size: 16px
