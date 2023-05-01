@@ -18,7 +18,10 @@ function isScrolledIntoView(elem) {
     var elemBottom = elemTop + elem.offsetHeight;
     return ((elemTop <= docViewBottom) && (elemBottom >= docViewTop));
 }
+
 var headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+var previousHeading;
+
 window.addEventListener('scroll', function () {
     var found = false;
     for (var heading of headings) {
@@ -27,6 +30,7 @@ window.addEventListener('scroll', function () {
             var link = document.querySelector(`a[href="#${heading_id}"]`);
             if (link) {
                 link.style.fontWeight = 'bold';
+                previousHeading = heading;
                 found = true;
             }
         } else {
@@ -35,6 +39,14 @@ window.addEventListener('scroll', function () {
             if (link) {
                 link.style.fontWeight = 'normal';
             }
+        }
+    }
+    
+    // If no heading is found, set the previous heading to bold
+    if (!found && previousHeading) {
+        var previousLink = document.querySelector(`a[href="#${previousHeading.id}"]`);
+        if (previousLink) {
+            previousLink.style.fontWeight = 'bold';
         }
     }
 });
