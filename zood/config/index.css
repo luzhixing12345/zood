@@ -319,7 +319,6 @@ blockquote {
 
 .markdown-body pre {
   position: relative;
-  overflow-x: scroll;
 }
 
 .markdown-body pre #code_copy {
