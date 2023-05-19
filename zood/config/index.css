@@ -343,6 +343,10 @@ blockquote {
   border-radius: 5px;
 }
 
+.markdown-body ul li blockquote {
+  margin-top: 10px;
+}
+
 .changeMode {
   position: absolute;
   right: 50px;
@@ -587,6 +591,14 @@ pre[class*="language-"]::selection {
   list-style: none;
   position: relative;
   /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
+}
+
+.dir-tree ul li a {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .search-bar::-webkit-scrollbar {
@@ -839,6 +851,7 @@ pre[class*="language-"]::selection {
 .header-navigator {
   display: none;
   position: fixed;
+  width: "<%navigator_max_width%>";
   left: "<%navigator_left%>";
   top: "<%navigator_top%>";
   font-family: "<%font_family%>";
@@ -876,4 +889,12 @@ pre[class*="language-"]::selection {
 
 .header-navigator ul ul {
   margin-left: -20px;
+}
+
+.header-navigator a {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

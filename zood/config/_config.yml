@@ -96,6 +96,9 @@ position:
   # 导航栏顶部距离
   navigator_top: 10%
 
+  # 导航栏宽度
+  navigator_max_width: 15%
+
   # 一级条目上下间距
   dir_item_margin: "25px"
 
