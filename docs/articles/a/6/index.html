@@ -13,7 +13,342 @@
 </head>
 
 <body class="light">
-    <div class="header-navigator"><ul><li><a href="#h1-0">6</a></li></ul></div><div class='markdown-body'><h1 id="h1-0">6</h1></div>
+    <div class="header-navigator"><ul><li><a href="#h1-0">BombLab</a><ul><li><a href="#h2-1">基本知识</a><ul><li><a href="#h3-2">x86-64架构调用函数时参数传递使用的寄存器和栈地址</a></li></ul><ul><li><a href="#h3-3">x86-64寄存器</a></li></ul><ul><li><a href="#h3-4">操作数指示符</a></li></ul><ul><li><a href="#h3-5">常用汇编</a></li></ul></li></ul><ul><li><a href="#h2-6">GDB</a></li></ul><ul><li><a href="#h3-7">调试使用到的指令</a></li></ul><ul><li><a href="#h2-8">开始之前</a></li></ul><ul><li><a href="#h2-9">实验报告</a><ul><li><a href="#h3-10">phase_1</a></li></ul><ul><li><a href="#h3-11">phase_2</a></li></ul><ul><li><a href="#h3-12">phase_3</a></li></ul><ul><li><a href="#h3-13">phase_4</a></li></ul><ul><li><a href="#h3-14">phase_5</a></li></ul><ul><li><a href="#h3-15">phase_6</a></li></ul><ul><li><a href="#h3-16">secret_phase</a></li></ul></li></ul></li></ul></div><div class='markdown-body'><h1 id="h1-0">BombLab</h1><blockquote><p><a href="https://earthaa.github.io/2020/01/12/CSAPP-Bomblab/" target="_blank">《深入理解计算机系统》Bomb Lab实验解析</a></p><p><a href="https://hakula.xyz/posts/note/csapp/bomb-lab/" target="_blank">CS:APP - Bomb Lab</a></p></blockquote><p>如果在gdb调试的出现Permission deny的问题可以调整bomb的权限</p><pre><code class="language-bash">chmod 777 bomb</code></pre><h2 id="h2-1">基本知识</h2><p>Bomb lab 主要考察对应汇编代码的阅读和理解能力,以及使用gdb调试工具</p><h3 id="h3-2">x86-64架构调用函数时参数传递使用的寄存器和栈地址</h3><table><tr><th>%rdi</th><th>%rsi</th><th>%rdx</th><th>%rcx</th><th>%r8</th><th>%r9</th><th>(%rsp)</th><th>(%rsp+8)</th><th>(%rsp+...)</th></tr></table><p>return -> %rax</p><h3 id="h3-3">x86-64寄存器</h3><p><img src="https://raw.githubusercontent.com/learner-lu/picbed/master/QQ%E5%9B%BE%E7%89%8720221015171443.jpg" alt="QQ图片20221015171443"></p><h3 id="h3-4">操作数指示符</h3><p><img src="https://raw.githubusercontent.com/learner-lu/picbed/master/as123gsz.jpg" alt="as123gsz"></p><h3 id="h3-5">常用汇编</h3><ul><li>mov S,D : 把S的值传给D,具体的S见 操作数指示符</li></ul><ul><li>lea A,B : 计算A表达式的值传给B</li></ul><ul><li>cmp A,B : 对 B-A 的值进行判断, gl(有符号) ab(无符号)</li></ul><ul><li>test A,B : A&B</li></ul><ul><li>je : 等于0跳转</li></ul><ul><li>jne : 不等于0跳转</li></ul><h2 id="h2-6">GDB</h2><h3 id="h3-7">调试使用到的指令</h3><blockquote><p>注 : 括号表示完成指令名中可以被省略的部分</p></blockquote><table><tr><th>命令</th><th>用途</th></tr><tr><td style="text-align:center">                gdb bomb</td><td style="text-align:center">                使用gdb调试可执行文件bomb</td></tr><tr><td style="text-align:center">                disas(semble) phase_1</td><td style="text-align:center">                反汇编函数phase_1</td></tr><tr><td style="text-align:center">                disas 0x402400</td><td style="text-align:center">                反汇编地址0x402400附近的函数</td></tr><tr><td style="text-align:center">                x/s 0x400544</td><td style="text-align:center">                以字符串的形式输出,字符串在内存中的首地址为0x400544</td></tr><tr><td style="text-align:center">                x/d 0x400544</td><td style="text-align:center">                以整数的形式输出,整数在内存中的首地址为0x400544</td></tr><tr><td style="text-align:center">                x/x 0x400544</td><td style="text-align:center">                以16进制的形式输出</td></tr><tr><td style="text-align:center">                x/4x 0x400544</td><td style="text-align:center">                以16进制的形式输出四个字节的数据</td></tr><tr><td style="text-align:center">                x/a 0x400544</td><td style="text-align:center">                以指针的形式</td></tr><tr><td style="text-align:center">                b(reak) *0x400da4</td><td style="text-align:center">                在0x400da4地址处打断点</td></tr><tr><td style="text-align:center">                b phase_5</td><td style="text-align:center">                在phase_5函数入口地址打断点</td></tr><tr><td style="text-align:center">                b 74</td><td style="text-align:center">                在源代码74行打断点</td></tr><tr><td style="text-align:center">                r(un)</td><td style="text-align:center">                运行可执行文件</td></tr><tr><td style="text-align:center">                r input.txt</td><td style="text-align:center">                运行可执行文件,传入一个参数,参数名是input.txt</td></tr><tr><td style="text-align:center">                c(ontinue)</td><td style="text-align:center">                从断点处继续运行</td></tr><tr><td style="text-align:center">                k(ill)</td><td style="text-align:center">                停止调试当前运行的程序</td></tr><tr><td style="text-align:center">                q(uit)</td><td style="text-align:center">                退出调试</td></tr><tr><td style="text-align:center">                i(nfo) r(egister)</td><td style="text-align:center">                打印所有整数寄存器及其内容</td></tr><tr><td style="text-align:center">                i r rax</td><td style="text-align:center">                打印rax寄存器及其内容</td></tr><tr><td style="text-align:center">                i b</td><td style="text-align:center">                打印所有断点</td></tr><tr><td style="text-align:center">                d(elete) 1</td><td style="text-align:center">                删除断点1</td></tr></table><blockquote><p><a href="https://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/gdb.html" target="_blank">gdb 调试利器</a></p><p><a href="https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf" target="_blank">gdb文档</a></p></blockquote><h2 id="h2-8">开始之前</h2><p>解压文件之后可以看到三个文件 <code>bomb</code> 是本次实验使用的可执行文件, <code>bomb.c</code> 是源代码中的主函数部分, <code>README</code>是介绍文件</p><p>浏览 <code>bomb.c</code> 可以看到它在开头引用了</p><pre><code class="language-c">...
+#include "support.h"
+#include "phases.h"
+...</code></pre><p>所以可以看出 <code>bomb.c</code> 只是源文件的一部分, <code>bomb</code> 是由多个文件一起编译得到的,提供 bomb.c 文件实际上是为了给读者一个清晰的bomb lab思路</p><p>使用 <code>gdb bomb</code> 进入调试</p><h2 id="h2-9">实验报告</h2><h3 id="h3-10">phase_1</h3><p>使用 <code>disas phase_1</code> 查看第一关汇编</p><pre><code class="language-txt">0x0000000000400ee0 &lt;+0&gt;:     sub    $0x8,%rsp
+0x0000000000400ee4 &lt;+4&gt;:     mov    $0x402400,%esi               # esi = 0x402400
+0x0000000000400ee9 &lt;+9&gt;:     call   0x401338 &lt;strings_not_equal&gt; # 比较 edi esi 两个字符串是否相同
+0x0000000000400eee &lt;+14&gt;:    test   %eax,%eax                    # 相同返回0,不相同返回1
+0x0000000000400ef0 &lt;+16&gt;:    je     0x400ef7 &lt;phase_1+23&gt;        # 应该相同
+0x0000000000400ef2 &lt;+18&gt;:    call   0x40143a &lt;explode_bomb&gt;
+0x0000000000400ef7 &lt;+23&gt;:    add    $0x8,%rsp
+0x0000000000400efb &lt;+27&gt;:    ret</code></pre><p>前一步使用 <code>read_line</code> 读取了一行输入,输入被读入了</p><p>edi指向用户输入的字符串的首地址, <code>strings_not_equal</code> 函数的作用是判断两个字符串是否不相同,不相同返回1,相同返回0</p><blockquote><p>如果有耐心阅读可以稍微解释一下strings_not_equal的汇编细节,也可以省略</p></blockquote><p>0x402400指向的字符串通过 <code>x/s 0x402400</code> 查看是 <code>"Border relations with Canada have never been better."</code></p><p>所以第一关的答案是</p><pre><code class="language-txt">Border relations with Canada have never been better.</code></pre><h3 id="h3-11">phase_2</h3><p><code>disas phase_2</code> ,先看第一部分</p><pre><code class="language-txt">0x0000000000400efc &lt;+0&gt;:     push   %rbp
+0x0000000000400efd &lt;+1&gt;:     push   %rbx
+0x0000000000400efe &lt;+2&gt;:     sub    $0x28,%rsp
+0x0000000000400f02 &lt;+6&gt;:     mov    %rsp,%rsi                    #rsi = rsp
+0x0000000000400f05 &lt;+9&gt;:     call   0x40145c &lt;read_six_numbers&gt;</code></pre><p>查看 <code>read_six_numbers</code> 函数反汇编</p><pre><code class="language-txt">0x000000000040145c &lt;+0&gt;:     sub    $0x18,%rsp
+0x0000000000401460 &lt;+4&gt;:     mov    %rsi,%rdx                        # rdx = rsp
+0x0000000000401463 &lt;+7&gt;:     lea    0x4(%rsi),%rcx                   # rcx = rsp + 4
+0x0000000000401467 &lt;+11&gt;:    lea    0x14(%rsi),%rax                  # rax = rsp + 20
+0x000000000040146b &lt;+15&gt;:    mov    %rax,0x8(%rsp)                   # (rsp+8) = rsp + 20
+0x0000000000401470 &lt;+20&gt;:    lea    0x10(%rsi),%rax                  # rax = rsp + 16
+0x0000000000401474 &lt;+24&gt;:    mov    %rax,(%rsp)                      # (rsp) = rsp + 16
+0x0000000000401478 &lt;+28&gt;:    lea    0xc(%rsi),%r9                    # r9 = rsi + 12
+0x000000000040147c &lt;+32&gt;:    lea    0x8(%rsi),%r8                    # r8 = rsi + 8
+0x0000000000401480 &lt;+36&gt;:    mov    $0x4025c3,%esi                   # esi = 0x4025c3
+0x0000000000401485 &lt;+41&gt;:    mov    $0x0,%eax                        # eax = 0
+0x000000000040148a &lt;+46&gt;:    call   0x400bf0 &lt;__isoc99_sscanf@plt&gt;   # 调用sccanf函数
+0x000000000040148f &lt;+51&gt;:    cmp    $0x5,%eax                        # 返回值应该大于5,即至少读取六个
+0x0000000000401492 &lt;+54&gt;:    jg     0x401499 &lt;read_six_numbers+61&gt;
+0x0000000000401494 &lt;+56&gt;:    call   0x40143a &lt;explode_bomb&gt;
+0x0000000000401499 &lt;+61&gt;:    add    $0x18,%rsp
+0x000000000040149d &lt;+65&gt;:    ret</code></pre><p><code>sccanf</code> 的作用是从字符串中提取得到格式化的值</p><p>查看 <code>0x4025c3</code> 的字符串为 <code>"%d %d %d %d %d %d"</code>,即接收六个整数(int),所以输入应该为空格分隔的六个整数</p><ul><li>rdi = 用户输入字符串的首地址</li></ul><ul><li>rsi = 0x4025c3(读取的格式,六个整数)</li></ul><ul><li>rdx = rsp</li></ul><ul><li>rcx = rsp+4</li></ul><ul><li>r8 = rsp+8</li></ul><ul><li>r9 = rsp+12</li></ul><ul><li>(rsp) = rsp+16</li></ul><ul><li>(rsp+8) = rsp+20</li></ul><p>根据x86-64架构调用函数时参数传递使用的寄存器和栈地址的规则</p><pre><code class="language-txt">// 假设输入是 1 2 3 4 5 6 -&gt; 字符串
+int sccanf("1 2 3 4 5 6","%d %d %d %d %d %d",rdx,rsi,r8,r9,(rsp),(rsp+8)) -&gt; rax</code></pre><p>所以通过 <code>sscanf</code> 从字符串中读取的六个整数分别存放在(rsp),(rsp+4),...等连续六个位置</p><p>再看第二部分,</p><pre><code class="language-txt"> 0x0000000000400f0a &lt;+14&gt;:    cmpl   $0x1,(%rsp)             # 第一个输入的整数(number[0])应该为 1
+ 0x0000000000400f0e &lt;+18&gt;:    je     0x400f30 &lt;phase_2+52&gt;
+ 0x0000000000400f10 &lt;+20&gt;:    call   0x40143a &lt;explode_bomb&gt;
+ 0x0000000000400f15 &lt;+25&gt;:    jmp    0x400f30 &lt;phase_2+52&gt;
+ 0x0000000000400f17 &lt;+27&gt;:    mov    -0x4(%rbx),%eax         # eax = (rbx-4)=(rsp)=number[0]
+ 0x0000000000400f1a &lt;+30&gt;:    add    %eax,%eax               # eax = 2*number[0]
+ 0x0000000000400f1c &lt;+32&gt;:    cmp    %eax,(%rbx)             # (rbx) = eax, 即 (rsp+4)=number[1]=eax=2*number[0]
+ 0x0000000000400f1e &lt;+34&gt;:    je     0x400f25 &lt;phase_2+41&gt;
+ 0x0000000000400f20 &lt;+36&gt;:    call   0x40143a &lt;explode_bomb&gt;
+ 0x0000000000400f25 &lt;+41&gt;:    add    $0x4,%rbx               # rbx += 4,开始循环
+ 0x0000000000400f29 &lt;+45&gt;:    cmp    %rbp,%rbx               # 判断是否越界,越界则结束
+ 0x0000000000400f2c &lt;+48&gt;:    jne    0x400f17 &lt;phase_2+27&gt;
+ 0x0000000000400f2e &lt;+50&gt;:    jmp    0x400f3c &lt;phase_2+64&gt;
+ 0x0000000000400f30 &lt;+52&gt;:    lea    0x4(%rsp),%rbx          # rbx = rsp+4 (number[1])
+ 0x0000000000400f35 &lt;+57&gt;:    lea    0x18(%rsp),%rbp         # rbp = rsp+0x18 (0x18=24,相当于数组的边界number[6])
+ 0x0000000000400f3a &lt;+62&gt;:    jmp    0x400f17 &lt;phase_2+27&gt;
+ 0x0000000000400f3c &lt;+64&gt;:    add    $0x28,%rsp
+ 0x0000000000400f40 &lt;+68&gt;:    pop    %rbx
+ 0x0000000000400f41 &lt;+69&gt;:    pop    %rbp
+ 0x0000000000400f42 &lt;+70&gt;:    ret</code></pre><p>阅读汇编,可知第一个输入的(rsp),也就是number[0]应该为1,之后的数字应该依次乘2,也就是一个首项为1,公比为2的等比数列,一共六个输入,所以答案为</p><pre><code class="language-txt">1 2 4 8 16 32</code></pre><h3 id="h3-12">phase_3</h3><pre><code class="language-txt">0x0000000000400f43 &lt;+0&gt;:     sub    $0x18,%rsp
+0x0000000000400f47 &lt;+4&gt;:     lea    0xc(%rsp),%rcx
+0x0000000000400f4c &lt;+9&gt;:     lea    0x8(%rsp),%rdx
+0x0000000000400f51 &lt;+14&gt;:    mov    $0x4025cf,%esi
+0x0000000000400f56 &lt;+19&gt;:    mov    $0x0,%eax
+0x0000000000400f5b &lt;+24&gt;:    call   0x400bf0 &lt;__isoc99_sscanf@plt&gt;</code></pre><p>查看 <code>x/s 0x4025cf</code> 得到 "%d %d",所以输入应该为空格分隔的两个整数</p><p>第一个值保存在rdx,也就是(rsp+8),第二个值保存在(rsp+12)</p><pre><code class="language-txt">0x0000000000400f60 &lt;+29&gt;:    cmp    $0x1,%eax               # 获取的值应该大于1
+0x0000000000400f63 &lt;+32&gt;:    jg     0x400f6a &lt;phase_3+39&gt;
+0x0000000000400f65 &lt;+34&gt;:    call   0x40143a &lt;explode_bomb&gt;
+0x0000000000400f6a &lt;+39&gt;:    cmpl   $0x7,0x8(%rsp)          # 第一个值应该小于等于7
+0x0000000000400f6f &lt;+44&gt;:    ja     0x400fad &lt;phase_3+106&gt;
+0x0000000000400f71 &lt;+46&gt;:    mov    0x8(%rsp),%eax          # eax = number[0]
+0x0000000000400f75 &lt;+50&gt;:    jmp    *0x402470(,%rax,8)      # 跳转到0x402470+8*number[0]的位置
+0x0000000000400f7c &lt;+57&gt;:    mov    $0xcf,%eax
+0x0000000000400f81 &lt;+62&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+0x0000000000400f83 &lt;+64&gt;:    mov    $0x2c3,%eax
+0x0000000000400f88 &lt;+69&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+0x0000000000400f8a &lt;+71&gt;:    mov    $0x100,%eax
+0x0000000000400f8f &lt;+76&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+0x0000000000400f91 &lt;+78&gt;:    mov    $0x185,%eax
+0x0000000000400f96 &lt;+83&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+0x0000000000400f98 &lt;+85&gt;:    mov    $0xce,%eax
+0x0000000000400f9d &lt;+90&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+0x0000000000400f9f &lt;+92&gt;:    mov    $0x2aa,%eax
+0x0000000000400fa4 &lt;+97&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+0x0000000000400fa6 &lt;+99&gt;:    mov    $0x147,%eax
+0x0000000000400fab &lt;+104&gt;:   jmp    0x400fbe &lt;phase_3+123&gt;
+0x0000000000400fad &lt;+106&gt;:   call   0x40143a &lt;explode_bomb&gt;
+0x0000000000400fb2 &lt;+111&gt;:   mov    $0x0,%eax
+0x0000000000400fb7 &lt;+116&gt;:   jmp    0x400fbe &lt;phase_3+123&gt;
+0x0000000000400fb9 &lt;+118&gt;:   mov    $0x137,%eax
+0x0000000000400fbe &lt;+123&gt;:   cmp    0xc(%rsp),%eax          #number[1]应该等于eax
+0x0000000000400fc2 &lt;+127&gt;:   je     0x400fc9 &lt;phase_3+134&gt;
+0x0000000000400fc4 &lt;+129&gt;:   call   0x40143a &lt;explode_bomb&gt;
+0x0000000000400fc9 &lt;+134&gt;:   add    $0x18,%rsp
+0x0000000000400fcd &lt;+138&gt;:   ret</code></pre><p>这里 <code>&lt;+50&gt;:jmp *0x402470(,%rax,8)</code> 显然是一个跳转的地址,既然已经知道number[0]的值小于等于7,这里显然应该>=0,所以我们可以使用 <code>x/a + 地址</code> 依次查看从 <code>0x402470</code> 的跳转位置,得到的结果如下</p><pre><code class="language-txt">(gdb) x/a 0x402470                      # 对应number[0] = 0
+0x402470:       0x400f7c &lt;phase_3+57&gt;
+(gdb) x/a 0x402478                      # 对应number[0] = 1
+0x402478:       0x400fb9 &lt;phase_3+118&gt;
+(gdb) x/a 0x402480                      # 对应number[0] = 2
+0x402480:       0x400f83 &lt;phase_3+64&gt;
+(gdb) x/a 0x402488                      # 对应number[0] = 3
+0x402488:       0x400f8a &lt;phase_3+71&gt;
+(gdb) x/a 0x402490                      # 对应number[0] = 4
+0x402490:       0x400f91 &lt;phase_3+78&gt;
+(gdb) x/a 0x402498                      # 对应number[0] = 5
+0x402498:       0x400f98 &lt;phase_3+85&gt;
+(gdb) x/a 0x4024a0                      # 对应number[0] = 6
+0x4024a0:       0x400f9f &lt;phase_3+92&gt;
+(gdb) x/a 0x4024a8                      # 对应number[0] = 7
+0x4024a8:       0x400fa6 &lt;phase_3+99&gt;</code></pre><p>那么根据第一个输入可以得到不同的跳转地址,接下来只需要根据跳转的位置后面跟的 mov指令就可以得到number[1]的值了</p><p>所以第三关的答案不唯一,以下任何一组答案都可以通过</p><pre><code class="language-txt">0 207
+1 331
+2 707
+3 256
+4 389
+5 206
+6 682
+7 327</code></pre><h3 id="h3-13">phase_4</h3><pre><code class="language-txt">0x000000000040100c &lt;+0&gt;:     sub    $0x18,%rsp
+0x0000000000401010 &lt;+4&gt;:     lea    0xc(%rsp),%rcx                 # number[1]
+0x0000000000401015 &lt;+9&gt;:     lea    0x8(%rsp),%rdx                 # number[0]
+0x000000000040101a &lt;+14&gt;:    mov    $0x4025cf,%esi                 # %d %d
+0x000000000040101f &lt;+19&gt;:    mov    $0x0,%eax
+0x0000000000401024 &lt;+24&gt;:    call   0x400bf0 &lt;__isoc99_sscanf@plt&gt;
+0x0000000000401029 &lt;+29&gt;:    cmp    $0x2,%eax
+0x000000000040102c &lt;+32&gt;:    jne    0x401035 &lt;phase_4+41&gt;
+0x000000000040102e &lt;+34&gt;:    cmpl   $0xe,0x8(%rsp)                 # number[0]&lt;=14
+0x0000000000401033 &lt;+39&gt;:    jbe    0x40103a &lt;phase_4+46&gt;
+0x0000000000401035 &lt;+41&gt;:    call   0x40143a &lt;explode_bomb&gt;
+0x000000000040103a &lt;+46&gt;:    mov    $0xe,%edx                      # edx = 14
+0x000000000040103f &lt;+51&gt;:    mov    $0x0,%esi                      # esi = 0
+0x0000000000401044 &lt;+56&gt;:    mov    0x8(%rsp),%edi                 # edi = number[0]
+0x0000000000401048 &lt;+60&gt;:    call   0x400fce &lt;func4&gt;               # 进入func4
+0x000000000040104d &lt;+65&gt;:    test   %eax,%eax                      # 返回值应为0
+0x000000000040104f &lt;+67&gt;:    jne    0x401058 &lt;phase_4+76&gt;
+0x0000000000401051 &lt;+69&gt;:    cmpl   $0x0,0xc(%rsp)                 # number[1]=0
+0x0000000000401056 &lt;+74&gt;:    je     0x40105d &lt;phase_4+81&gt;
+0x0000000000401058 &lt;+76&gt;:    call   0x40143a &lt;explode_bomb&gt;
+0x000000000040105d &lt;+81&gt;:    add    $0x18,%rsp
+0x0000000000401061 &lt;+85&gt;:    ret</code></pre><p>phase_4的主体就是 <code>func4</code> 这个函数</p><p>这里不难看出是一个递归函数,三个参数,返回值为int,不妨设</p><pre><code class="language-c">int func4(int x, int y, int z) {
+  ...     // edi   esi   edx
+}</code></pre><pre><code class="language-txt">0x0000000000400fce &lt;+0&gt;:     sub    $0x8,%rsp
+0x0000000000400fd2 &lt;+4&gt;:     mov    %edx,%eax            # eax = z
+0x0000000000400fd4 &lt;+6&gt;:     sub    %esi,%eax            # eax = z-y = 14
+0x0000000000400fd6 &lt;+8&gt;:     mov    %eax,%ecx            # ecx = 14
+0x0000000000400fd8 &lt;+10&gt;:    shr    $0x1f,%ecx           # ecx &gt;&gt;= 31
+                                                         # ecx = 0 if ecx &gt;=0 else 1
+0x0000000000400fdb &lt;+13&gt;:    add    %ecx,%eax            # eax += ecx
+0x0000000000400fdd &lt;+15&gt;:    sar    %eax                 # eax &gt;&gt; 1 #(y-z)/2
+0x0000000000400fdf &lt;+17&gt;:    lea    (%rax,%rsi,1),%ecx   # [temp] = ecx = rax+rsi = (y-z)/2+z = (y+z)/2
+0x0000000000400fe2 &lt;+20&gt;:    cmp    %edi,%ecx
+0x0000000000400fe4 &lt;+22&gt;:    jle    0x400ff2 &lt;func4+36&gt;  # if (temp-x&lt;=0)
+0x0000000000400fe6 &lt;+24&gt;:    lea    -0x1(%rcx),%edx      # z = temp-1
+0x0000000000400fe9 &lt;+27&gt;:    call   0x400fce &lt;func4&gt;     # 递归调用
+0x0000000000400fee &lt;+32&gt;:    add    %eax,%eax            # return 2*func4(x,y,temp-1)
+0x0000000000400ff0 &lt;+34&gt;:    jmp    0x401007 &lt;func4+57&gt;
+0x0000000000400ff2 &lt;+36&gt;:    mov    $0x0,%eax            # eax = 0 (递归出口)
+0x0000000000400ff7 &lt;+41&gt;:    cmp    %edi,%ecx
+0x0000000000400ff9 &lt;+43&gt;:    jge    0x401007 &lt;func4+57&gt;  # if (temp&gt;=x) -&gt; 这里其实等价于 temp == x
+0x0000000000400ffb &lt;+45&gt;:    lea    0x1(%rcx),%esi       # esi = temp+1
+0x0000000000400ffe &lt;+48&gt;:    call   0x400fce &lt;func4&gt;     # 递归调用
+0x0000000000401003 &lt;+53&gt;:    lea    0x1(%rax,%rax,1),%eax# return 2*func4(x,temp+1,z)+1
+0x0000000000401007 &lt;+57&gt;:    add    $0x8,%rsp
+0x000000000040100b &lt;+61&gt;:    ret</code></pre><p>所以等价的C语言代码为</p><pre><code class="language-c">int func4(int x, int y, int z) {
+  int temp = z-y;
+  if (temp &lt; 0) temp+=1;
+  temp = temp/2 + y; // temp = (y+z)/2
+  if (temp &lt;= x) {
+    if (temp &gt;= x) return 0; // 相当于 temp == x
+    else {
+      return 2*func4(x,temp+1,z)+1;
+    }
+  } else {
+    return 2*func4(x,y,temp-1);
+  }
+}</code></pre><p>在 phase_4 中调用的函数是 <code>func4(number[0],0,14)</code>, 函数的返回值应为0</p><p>观察可知递归的出口返回0,所以 number[0] = 7 即可通过 temp==x 这条判断返回. 由phase_4的剩余汇编可知第二个参数 number[1]应为0</p><p>所以本题答案为</p><pre><code class="language-txt">7 0</code></pre><h3 id="h3-14">phase_5</h3><p>最开始这里使用了 stack canary(栈金丝雀)用来保护栈</p><p>用途是确保 <code>0x18(%rsp)</code> 的数值在函数前后没有发生改动,如果发生改动则执行 <code>&lt;__stack_chk_fail@plt&gt;</code> 调用系统函数 __stack_chk_fail 跳出，从而防止栈溢出</p><p>简单来说就是,防止输入的字符串过长导致栈溢出</p><blockquote><p>[Why does this memory address %fs:0x28 ( fs[0x28] ) have a random value?](<a href="https://stackoverflow.com/questions/10325713/why-does-this-memory-address-fs0x28-fs0x28-have-a-random-value" target="_blank">https://stackoverflow.com/questions/10325713/why-does-this-memory-address-fs0x28-fs0x28-have-a-random-value</a>)</p><p>[What sets fs:[0x28] (stack canary)?](<a href="https://unix.stackexchange.com/questions/453749/what-sets-fs0x28-stack-canary" target="_blank">https://unix.stackexchange.com/questions/453749/what-sets-fs0x28-stack-canary</a>)</p></blockquote><p>接着判断了输入的字符串应该长度为6</p><pre><code class="language-txt">0x000000000040107a &lt;+24&gt;:    callq  0x40131b &lt;string_length&gt;
+0x000000000040107f &lt;+29&gt;:    cmp    $0x6,%eax
+0x0000000000401082 &lt;+32&gt;:    je     0x4010d2 &lt;phase_5+112&gt;
+0x0000000000401084 &lt;+34&gt;:    callq  0x40143a &lt;explode_bomb&gt;</code></pre><p>接着是本次程序的主逻辑判断</p><pre><code class="language-txt">0x0000000000401067 &lt;+5&gt;:     mov    %rdi,%rbx                     # rbx = rdi (输入字符串首地址)
+...
+0x00000000004010d2 &lt;+112&gt;:   mov    $0x0,%eax
+...
+0x000000000040108b &lt;+41&gt;:    movzbl (%rbx,%rax,1),%ecx            # 取出字符 input[%rax]
+0x000000000040108f &lt;+45&gt;:    mov    %cl,(%rsp)
+0x0000000000401092 &lt;+48&gt;:    mov    (%rsp),%rdx
+0x0000000000401096 &lt;+52&gt;:    and    $0xf,%edx                     # 只使用低4位
+0x0000000000401099 &lt;+55&gt;:    movzbl 0x4024b0(%rdx),%edx           # ...</code></pre><p>可以通过gdb查看地址 <code>0x4024b0</code> 的字符串</p><pre><code class="language-bash">(gdb) x/s 0x4024b0
+0x4024b0 &lt;array.3449&gt;:  "maduiersnfotvbylSo you think you can stop the bomb with ctrl-c, do you?"</code></pre><p>由于只有低4位(0-15),所以会被映射到的就是 <code>maduiersnfotvbyl</code></p><p>所以可知这里利用了输入字符串的低4位作为索引,找到这里的一个字符,取出来</p><pre><code class="language-txt">0x00000000004010a0 &lt;+62&gt;:    mov    %dl,0x10(%rsp,%rax,1)         # 保存到 (rsp+%rax+0x10)的位置
+0x00000000004010a4 &lt;+66&gt;:    add    $0x1,%rax
+0x00000000004010a8 &lt;+70&gt;:    cmp    $0x6,%rax
+0x00000000004010ac &lt;+74&gt;:    jne    0x40108b &lt;phase_5+41&gt;         # 遍历所有字符
+0x00000000004010ae &lt;+76&gt;:    movb   $0x0,0x16(%rsp)
+0x00000000004010b3 &lt;+81&gt;:    mov    $0x40245e,%esi                # 另一个字符串
+0x00000000004010b8 &lt;+86&gt;:    lea    0x10(%rsp),%rdi               # 判断字符串相同
+0x00000000004010bd &lt;+91&gt;:    callq  0x401338 &lt;strings_not_equal&gt;
+0x00000000004010c2 &lt;+96&gt;:    test   %eax,%eax
+0x00000000004010c4 &lt;+98&gt;:    je     0x4010d9 &lt;phase_5+119&gt;</code></pre><p>查看另一个字符串</p><pre><code class="language-bash">(gdb) x/s 0x40245e
+0x40245e:       "flyers"</code></pre><p>所以为了使这两个字符串相同,我们需要做的就是输入一个六位的字符串,将这个字符串的ascii值的低四位作为索引,在 <code>maduiersnfotvbyl</code> 字符串中查找对应的字符,去匹配 <code>flyers</code></p><p>所以索引应该为</p><pre><code class="language-txt">9 15 14 5 6 7</code></pre><p>查找字符的ASCII码值有多种方式</p><ul><li><a href="http://c.biancheng.net/c/ascii/" target="_blank">ASCII码对照表</a></li></ul><ul><li>输入 <code>man ascii</code> 打开相关信息查看</li></ul><p>所以本题答案也不唯一,大小写都可以,也有多个映射,这里给出一个答案</p><pre><code class="language-txt">ionefg</code></pre><h3 id="h3-15">phase_6</h3><pre><code class="language-txt">0x00000000004010fc &lt;+8&gt;:     sub    $0x50,%rsp
+0x0000000000401100 &lt;+12&gt;:    mov    %rsp,%r13
+0x0000000000401103 &lt;+15&gt;:    mov    %rsp,%rsi
+0x0000000000401106 &lt;+18&gt;:    callq  0x40145c &lt;read_six_numbers&gt;</code></pre><p>首先是之前分析过的读取六个整数,保存在 (rsp) 的位置</p><pre><code class="language-txt">0x0000000000401100 &lt;+12&gt;:    mov    %rsp,%r13                  # r13 = rsp
+...
+0x000000000040110b &lt;+23&gt;:    mov    %rsp,%r14
+0x000000000040110e &lt;+26&gt;:    mov    $0x0,%r12d                 # r12d = 0
+0x0000000000401114 &lt;+32&gt;:    mov    %r13,%rbp
+0x0000000000401117 &lt;+35&gt;:    mov    0x0(%r13),%eax             # eax = number[i]
+0x000000000040111b &lt;+39&gt;:    sub    $0x1,%eax
+0x000000000040111e &lt;+42&gt;:    cmp    $0x5,%eax
+0x0000000000401121 &lt;+45&gt;:    jbe    0x401128 &lt;phase_6+52&gt;      # eax-1 &lt;= 5
+0x0000000000401123 &lt;+47&gt;:    callq  0x40143a &lt;explode_bomb&gt;
+0x0000000000401128 &lt;+52&gt;:    add    $0x1,%r12d                 # r12d += 1
+0x000000000040112c &lt;+56&gt;:    cmp    $0x6,%r12d
+0x0000000000401130 &lt;+60&gt;:    je     0x401153 &lt;phase_6+95&gt;      # 外层循环,判断所有的六个数
+0x0000000000401132 &lt;+62&gt;:    mov    %r12d,%ebx
+0x0000000000401135 &lt;+65&gt;:    movslq %ebx,%rax
+0x0000000000401138 &lt;+68&gt;:    mov    (%rsp,%rax,4),%eax
+0x000000000040113b &lt;+71&gt;:    cmp    %eax,0x0(%rbp)
+0x000000000040113e &lt;+74&gt;:    jne    0x401145 &lt;phase_6+81&gt;      # 判断六个数每两个数都不相同
+0x0000000000401140 &lt;+76&gt;:    callq  0x40143a &lt;explode_bomb&gt;
+0x0000000000401145 &lt;+81&gt;:    add    $0x1,%ebx
+0x0000000000401148 &lt;+84&gt;:    cmp    $0x5,%ebx
+0x000000000040114b &lt;+87&gt;:    jle    0x401135 &lt;phase_6+65&gt;      # 内层循环,判断五次(最后一个不需要判断)</code></pre><p>所以这段代码的意思就是判断一下输入的六个数都有应该小于等于6,而且这里使用的是 <code>jbe</code> 无符号判断,所以也<code>eax-1</code>也应该大于等于0,即所有的数大于等于1,并且每两个数都不相同.</p><blockquote><p>从这里我们可以看出这应该是一个1-6的全排列中的一种情况</p></blockquote><pre><code class="language-txt">0x0000000000401153 &lt;+95&gt;:    lea    0x18(%rsp),%rsi            # 设置循环终点
+0x0000000000401158 &lt;+100&gt;:   mov    %r14,%rax
+0x000000000040115b &lt;+103&gt;:   mov    $0x7,%ecx
+0x0000000000401160 &lt;+108&gt;:   mov    %ecx,%edx
+0x0000000000401162 &lt;+110&gt;:   sub    (%rax),%edx                # (rax) = 7-(rax)
+0x0000000000401164 &lt;+112&gt;:   mov    %edx,(%rax)
+0x0000000000401166 &lt;+114&gt;:   add    $0x4,%rax
+0x000000000040116a &lt;+118&gt;:   cmp    %rsi,%rax
+0x000000000040116d &lt;+121&gt;:   jne    0x401160 &lt;phase_6+108&gt;</code></pre><p>这里的汇编就是将栈内的六个数a都变成7-a</p><pre><code class="language-txt">0x0000000000401197 &lt;+163&gt;:   mov    (%rsp,%rsi,1),%ecx        # ecx = number[rsi]
+0x000000000040119a &lt;+166&gt;:   cmp    $0x1,%ecx
+0x000000000040119d &lt;+169&gt;:   jle    0x401183 &lt;phase_6+143&gt;    # 如果 number[rsi] == 1,只有一种情况
+0x000000000040119f &lt;+171&gt;:   mov    $0x1,%eax
+0x00000000004011a4 &lt;+176&gt;:   mov    $0x6032d0,%edx
+0x00000000004011a9 &lt;+181&gt;:   jmp    0x401176 &lt;phase_6+130&gt;    # ...</code></pre><p>我们不为1的情况,他会跳转到+130的位置,这里出现了一个地址 <code>0x6032d0</code>,并且将 eax 设为1</p><pre><code class="language-txt">0x0000000000401176 &lt;+130&gt;:   mov    0x8(%rdx),%rdx
+0x000000000040117a &lt;+134&gt;:   add    $0x1,%eax
+0x000000000040117d &lt;+137&gt;:   cmp    %ecx,%eax
+0x000000000040117f &lt;+139&gt;:   jne    0x401176 &lt;phase_6+130&gt;</code></pre><p>接下来做循环, 使用 <code>mov 0x8(%rdx),%rdx</code> 不断地赋值,直到 eax == ecx,这种操作可以看出应该是一个链表的跳转</p><p>我们可以使用 <code>x/a</code> 来查看这个指针指向的位置,注意+8</p><pre><code class="language-bash">(gdb) x/a 0x6032d0
+0x6032d0 &lt;node1&gt;:       0x10000014c
+(gdb) x/a 0x6032d8
+0x6032d8 &lt;node1+8&gt;:     0x6032e0 &lt;node2&gt;
+(gdb) x/a 0x6032e8
+0x6032e8 &lt;node2+8&gt;:     0x6032f0 &lt;node3&gt;
+(gdb) x/a 0x6032f8
+0x6032f8 &lt;node3+8&gt;:     0x603300 &lt;node4&gt;
+(gdb) x/a 0x603308
+0x603308 &lt;node4+8&gt;:     0x603310 &lt;node5&gt;
+(gdb) x/a 0x603318
+0x603318 &lt;node5+8&gt;:     0x603320 &lt;node6&gt;</code></pre><p>这里可以看出来是六个node,且跳转的次数对应ecx.所以现在的对应关系如下</p><table><tr><th>输入</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr><tr><td style="text-align:center">                rdx的值</td><td style="text-align:center">                ?</td><td style="text-align:center">                0x6032e0</td><td style="text-align:center">                0x6032f0</td><td style="text-align:center">                0x603300</td><td style="text-align:center">                0x603310</td><td style="text-align:center">                0x603320</td></tr></table><p>循环的终点就是将这个指针的值赋给 (rsp+2*rsi+0x20)的位置</p><pre><code class="language-txt">0x0000000000401188 &lt;+148&gt;:   mov    %rdx,0x20(%rsp,%rsi,2)   # 这里的 rsi 是输入字符串的索引 0/4/8/12/16/20
+0x000000000040118d &lt;+153&gt;:   add    $0x4,%rsi
+0x0000000000401191 &lt;+157&gt;:   cmp    $0x18,%rsi               # 0x18 对应的值是24(24/4=6),也即是外层循环的终点
+0x0000000000401195 &lt;+161&gt;:   je     0x4011ab &lt;phase_6+183&gt;
+0x0000000000401197 &lt;+163&gt;:   mov    (%rsp,%rsi,1),%ecx       # 否则 ecx 赋值下一个数字</code></pre><p>而如果是 ecx == 1 的情况,就是直接将 <code>0x6032d0</code> 赋值给 edx</p><pre><code class="language-txt">0x0000000000401183 &lt;+143&gt;:   mov    $0x6032d0,%edx
+0x0000000000401188 &lt;+148&gt;:   mov    %rdx,0x20(%rsp,%rsi,2)</code></pre><p>所以现在是</p><table><tr><th>输入</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr><tr><td style="text-align:center">                rdx的值</td><td style="text-align:center">                0x6032d0</td><td style="text-align:center">                0x6032e0</td><td style="text-align:center">                0x6032f0</td><td style="text-align:center">                0x603300</td><td style="text-align:center">                0x603310</td><td style="text-align:center">                0x603320</td></tr><tr><td style="text-align:center">                保存在栈中的位置</td><td style="text-align:center">                (rsp+0x20)</td><td style="text-align:center">                (rsp+0x28)</td><td style="text-align:center">                (rsp+0x30)</td><td style="text-align:center">                (rsp+0x38)</td><td style="text-align:center">                (rsp+0x40)</td><td style="text-align:center">                (rsp+0x48)</td></tr></table><p>最后当外层循环结束之后跳转到 +183 继续执行</p><pre><code class="language-txt">0x00000000004011ab &lt;+183&gt;:   mov    0x20(%rsp),%rbx          # 栈中第一个地址
+0x00000000004011b0 &lt;+188&gt;:   lea    0x28(%rsp),%rax          # rax = rsp+0x28
+0x00000000004011b5 &lt;+193&gt;:   lea    0x50(%rsp),%rsi          # rsi 是结束的位置
+0x00000000004011ba &lt;+198&gt;:   mov    %rbx,%rcx
+0x00000000004011bd &lt;+201&gt;:   mov    (%rax),%rdx              # 栈中下一个地址
+0x00000000004011c0 &lt;+204&gt;:   mov    %rdx,0x8(%rcx)           # 将下一个地址赋给 (第一个地址+8)的内存单元
+0x00000000004011c4 &lt;+208&gt;:   add    $0x8,%rax
+0x00000000004011c8 &lt;+212&gt;:   cmp    %rsi,%rax
+0x00000000004011cb &lt;+215&gt;:   je     0x4011d2 &lt;phase_6+222&gt;
+0x00000000004011cd &lt;+217&gt;:   mov    %rdx,%rcx
+0x00000000004011d0 &lt;+220&gt;:   jmp    0x4011bd &lt;phase_6+201&gt;</code></pre><p>这段汇编做的事情就是将栈中六个地址串起来,每一个地址+8的内存单元保存着下一个地址</p><p>这里举一个例子,比如我们输入的是 3 1 5 2 4 6,那么先经过一次 7-x 的操作变成了 4 6 2 5 3 1. 然后这个数据保存到ecx中作为从 <code>0x6032d0</code>跳转的次数</p><p>那么按照这个顺序,现在保存到栈中的数据就应该依次是</p><p><img src="https://raw.githubusercontent.com/learner-lu/picbed/master/20221108181508.png" alt="20221108181508"></p><p>由于之前跳转的时候node123456之间存在着索引,这里就是将原本的索引破坏掉,创建一个一个新的链表,新的一组指针索引</p><blockquote><p>例如原先 <code>0x6032e0</code>(node2) 的下一跳 <code>0x6032e8</code> 的值是 <code>0x6032f0</code>(node3),现在就变成了 <code>0x603310</code>(node5)</p></blockquote><p>接着就是最后的一步了</p><pre><code class="language-txt">0x00000000004011d2 &lt;+222&gt;:   movq   $0x0,0x8(%rdx)
+0x00000000004011da &lt;+230&gt;:   mov    $0x5,%ebp                # rbx 在+183做了赋值 = (rsp+20),栈中第一个地址
+0x00000000004011df &lt;+235&gt;:   mov    0x8(%rbx),%rax           # rax = 下一跳的地址
+0x00000000004011e3 &lt;+239&gt;:   mov    (%rax),%eax              # rax = (rax)
+0x00000000004011e5 &lt;+241&gt;:   cmp    %eax,(%rbx)              # 比较第一个地址内存值和第二个地址的内存值
+0x00000000004011e7 &lt;+243&gt;:   jge    0x4011ee &lt;phase_6+250&gt;   # 递减排序
+0x00000000004011e9 &lt;+245&gt;:   callq  0x40143a &lt;explode_bomb&gt;
+0x00000000004011ee &lt;+250&gt;:   mov    0x8(%rbx),%rbx
+0x00000000004011f2 &lt;+254&gt;:   sub    $0x1,%ebp
+0x00000000004011f5 &lt;+257&gt;:   jne    0x4011df &lt;phase_6+235&gt;</code></pre><p>我们可以使用gdb查看当前节点地址的值</p><pre><code class="language-bash">(gdb) x/d 0x6032d0
+0x6032d0 &lt;node1&gt;:       332
+(gdb) x/d 0x6032e0
+0x6032e0 &lt;node2&gt;:       168
+(gdb) x/d 0x6032f0
+0x6032f0 &lt;node3&gt;:       924
+(gdb) x/d 0x603300
+0x603300 &lt;node4&gt;:       691
+(gdb) x/d 0x603310
+0x603310 &lt;node5&gt;:       477
+(gdb) x/d 0x603320
+0x603320 &lt;node6&gt;:       443</code></pre><p>根据值递减关系,对应的索引应该是 0x6032f0 -> 0x603300 -> 0x603310 -> 0x603320 -> 0x6032d0 -> 0x6032e0</p><p>查一下之前的表格可以得到</p><table><tr><th>输入</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr><tr><td style="text-align:center">                rdx的值</td><td style="text-align:center">                0x6032d0</td><td style="text-align:center">                0x6032e0</td><td style="text-align:center">                0x6032f0</td><td style="text-align:center">                0x603300</td><td style="text-align:center">                0x603310</td><td style="text-align:center">                0x603320</td></tr><tr><td style="text-align:center">                保存在栈中的位置</td><td style="text-align:center">                (rsp+0x20)</td><td style="text-align:center">                (rsp+0x28)</td><td style="text-align:center">                (rsp+0x30)</td><td style="text-align:center">                (rsp+0x38)</td><td style="text-align:center">                (rsp+0x40)</td><td style="text-align:center">                (rsp+0x48)</td></tr></table><p>所以对应的输入应该是 3 4 5 6 1 2,因为之前是7-x,所以应该反过来,所以最终的答案就是</p><pre><code class="language-txt">4 3 2 1 6 5</code></pre><h3 id="h3-16">secret_phase</h3><p>六个关卡都通过了就会提示实验通关,但是bomb实验还有一个隐藏关卡,注意到在 <code>bomb.c</code> 的最后有一行注释</p><pre><code class="language-c">/* Wow, they got it!  But isn't something... missing?  Perhaps
+ * something they overlooked?  Mua ha ha ha ha! */</code></pre><p>这说明其实还有谜题没有解开,我们可以使用 <code>disas main</code> 来查看所有的步骤,并没有发现遗漏,都是 <code>phase_x</code> + <code>phase_defused</code> 的模式,所以问题一定是出现在 <code>phase_defused</code> 之中</p><p>进行反汇编 <code>disas phase_defused</code>之后就可以发现存在一个隐藏关卡</p><pre><code class="language-txt">0x0000000000401630 &lt;+108&gt;:   callq  0x401242 &lt;secret_phase&gt;</code></pre><p>所以我们需要阅读这段汇编寻找到如何进入这个函数</p><pre><code class="language-txt">0x00000000004015c4 &lt;+0&gt;:     sub    $0x78,%rsp
+0x00000000004015c8 &lt;+4&gt;:     mov    %fs:0x28,%rax
+0x00000000004015d1 &lt;+13&gt;:    mov    %rax,0x68(%rsp)
+0x00000000004015d6 &lt;+18&gt;:    xor    %eax,%eax
+0x00000000004015d8 &lt;+20&gt;:    cmpl   $0x6,0x202181(%rip)        # 0x603760 &lt;num_input_strings&gt;
+0x00000000004015df &lt;+27&gt;:    jne    0x40163f &lt;phase_defused+123&gt;</code></pre><p>这里的 <code>0x603760</code> 应该是一个整数(因为它在和立即数6进行比较),可以根据命名推测大概率是输入的字符串的个数,如果能输入六次字符串并且还运行到这里显然前面的六关都通过了,我们可以稍后使用gdb打断点的方式来验证我们的猜想</p><pre><code class="language-txt">0x00000000004015e1 &lt;+29&gt;:    lea    0x10(%rsp),%r8
+0x00000000004015e6 &lt;+34&gt;:    lea    0xc(%rsp),%rcx
+0x00000000004015eb &lt;+39&gt;:    lea    0x8(%rsp),%rdx
+0x00000000004015f0 &lt;+44&gt;:    mov    $0x402619,%esi                 # 输入格式化
+0x00000000004015f5 &lt;+49&gt;:    mov    $0x603870,%edi                 # 输入的字符串
+0x00000000004015fa &lt;+54&gt;:    callq  0x400bf0 &lt;__isoc99_sscanf@plt&gt;
+0x00000000004015ff &lt;+59&gt;:    cmp    $0x3,%eax                      # 三个结果</code></pre><p><code>x/s 0x402619</code> 可以看到<code>sscanf</code>的输入格式化是 "%d %d %s", 两个整数一个字符串,但是获取的输入地址是 <code>0x603870</code> 这个我们并不知道是哪一个字符串,如果现在使用 <code>x/s</code> 查看只会得到一个空字符串,那么很有可能这里保存着我们输入的字符串,我们可以稍后使用gdb打断点的方式来验证我们的猜想并且确定是哪一关输入的字符串</p><pre><code class="language-txt">0x0000000000401604 &lt;+64&gt;:    mov    $0x402622,%esi
+0x0000000000401609 &lt;+69&gt;:    lea    0x10(%rsp),%rdi
+0x000000000040160e &lt;+74&gt;:    callq  0x401338 &lt;strings_not_equal&gt;
+0x0000000000401613 &lt;+79&gt;:    test   %eax,%eax</code></pre><p>接着判断了字符串是否相同, <code>x/s 0x402622</code> 查看到最后一个 <code>%s</code> 对应的字符串应该是 "DrEvil"</p><p>我们先在 <+54> 也就是调用 sccanf之前打一个断点 <code>b *0x4015fa</code>,然后使用 <code>r input.txt</code> 进行调试</p><p>bomb提供了一个参数用于从文件中读取内容,所以每一关完成之后我们都可以把答案写在一个文件里(input.txt),然后直接运行它就可以了,从文件中读完所有的内容之后再会切换到STDIN</p><pre><code class="language-txt">(gdb) x/d 0x603760
+0x603760 &lt;num_input_strings&gt;:   6
+(gdb) x/s 0x603870
+0x603870 &lt;input_strings+240&gt;:   "7 0"</code></pre><p>这里也验证了我们之前的猜想,输入六次进入到这里的时候 <code>num_input_strings</code> 是6,并且 <code>0x603870</code> 地址对应的字符串是 <code>7 0</code>这是我们第四关的答案,所以需要在第四关后面追加一个字符串 <code>DrEvil</code> 就可以进入隐藏关卡了</p><p>反汇编 <code>disas secret_phase</code>之后发现这个函数并不复杂</p><pre><code class="language-txt">0x0000000000401242 &lt;+0&gt;:     push   %rbx
+0x0000000000401243 &lt;+1&gt;:     callq  0x40149e &lt;read_line&gt;
+0x0000000000401248 &lt;+6&gt;:     mov    $0xa,%edx              # 十进制
+0x000000000040124d &lt;+11&gt;:    mov    $0x0,%esi
+0x0000000000401252 &lt;+16&gt;:    mov    %rax,%rdi
+0x0000000000401255 &lt;+19&gt;:    callq  0x400bd0 &lt;strtol@plt&gt;</code></pre><p>即将字符串转为10进制的整数(long类型)</p><pre><code class="language-txt">0x000000000040125a &lt;+24&gt;:    mov    %rax,%rbx
+0x000000000040125d &lt;+27&gt;:    lea    -0x1(%rax),%eax
+0x0000000000401260 &lt;+30&gt;:    cmp    $0x3e8,%eax                  # x-1 &lt;= 1000
+0x0000000000401265 &lt;+35&gt;:    jbe    0x40126c &lt;secret_phase+42&gt;
+0x0000000000401267 &lt;+37&gt;:    callq  0x40143a &lt;explode_bomb&gt;
+0x000000000040126c &lt;+42&gt;:    mov    %ebx,%esi                    # esi = x
+0x000000000040126e &lt;+44&gt;:    mov    $0x6030f0,%edi               # 一个地址
+0x0000000000401273 &lt;+49&gt;:    callq  0x401204 &lt;fun7&gt;
+0x0000000000401278 &lt;+54&gt;:    cmp    $0x2,%eax                    # 返回值应该为2
+0x000000000040127b &lt;+57&gt;:    je     0x401282 &lt;secret_phase+64&gt;
+0x000000000040127d &lt;+59&gt;:    callq  0x40143a &lt;explode_bomb&gt;</code></pre><p>输入的整数应该小于等于 1001, 接着edi是一个地址,esi是输入的整数,调用 <code>fun7</code>,并且返回值应为2</p><p>假设fun7的形参如下</p><pre><code class="language-c">int fun7(long *p, long x) {
+  ...
+  return ...
+}</code></pre><pre><code class="language-txt">0x0000000000401204 &lt;+0&gt;:     sub    $0x8,%rsp
+0x0000000000401208 &lt;+4&gt;:     test   %rdi,%rdi                  # 如果p==0(即空地址),返回-1
+0x000000000040120b &lt;+7&gt;:     je     0x401238 &lt;fun7+52&gt;
+0x000000000040120d &lt;+9&gt;:     mov    (%rdi),%edx                # edx = *p
+0x000000000040120f &lt;+11&gt;:    cmp    %esi,%edx                  # if (*p &lt;= x)
+0x0000000000401211 &lt;+13&gt;:    jle    0x401220 &lt;fun7+28&gt;
+0x0000000000401213 &lt;+15&gt;:    mov    0x8(%rdi),%rdi             # p = p + 0x8
+0x0000000000401217 &lt;+19&gt;:    callq  0x401204 &lt;fun7&gt;            # 再次调用
+0x000000000040121c &lt;+24&gt;:    add    %eax,%eax                  # return 2*fun7(p+0x8,x)
+0x000000000040121e &lt;+26&gt;:    jmp    0x40123d &lt;fun7+57&gt;
+0x0000000000401220 &lt;+28&gt;:    mov    $0x0,%eax
+0x0000000000401225 &lt;+33&gt;:    cmp    %esi,%edx                  # if (*p == x) return 0
+0x0000000000401227 &lt;+35&gt;:    je     0x40123d &lt;fun7+57&gt;
+0x0000000000401229 &lt;+37&gt;:    mov    0x10(%rdi),%rdi            # p = p + 0x10
+0x000000000040122d &lt;+41&gt;:    callq  0x401204 &lt;fun7&gt;            # 再次调用
+0x0000000000401232 &lt;+46&gt;:    lea    0x1(%rax,%rax,1),%eax      # return 2*fun7(p+0x10,x)+1
+0x0000000000401236 &lt;+50&gt;:    jmp    0x40123d &lt;fun7+57&gt;
+0x0000000000401238 &lt;+52&gt;:    mov    $0xffffffff,%eax           # return -1
+0x000000000040123d &lt;+57&gt;:    add    $0x8,%rsp
+0x0000000000401241 &lt;+61&gt;:    retq</code></pre><p>所以整体的思路还是很清晰的,这应该是一个二叉树的结构,如果大于则+16,如果小于则+8,类似root->left,root->right的情况</p><p>那么我们就可以从地址 <code>0x6030f0</code> 出发,左右左右的跳转,完整的画出这棵二叉树</p><p><img src="https://raw.githubusercontent.com/learner-lu/picbed/master/20221109185152.png" alt="20221109185152"></p><p>这段程序对应的C代码如下</p><pre><code class="language-c">int fun7(long *p, long x) {
+  if (p == 0) return -1;
+  if (*p &lt;= x) {
+    return 2*fun7(p+16,x)+1 // 向右
+  } else {
+    if (*p == x) return 0;
+    else return 2*fun7(p+8,x); // 向左
+  }
+}</code></pre><p>预期结果是2那么根据if分支的选项满足这个输出的结果应该是 2<i>(2</i>(0)+1), 对应 <code>左-右</code>(22); 和 2<i>(2</i>(2*(0))+1), 对应 <code>左-右-左</code>(20)</p><p>所以本题答案有两个</p><pre><code class="language-txt">22
+20</code></pre><p>关于 @plt</p><ul><li><a href="https://stackoverflow.com/questions/25667205/what-exactly-does-putsplt-mean" target="_blank">回答1</a></li></ul><ul><li><a href="https://stackoverflow.com/questions/5469274/what-does-plt-mean-here" target="_blank">回答2</a></li></ul></div>
     <div class="dir-tree"><ul><li><a href="../../md-docs/README" >README</a></li></ul><ul><li><a href="../../快速开始/安装与使用" >快速开始</a><ul><li><a href="../../快速开始/安装与使用" >安装与使用</a></li></ul><ul><li><a href="../../快速开始/配置信息" >配置信息</a></li></ul><ul><li><a href="../../快速开始/功能演示" >功能演示</a></li></ul><ul><li><a href="../../快速开始/代码高亮" >代码高亮</a></li></ul></li></ul><ul><li><a href="../../API/zood init" >API</a><ul><li><a href="../../API/zood init" >zood init</a></li></ul><ul><li><a href="../../API/zood config" >zood config</a></li></ul><ul><li><a href="../../API/zood -g" >zood -g</a></li></ul></li></ul><ul><li><a href="../../a/1" >a</a><ul><li><a href="../../a/1" >1</a></li></ul><ul><li><a href="../../a/2" >2</a></li></ul><ul><li><a href="../../a/3" >3</a></li></ul><ul><li><a href="../../a/4" >4</a></li></ul><ul><li><a href="../../a/5" >5</a></li></ul><ul><li><a href="../../a/6" >6</a></li></ul><ul><li><a href="../../a/7" >7</a></li></ul><ul><li><a href="../../a/1111111111111111111" >1111111111111111111</a></li></ul></li></ul></div>
     <div class="zood"><a class="" href="https://github.com/luzhixing12345/zood" target="_blank">zood</a></div>
     <script type="text/javascript" src="../../../js/next_front.js"></script><script>addLink("../../a/5","../../a/7","ab")</script><script type="text/javascript" src="../../../js/change_mode.js"></script><script>addChangeModeButton("../../../img/sun.png","../../../img/moon.png")</script><script type="text/javascript" src="../../../js/copy_code.js"></script><script>addCodeCopy("../../../img/before_copy.png","../../../img/after_copy.png")</script><script type="text/javascript" src="../../../js/navigator.js"></script><script type="text/javascript" src="../../../js/prism.js"></script><script type="text/javascript" src="../../../js/picture_preview.js"></script><script type="text/javascript" src="../../../js/search.js"></script><script>addSearchBar("{\"../../md-docs/README\": \"zoodzoodzood \u662f\u4e00\u4e2a\u8f85\u52a9\u6587\u6863\u751f\u6210\u7684Python\u5e93, zood\u7684\u9875\u9762\u98ce\u683c\u66f4\u503e\u5411\u4e8e\u7eaf\u6587\u6863\u5185\u5bb9\u800c\u975e\u535a\u5ba2\u60a8\u53ef\u524d\u5f80zood\uff1a\u9879\u76ee\u6587\u6863\u751f\u6210\u5de5\u5177\u6d4f\u89c8\u4e00\u4e2a\u76f8\u5173\u89c6\u9891\u6b22\u8fce\u5404\u4f4d\u63d0\u51fa\u5b9d\u8d35\u5efa\u8bae\u4ee5\u53ca\u62a5\u544abug\u5982\u679c\u60a8\u60f3\u8981\u63d0\u4ea4\u4e00\u4e2a\u6539\u52a8\u8f83\u5927\u7684PR\u8bf7\u5148\u4e0e\u7b14\u8005\u8054\u7cfb,\u8c22\u8c22\", \"../../API/zood init\": \"zood init\u6458\u8981\u672f\u8bed\u8868zood init\u8fd9\u90e8\u5206\u5185\u5bb9\u7528\u4e8e\u6d4b\u8bd5\u641c\u7d22\u6458\u8981\u4e09\u79cdCXL\u534f\u8bae\u8ba8\u8bba\u4e86\u6700\u4f18\u7684PCIe\u5b58\u50a8\u8bbe\u5907\u9009\u62e9(Type3)\u505a\u5bf9\u6bd4\u5b9e\u73b0\u8ba8\u8bbaCXL\u5e26\u6765\u4e86\u7684\u6027\u80fd\u63d0\u5347\u63a2\u7d22\u7f51\u7edc\u62d3\u6251\u548c\u7ba1\u7406\u5185\u5b58\u6269\u5c55\u7684\u65b9\u5f0f\u672f\u8bed\u8868\u540d\u8bcd\u91ca\u4e49                BARs                PCIe base address registers                FlexBus                CXL.io\u521b\u5efa\u7684\u9ad8\u901fIO\u901a\u9053                CXL RP                CXL root port                HDM                host-managed device memory                CXL flit                \u4e3b\u673a\u8bbe\u5907\u901a\u8fc7CXL RP\u53d1\u9001\u7ed9type3\u8bbe\u5907\u7528\u4e8e\u540c\u6b65\u7684\u4fe1\u606f                USP                upstream ports                DSP                downstream ports                fabric manager                swicths crossbar,\u4ea4\u6362\u673a\u8fde\u63a5USP,DSP\u7684\u90e8\u5206                VH                virtual hierarchy                MLD                multiple logical device                GPF                global persistent flush                DT                deterministic                ND                non-deterministic                BF                bufferable                NB                non-bufferable\", \"../../API/zood config\": \"zood configzood configasdjl  qweuasdoj zood config asdjklqw qwejlVue (\u53d1\u97f3\u4e3a /vju\u02d0/\uff0c\u7c7b\u4f3c view) \u662f\u4e00\u6b3e\u7528\u4e8e\u6784\u5efa\u7528\u6237\u754c\u9762\u7684 JavaScript \u6846\u67b6\u3002\u5b83\u57fa\u4e8e\u6807\u51c6 HTML\u3001CSS \u548c JavaScript \u6784\u5efa\uff0c\u5e76\u63d0\u4f9b\u4e86\u4e00\u5957\u58f0\u660e\u5f0f\u7684\u3001\u7ec4\u4ef6\u5316\u7684\u7f16\u7a0b\u6a21\u578b\uff0c\u5e2e\u52a9\u4f60\u9ad8\u6548\u5730\u5f00\u53d1\u7528\u6237\u754c\u9762\u3002\u65e0\u8bba\u662f\u7b80\u5355\u8fd8\u662f\u590d\u6742\u7684\u754c\u9762\uff0cVue \u90fd\u53ef\u4ee5\u80dc\u4efb\u3002\", \"../../API/zood -g\": \"zood -ggem5-cxlzood -gjust a test for me?tooooooooooooooooooooooooooo longgggggggggggggggggggg codeeeeeeeeeeeeeeeeeeeeeee tooo copyhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhgem5-cxl\u672c\u6587\u6863\u7528\u4e8e\u8bb0\u5f55gem5\u7684\u7f16\u8bd1\u548c\u4f7f\u7528gem5\u6e90\u7801\u9605\u8bfbcxl\u7684gem5\u5b9e\u73b0cxl\u9a71\u52a8\u5b9e\u73b0gem5\u7684\u7f16\u8bd1\u548c\u4f7f\u7528gem5\u6e90\u7801\u9605\u8bfbcxl\u7684gem5\u5b9e\u73b0cxl\u9a71\u52a8\u5b9e\u73b0gem5\u7684\u7f16\u8bd1\u548c\u4f7f\u7528gem5\u6e90\u7801\u9605\u8bfbcxl\u7684gem5\u5b9e\u73b0cxl\u9a71\u52a8\u5b9e\u73b0gem5\u7684\u7f16\u8bd1\u548c\u4f7f\u7528gem5\u6e90\u7801\u9605\u8bfbcxl\u7684gem5\u5b9e\u73b0cxl\u9a71\u52a8\u5b9e\u73b0- gem5\u7684\u7f16\u8bd1\u548c\u4f7f\u7528gem5\u6e90\u7801\u9605\u8bfbcxl\u7684gem5\u5b9e\u73b0cxl\u9a71\u52a8\u5b9e\u73b0- gem5\u7684\u7f16\u8bd1\u548c\u4f7f\u7528gem5\u6e90\u7801\u9605\u8bfbcxl\u7684gem5\u5b9e\u73b0cxl\u9a71\u52a8\u5b9e\u73b0- gem5\u7684\u7f16\u8bd1\u548c\u4f7f\u7528gem5\u6e90\u7801\u9605\u8bfbcxl\u7684gem5\u5b9e\u73b0cxl\u9a71\u52a8\u5b9e\u73b0\"}","../../../img/search.svg","../../../img/enter.svg","Ctrl+K")</script><script type="text/javascript" src="../../../js/check_box.js"></script>

@@ -862,6 +862,8 @@ pre[class*="language-"]::selection {
   text-overflow: ellipsis; /*  过长文字省略号 */
   white-space: nowrap; /*禁止文字折行*/
   list-style: none;
+  max-height: 50%;
+  overflow: auto;
 }
 
 .header-navigator::-webkit-scrollbar {
