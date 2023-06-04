@@ -88,8 +88,8 @@ def parseMarkdownFiles(md_dir_name):
             file_name = list(i.keys())[0]
             file_path = os.path.join(md_dir_name,dir_name,file_name+'.md')
             if not os.path.exists(file_path):
-                printInfo('[zood解析失败]: 请检查 dir.yml')
-                printInfo('找不到文件 ' + file_path)
+                printInfo('[zood解析失败]: 找不到文件' + file_path)
+                print("如手动删除md文件可使用 zood update 更新 dir.yml")
                 exit(0)
             else:
                 with open(file_path,'r',encoding='utf-8') as f:

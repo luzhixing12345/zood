@@ -25,6 +25,7 @@ def sort(yml):
     for _,files in yml.items():
         files.sort(key=lambda item: list(item.values())[0])
 
+
 def printInfo(msg,color='red'):
     if color == 'red':
         print(f'\033[1;31m{msg}\033[0m')

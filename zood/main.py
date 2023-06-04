@@ -49,9 +49,10 @@ def main():
             print('未找到',os.path.join(md_dir_name,'prismjs'))
 
         return
+       
 
-    if len(args.cmd) == 0:
-        print('zood使用方法见 https://luzhixing12345.github.io/zood/')
+    if len(args.cmd) == 0 or args.cmd[0] == 'help':
+        show_help_info()
         return
     
     if args.cmd[0] == 'init':
@@ -85,28 +86,38 @@ def main():
         shutil.copy(global_config_path,local_config_path)
         printInfo(f"生成配置文件 {local_config_path}",color='green')
     
-    
-    # elif args.cmd[0] == 'update':
-    #     print(f"当前zood版本为 {version}, 正在查询最新zood版本...")
-    #     latest_zood_version = versions('zood')[0]
-    #     print(f'最新zood版本为', latest_zood_version)
-    #     if latest_zood_version == version:
-    #         return
-    #     else:
-    #         download = input(f'是否要下载最新版 zood=={latest_zood_version} (yes/no)[yes] ')
-    #         if download == '' or download == 'yes':
-    #             print('正在准备更新...')
-    #             try:
-    #                 os.system('pip install --upgrade zood')
-    #                 print('完成更新')
-    #             except:
-    #                 print('更新异常,请检查网络或代理,使用 pip install --upgrade zood 更新')
-                
-    #         else:
-    #             print('退出更新程序')
-                
-    # elif args.cmd[0] == 'version':
-    #     print(f"当前zood版本为 {version}")
+
+    elif args.cmd[0] == 'update':
+
+        current_dir = os.getcwd()
+        dir_yml_path = os.path.join(current_dir,md_dir_name,'dir.yml')
+        dir_yml = readConfigFile(dir_yml_path)    
+        sort(dir_yml)
+        for dir_name, files in dir_yml.items():
+            for i in range(len(files)):
+                file_name = list(files[i].keys())[0]
+                file_path = os.path.join(md_dir_name,dir_name,file_name+'.md')
+                if not os.path.exists(file_path):
+                    print("未找到",file_name)
+                files[i][file_name] = i+1
+        
+        writeConfigFile(dir_yml,dir_yml_path)
+        print("已更新排序")
 
     else:
-        print(f'未找到指令 zood {args.cmd[0]}')
+        printInfo(f'未找到指令 zood {args.cmd[0]}')
+        show_help_info()
+
+
+def show_help_info():
+
+    print('zood使用方法见 https://luzhixing12345.github.io/zood/\n')
+    print("{:<20}初始化仓库".format("  zood init"))
+    print("{:<20}创建A目录下的B文件".format("  zood new A B"))
+    print("{:<20}创建根目录下的A文件".format("  zood new A"))
+    print("{:<20}根据md-docs/更新dir.yml".format("  zood update"))
+    print("{:<20}生成docs/目录".format("  zood -g"))
+    print("{:<20}删除docs/目录".format("  zood clean"))
+    print("{:<20}获取配置文件".format("  zood config"))
+    print("{:<20}更新配置文件".format("  zood -s"))
+    print("")
