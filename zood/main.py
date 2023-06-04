@@ -115,7 +115,7 @@ def show_help_info():
     print("{:<20}初始化仓库".format("  zood init"))
     print("{:<20}创建A目录下的B文件".format("  zood new A B"))
     print("{:<20}创建根目录下的A文件".format("  zood new A"))
-    print("{:<20}根据md-docs/更新dir.yml".format("  zood update"))
+    print("{:<20}更新dir.yml顺序".format("  zood update"))
     print("{:<20}生成docs/目录".format("  zood -g"))
     print("{:<20}删除docs/目录".format("  zood clean"))
     print("{:<20}获取配置文件".format("  zood config"))
