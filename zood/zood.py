@@ -93,7 +93,7 @@ def parseMarkdownFiles(md_dir_name):
                 exit(0)
             else:
                 with open(file_path,'r',encoding='utf-8') as f:
-                    markdown_htmls[file_path] = MarkdownParser.parse_withtag(f.read())
+                    markdown_htmls[file_path] = MarkdownParser.parse_toc(f.read())
                 file_names.append(file_name)
         directory_tree.append({dir_name:file_names})
         
