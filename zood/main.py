@@ -5,17 +5,14 @@ import shutil
 from .util import *
 from .md_parser import parseDocs
 from .zood import *
-from .extensions import update_package
-
+from .extensions import update_PYPI_package, update_vsce_package
 
 def main():
     parser = argparse.ArgumentParser(
         description="zood: web page documentation & comment generation documentation"
     )
     parser.add_argument("cmd", type=str, nargs="*", help="initialize docs template")
-    parser.add_argument(
-        "-g", "--generate", action="store_true", help="generate html doc"
-    )
+    parser.add_argument("-g", "--generate", action="store_true", help="generate html doc")
     parser.add_argument(
         "-s",
         "--save",
@@ -28,9 +25,7 @@ def main():
     md_dir_name = config["markdown_folder"]
 
     local_config_path = os.path.join(md_dir_name, "_config.yml")
-    global_config_path = os.path.join(
-        os.path.dirname(__file__), "config", "_config.yml"
-    )
+    global_config_path = os.path.join(os.path.dirname(__file__), "config", "_config.yml")
 
     if args.generate:
         if not os.path.exists(md_dir_name):
@@ -53,12 +48,8 @@ def main():
             global_prism_js_path = os.path.join(
                 os.path.dirname(__file__), "config", "js", "prismjs", "prism.js"
             )
-            shutil.copy(
-                os.path.join(md_dir_name, "prismjs", "prism.css"), global_prism_css_path
-            )
-            shutil.copy(
-                os.path.join(md_dir_name, "prismjs", "prism.js"), global_prism_js_path
-            )
+            shutil.copy(os.path.join(md_dir_name, "prismjs", "prism.css"), global_prism_css_path)
+            shutil.copy(os.path.join(md_dir_name, "prismjs", "prism.js"), global_prism_js_path)
             print_info("已更新全局配置文件 prismjs")
         else:
             print("未找到", os.path.join(md_dir_name, "prismjs"))
@@ -128,7 +119,24 @@ def main():
                 print_info("choice 选项为 (sub, main)")
                 show_help_info()
                 return
-        update_package(choice)
+        update_PYPI_package(choice)
+
+    elif args.cmd[0] == "vsce":
+        
+        if len(args.cmd) > 2:
+            print_info("vsce 接收0/1个参数")
+            show_help_info()
+            return
+
+        choice = None
+        if len(args.cmd) == 2:
+            choice = args.cmd[1]
+            if choice not in ("sub", "main"):
+                print_info("choice 选项为 (sub, main)")
+                show_help_info()
+                return
+        update_vsce_package(choice=choice)
+        
 
     else:
         print_info(f"未找到指令 zood {args.cmd[0]}")
@@ -147,8 +155,15 @@ def show_help_info():
     print("{:<20}更新配置文件".format("  zood -s"))
 
     print("\n其他:")
-    print("{:<25}获取配置文件\n".format("  zood poetry <choice>"))
-    print(" " * 6, "choice = None(default) 发布版本更新")
-    print(" " * 6, "choice = sub           次版本更新")
-    print(" " * 6, "choice = main          主版本更新")
+    print("{:<25}更新PYPI库版本\n".format("  zood poetry <choice>"))
+    indent = 12
+    print(" " * indent, "choice = None(default) 发布版本更新")
+    print(" " * indent, "choice = sub           次版本更新")
+    print(" " * indent, "choice = main          主版本更新")
+    print("")
+    print("{:<25}更新Vscode扩展版本\n".format("  zood vsce <choice>"))
+    indent = 12
+    print(" " * indent, "choice = None(default) 发布版本更新")
+    print(" " * indent, "choice = sub           次版本更新")
+    print(" " * indent, "choice = main          主版本更新")
     print("")

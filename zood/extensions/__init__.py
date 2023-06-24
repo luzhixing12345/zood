@@ -1,3 +1,1 @@
-
-
-from .poetry_update import update_package
+from .poetry_update import update_PYPI_package, update_vsce_package
