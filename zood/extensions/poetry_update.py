@@ -79,12 +79,14 @@ def update_PYPI_package(choice=None):
         print_info("库更新失败, pyproject.toml 版本已回退")
         with open(pyproject_path, "w", encoding="utf-8") as f:
             f.write(file)
+        return
     result = subprocess.run(['poetry', 'publish'], capture_output=True, text=True)
     if result.returncode != 0:
         print_info("库更新失败, pyproject.toml 版本已回退")
         with open(pyproject_path, "w", encoding="utf-8") as f:
             f.write(file)
-        
+        return
+    print_info('更新成功','green')
 
 
 def update_vsce_package(choice=None):
@@ -117,8 +119,11 @@ def update_vsce_package(choice=None):
         print_info("库更新失败, package.json 版本已回退")
         with open('package.json', "w", encoding="utf-8") as f:
             f.write(file)
+        return
     result = subprocess.run(['pnpm', 'vsce','publish','--no-dependencies'], capture_output=True, text=True)
     if result.returncode != 0:
         print_info("库更新失败, pyproject.toml 版本已回退")
         with open('package.json', "w", encoding="utf-8") as f:
             f.write(file)
+        return
+    print_info('更新成功','green')
