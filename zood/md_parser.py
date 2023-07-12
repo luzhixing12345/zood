@@ -52,8 +52,8 @@ def generateDocs(directory_tree, markdown_htmls, md_dir_name):
 
     # 目录树
     dir_tree_html = getDirTree(directory_tree, md_dir_name)
-
     front_url, next_url = caculateFrontNext(flat_paths, index_README_path, md_dir_name)
+    github_icon = get_github_icon(config["options"]["enable_github"])
 
     with open(index_html_path, "w", encoding="utf-8") as f:
         # index 的地址做一些修改
@@ -65,12 +65,12 @@ def generateDocs(directory_tree, markdown_htmls, md_dir_name):
         index_html_template = index_html_template.replace(
             "directory-tree-scope", index_dir_tree_html
         )
+        index_html_template = index_html_template.replace("github-icon", github_icon)
         index_html_template = urlReplace(index_html_template, front_url, next_url, "b")
-        f.write(
-            index_html_template.replace("html-scope", markdown_htmls[index_README_path])
-        )
+        f.write(index_html_template.replace("html-scope", markdown_htmls[index_README_path]))
 
     html_template = html_template.replace("directory-tree-scope", dir_tree_html)
+    html_template = html_template.replace("github-icon", github_icon)
     for file_path, markdown_html in markdown_htmls.items():
         dir_name = file_path.split(os.sep)[1]
         file_name = file_path.split(os.sep)[2].replace(".md", "")

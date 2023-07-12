@@ -13,6 +13,7 @@
 </head>
 
 <body class="light">
+    
     <div class="header-navigator"><ul><li><a href="#h1-0">安装与构建</a><ul><li><a href="#h2-1">标准构建方式</a></li></ul><ul><li><a href="#h2-2">可能遇到的问题</a></li></ul><ul><li><a href="#h2-3">一些补充信息</a></li></ul></li></ul></div><div class='markdown-body'><h1 id="h1-0">安装与构建</h1><p>gem5的安装是及其头痛的,由于gem5并未提供发行版而是采用了源码编译的方式,笔者付出了相当多的编译等待时间和错误处理时间</p><p>一旦完成构建, 我们就可以在 gem5 源码的基础上进行改进, 再次编译构建的速度就会快很多了</p><h2 id="h2-1">标准构建方式</h2><p>使用Ubuntu22.04操作系统,双系统,英文语言,gcc版本11.3.0,32G交换区</p><p>gem5的编译强烈建议使用双系统,在虚拟机中启动gem5模拟有点太慢了</p><p><b>内存分配至少8GB</b>,不然编译可能因为内存不足而失败.<b>不要使用低版本gcc</b></p><blockquote><p>不想装双系统麻烦的话 WSL2 也是一个不错的选择</p></blockquote><ul><li>安装依赖之前<pre><code class="language-bash">sudo apt update
 sudo apt install vim</code></pre></li></ul><ul><li>安装依赖<pre><code class="language-bash">sudo apt install build-essential git m4 scons zlib1g zlib1g-dev \
     libprotobuf-dev protobuf-compiler libprotoc-dev libgoogle-perftools-dev \

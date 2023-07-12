@@ -16,13 +16,7 @@ navigator_links.forEach(link => {
             let url = window.location.href.split('#')[0];
             let newUrl = url + this.getAttribute('href');
             history.pushState(null, null, newUrl);
-        }, 1000); // 1000毫秒延迟,你可以根据需要调整延迟时间
-        // this.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest', container: divElement });
-        
-        // // 修改网页 URL
-        // let url = window.location.href.split('#')[0]; // 获取当前 URL 并去除 # 及后面的内容
-        // let newUrl = url + this.getAttribute('href'); // 将当前 URL 与链接的 href 属性拼接
-        // history.pushState(null, null, newUrl); // 修改网页 URL
+        }, 1000);
     });
 });
 
