@@ -63,6 +63,9 @@ options:
   # 使用 github 图标
   enable_github: true
 
+  # 支持 latex 数学公式
+  enable_latex: false
+
 # 页面布局
 position:
 

@@ -233,6 +233,21 @@ mermaid.initialize({ startOnLoad: true });\
 </script>"
         js_scope += js_code
 
+    if config['options']['enable_latex']:
+        js_code = '''
+        <script>
+            MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+            };
+            </script>
+        <script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+        '''
+        js_scope += js_code
+
     js_scope += insertJScode("enable_check_box", html_dir_name)
 
     return js_scope
