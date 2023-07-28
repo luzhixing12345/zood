@@ -103,9 +103,7 @@ def parseMarkdownFiles(md_dir_name):
 
 def parseConfig(config, markdown_htmls):
     html_dir_name = config["html_folder"]
-    html_tempate_path = os.path.join(
-        os.path.dirname(__file__), "config", "template.html"
-    )
+    html_tempate_path = os.path.join(os.path.dirname(__file__), "config", "template.html")
     css_template_path = os.path.join(os.path.dirname(__file__), "config", "index.css")
 
     with open(html_tempate_path, "r", encoding="utf-8") as f:
@@ -134,9 +132,7 @@ def parseConfig(config, markdown_htmls):
     else:
         img_name = favicon_url.split(os.sep)[-1]
         shutil.copy(favicon_url, f"./{html_dir_name}/img/" + img_name)
-        basic_html_template = basic_html_template.replace(
-            "<%favicon%>", "../../../img/" + img_name
-        )
+        basic_html_template = basic_html_template.replace("<%favicon%>", "../../../img/" + img_name)
 
     title = config["title"]
     basic_html_template = basic_html_template.replace("<%title%>", title)
@@ -173,7 +169,9 @@ def zoodJSOptions(config, markdown_htmls):
 
     if config["options"]["enable_change_mode"]:
         js_code = insertJScode("enable_change_mode", html_dir_name)
-        js_code += f'<script>addChangeModeButton("../../../img/sun.png","../../../img/moon.png")</script>'
+        js_code += (
+            f'<script>addChangeModeButton("../../../img/sun.png","../../../img/moon.png")</script>'
+        )
         js_scope += js_code
 
     if config["options"]["enable_copy_code"]:
@@ -188,15 +186,11 @@ def zoodJSOptions(config, markdown_htmls):
     if config["options"]["enable_highlight"]:
         # 复制prismjs
         shutil.copy(
-            os.path.join(
-                os.path.dirname(__file__), "config", "js", "prismjs", "prism.css"
-            ),
+            os.path.join(os.path.dirname(__file__), "config", "js", "prismjs", "prism.css"),
             f"{html_dir_name}/css",
         )
         shutil.copy(
-            os.path.join(
-                os.path.dirname(__file__), "config", "js", "prismjs", "prism.js"
-            ),
+            os.path.join(os.path.dirname(__file__), "config", "js", "prismjs", "prism.js"),
             f"{html_dir_name}/js",
         )
         src = "../../../js/prism.js"
@@ -233,8 +227,8 @@ mermaid.initialize({ startOnLoad: true });\
 </script>"
         js_scope += js_code
 
-    if config['options']['enable_latex']:
-        js_code = '''
+    if config["options"]["enable_latex"]:
+        js_code = """
         <script>
             MathJax = {
             tex: {
@@ -245,21 +239,24 @@ mermaid.initialize({ startOnLoad: true });\
         <script id="MathJax-script" async
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
         </script>
-        '''
+        """
         js_scope += js_code
 
-    js_scope += insertJScode("enable_check_box", html_dir_name)
+    js_scope += insertJScode("global_js_configuration", html_dir_name)
 
     return js_scope
 
 
-def insertJScode(file_name, html_dir_name):
-    file_name = file_name[7:]  # 跳过enable_
-    # 文件同名
-    shutil.copy(
-        os.path.join(os.path.dirname(__file__), "config", "js", f"{file_name}.js"),
-        f"{html_dir_name}/js",
-    )
+def insertJScode(file_name: str, html_dir_name):
+    if file_name.startswith("enable_"):
+        # 跳过enable_
+        file_name = file_name[7:]
+    js_file_name = os.path.join(os.path.dirname(__file__), "config", "js", f"{file_name}.js")
+    if os.path.exists(js_file_name):
+        shutil.copy(
+            js_file_name,
+            f"{html_dir_name}/js",
+        )
     src = f"../../../js/{file_name}.js"
     js_code = f'<script type="text/javascript" src="{src}"></script>'
     return js_code
