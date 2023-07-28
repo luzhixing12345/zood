@@ -1,9 +1,11 @@
 # zood
 
-zood 是一个辅助文档生成的Python库, zood的页面风格更倾向于纯文档内容而非博客
+zood 网页文档生成的 python 库, 可以将本地 Markdown 文件转为 Web 网页
 
-您可前往[zood：项目文档生成工具](https://www.bilibili.com/video/BV1dK411r77d)浏览一个相关视频
+zood 的页面风格更倾向于纯文档内容而非博客, 您可利用 Github Pages 为每一个仓库部署单独的网页文档
 
-欢迎各位提出宝贵建议以及报告bug
+zood 基于 [MarkdownParser](https://github.com/luzhixing12345/MarkdownParser) 完成 Markdown 文件的解析和转换
 
-如果您想要提交一个改动较大的PR请先与笔者联系,谢谢
+您可前往 [【项目分享】zood:项目文档生成工具](https://www.bilibili.com/video/BV1dK411r77d) 浏览一个相关视频介绍
+
+欢迎各位提出宝贵使用建议, 新增功能需求, 以及报告bug
