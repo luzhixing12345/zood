@@ -1,3 +1,5 @@
+// 这里保存
+
 
 // 美化选择框
 // - [ ] xxx
@@ -16,7 +18,8 @@ var markdown_part = document.querySelector(".markdown-body");
 var currentUrl = window.location.href.slice(0, -1);
 var dirTree = document.querySelector(".dir-tree");
 var links = dirTree.querySelectorAll("a");
-// 主题保持
+
+// 如果保存的主题存在,则设置当前主题为保存的主题
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme !== null) {
     if (savedTheme === 'light') {
@@ -25,7 +28,6 @@ if (savedTheme !== null) {
         markdown_part.className = 'markdown-body markdown-dark'
     }
 }
-// 如果保存的主题存在,则设置当前主题为保存的主题
 links.forEach(function(link) {
   if (link.href === currentUrl) {
     link.scrollIntoView({block: 'center', inline:'nearest', container: dirTree });
