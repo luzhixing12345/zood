@@ -68,9 +68,13 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
             if syntaxlight.is_language_support(language):
                 language = syntaxlight.clean_language(language)
                 block.input["language"] = language
-                block.input["code"] = syntaxlight.parse(block.input["code"], language, file_path)
-                block.toHTML = types.MethodType(toHTML, block)
-                LANGUAGE_USED.add(language)
+                code = syntaxlight.parse(block.input["code"], language, file_path)
+                if code is not None:
+                    block.input["code"] = code
+                    block.toHTML = types.MethodType(toHTML, block)
+                    LANGUAGE_USED.add(language)
+                else:
+                    print("语法解析出错, 跳过该代码段高亮, 请按提示修改")
         else:
             hightlight_codeblock(block, file_path)
 
