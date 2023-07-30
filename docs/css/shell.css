@@ -18,11 +18,6 @@ pre[class*="language-shell"] .Token.brace-depth-2 {
     color: #1A9DFF;
 }
 
-
-pre[class*="language-shell"] .Token.PATH {
-    color: #88D6FE;
-}
-
 pre[class*="language-shell"] .Token.Program,
 pre[class*="language-shell"] .Token.Function,
 pre[class*="language-shell"] .Token.BACK_SLASH {
@@ -65,6 +60,14 @@ pre[class*="language-shell"] .Token.Control {
 
 pre[class*="language-shell"] .Token.Url {
     border-bottom: 1px solid #C1CCCC;
+}
+
+pre[class*="language-shell"] .Token.HOST_NAME {
+    color: #4EC9B0;
+}
+
+pre[class*="language-shell"] .Token.DIR_PATH {
+    color: #569cd6;
 }
 pre[class*="language-shell"] .Token.OPTION {
     color: #969696;

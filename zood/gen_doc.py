@@ -74,7 +74,7 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
                     block.toHTML = types.MethodType(toHTML, block)
                     LANGUAGE_USED.add(language)
                 else:
-                    print("语法解析出错, 跳过该代码段高亮, 请按提示修改")
+                    print_info(f"\n[zood]: 语法解析出错, 跳过该代码段高亮, 请按提示修改\n")
         else:
             hightlight_codeblock(block, file_path)
 

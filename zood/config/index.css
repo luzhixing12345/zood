@@ -336,7 +336,7 @@ ul>li>ul>li {
     z-index: 1;
 }
 
-.markdown-light pre #code_copy {
+.markdown-body pre #code_copy {
     background-color: rgb(196, 196, 196);
 }
 

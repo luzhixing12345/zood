@@ -27,6 +27,17 @@ body {
     background-color: #fff;
 }
 
+.light {
+    background-color: #eee;
+    color: #3c4858;
+}
+
+.dark {
+    background-color: #181c27;
+    color: #c4c6c9;
+}
+
+
 .markdown-light {
     background-color: #fff;
 }
@@ -325,7 +336,7 @@ ul>li>ul>li {
     z-index: 1;
 }
 
-.markdown-light pre #code_copy {
+.markdown-body pre #code_copy {
     background-color: rgb(196, 196, 196);
 }
 
@@ -729,8 +740,7 @@ ul>li>ul>li {
     white-space: nowrap;
 }
 
-pre[class^="language-"],
-pre.UNKNOWN {
+pre[class^="language-"] {
     background: #1f1f1f;
     color: white;
 }
