@@ -3,9 +3,10 @@ import os
 import shutil
 
 from .util import *
-from .md_parser import parseDocs
+from .gen_doc import generate_web_docs
 from .zood import *
 from .extensions import update_PYPI_package, update_vsce_package
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -21,7 +22,7 @@ def main():
     )
     args = parser.parse_args()
 
-    config = getZoodConfig()
+    config = get_zood_config()  # 获取配置信息
     md_dir_name = config["markdown_folder"]
 
     local_config_path = os.path.join(md_dir_name, "_config.yml")
@@ -31,7 +32,7 @@ def main():
         if not os.path.exists(md_dir_name):
             print_info("请先使用 zood init 初始化")
             return
-        parseDocs(md_dir_name)
+        generate_web_docs(md_dir_name)
         return
 
     if args.save:
@@ -41,19 +42,6 @@ def main():
         else:
             print("未找到", local_config_path)
 
-        if os.path.exists(os.path.join(md_dir_name, "prismjs")):
-            global_prism_css_path = os.path.join(
-                os.path.dirname(__file__), "config", "js", "prismjs", "prism.css"
-            )
-            global_prism_js_path = os.path.join(
-                os.path.dirname(__file__), "config", "js", "prismjs", "prism.js"
-            )
-            shutil.copy(os.path.join(md_dir_name, "prismjs", "prism.css"), global_prism_css_path)
-            shutil.copy(os.path.join(md_dir_name, "prismjs", "prism.js"), global_prism_js_path)
-            print_info("已更新全局配置文件 prismjs")
-        else:
-            print("未找到", os.path.join(md_dir_name, "prismjs"))
-
         return
 
     if len(args.cmd) == 0 or args.cmd[0] == "help":
@@ -61,7 +49,7 @@ def main():
         return
 
     if args.cmd[0] == "init":
-        initZood(md_dir_name)
+        init_zood(md_dir_name)
 
     elif args.cmd[0] == "new":
         if len(args.cmd) == 2:
@@ -78,9 +66,9 @@ def main():
             return
 
         if not os.path.exists(md_dir_name):
-            initZood(md_dir_name)
+            init_zood(md_dir_name)
 
-        createNewFile(md_dir_name, dir_name, file_name)
+        create_new_file(md_dir_name, dir_name, file_name)
 
     elif args.cmd[0] == "clean":
         shutil.rmtree("docs")
@@ -93,7 +81,7 @@ def main():
     elif args.cmd[0] == "update":
         current_dir = os.getcwd()
         dir_yml_path = os.path.join(current_dir, md_dir_name, "dir.yml")
-        dir_yml = readConfigFile(dir_yml_path)
+        dir_yml = read_configfile(dir_yml_path)
         sort(dir_yml)
         for dir_name, files in dir_yml.items():
             for i in range(len(files)):
@@ -122,7 +110,6 @@ def main():
         update_PYPI_package(choice)
 
     elif args.cmd[0] == "vsce":
-        
         if len(args.cmd) > 2:
             print_info("vsce 接收0/1个参数")
             show_help_info()
@@ -136,7 +123,6 @@ def main():
                 show_help_info()
                 return
         update_vsce_package(choice=choice)
-        
 
     else:
         print_info(f"未找到指令 zood {args.cmd[0]}")

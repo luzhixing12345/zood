@@ -7,15 +7,6 @@ body {
     position: absolute;
 }
 
-.light {
-    background-color: #eee;
-    color: #3c4858;
-}
-
-.dark {
-    background-color: #181c27;
-    color: #c4c6c9;
-}
 
 .markdown-body {
     margin-top: 2%;
@@ -358,170 +349,6 @@ ul>li>ul>li {
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
         rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
         rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-}
-
-.markdown-light :not(pre)>code[class*="language-"],
-.markdown-light pre[class*="language-"] {
-    background: #161823;
-}
-
-.markdown-dark :not(pre)>code[class*="language-"],
-.markdown-dark pre[class*="language-"] {
-    background: #303030;
-}
-
-.markdown-light .token.cdata,
-.markdown-light .token.comment,
-.markdown-light .token.doctype,
-.markdown-light .token.prolog {
-    color: #6A9955;
-}
-
-.markdown-dark .token.cdata,
-.markdown-dark .token.comment,
-.markdown-dark .token.doctype,
-.markdown-dark .token.prolog {
-    color: #6A9955;
-}
-
-.markdown-light code[class*="language-"],
-.markdown-light pre[class*="language-"] {
-    color: #fff;
-}
-
-.markdown-dark code[class*="language-"],
-.markdown-dark pre[class*="language-"] {
-    color: #fff;
-}
-
-code[class*="language-"] ::-moz-selection,
-code[class*="language-"]::-moz-selection,
-pre[class*="language-"] ::-moz-selection,
-pre[class*="language-"]::-moz-selection {
-    text-shadow: none;
-    background: #318FFE;
-    color: #fff;
-}
-
-code[class*="language-"] ::selection,
-code[class*="language-"]::selection,
-pre[class*="language-"] ::selection,
-pre[class*="language-"]::selection {
-    text-shadow: none;
-    background: #318FFE;
-    color: #fff;
-}
-
-.token.punctuation {
-    color: #E3C91C;
-}
-
-.markdown-light .token.boolean,
-.markdown-light .token.constant,
-.markdown-light .token.deleted,
-.markdown-light .token.number,
-.markdown-light .token.property,
-.markdown-light .token.symbol,
-.markdown-light .token.tag {
-    color: #e1e1e1;
-}
-
-.markdown-dark .token.boolean,
-.markdown-dark .token.constant,
-.markdown-dark .token.deleted,
-.markdown-dark .token.number,
-.markdown-dark .token.property,
-.markdown-dark .token.symbol,
-.markdown-dark .token.tag {
-    color: #e1e1e1;
-}
-
-.markdown-light .token.attr-name,
-.markdown-light .token.builtin,
-.markdown-light .token.char,
-.markdown-light .token.inserted,
-.markdown-light .token.selector,
-.markdown-light .token.string {
-    color: #D89B6F;
-}
-
-.markdown-dark .token.attr-name,
-.markdown-dark .token.builtin,
-.markdown-dark .token.char,
-.markdown-dark .token.inserted,
-.markdown-dark .token.selector,
-.markdown-dark .token.string {
-    color: #D89B6F;
-}
-
-.markdown-light .language-css .token.string,
-.markdown-light .style .token.string,
-.markdown-light .token.entity,
-.markdown-light .token.operator,
-.markdown-light .token.url {
-    color: #fff;
-    /* background: hsla(0, 0%, 100%, 0.5); */
-}
-
-.markdown-dark .language-css .token.string,
-.markdown-dark .style .token.string,
-.markdown-dark .token.entity,
-.markdown-dark .token.operator,
-.markdown-dark .token.url {
-    color: #fff;
-    /* background: hsla(0, 0%, 100%, 0.5); */
-}
-
-.markdown-light .token.atrule,
-.markdown-light .token.attr-value,
-.markdown-light .token.keyword {
-    color: #569CD6;
-}
-
-.markdown-light .token.directive.keyword {
-    color: #C586C0;
-}
-
-.markdown-dark .token.directive.keyword {
-    color: #C586C0;
-}
-
-.markdown-light .token.directive-hash {
-    color: #C586C0;
-}
-
-.markdown-dark .token.directive-hash {
-    color: #C586C0;
-}
-
-.markdown-light .token.property {
-    color: #9CDCFE;
-}
-
-.markdown-dark .token.property {
-    color: #9CDCFE;
-}
-
-.markdown-dark .token.atrule,
-.markdown-dark .token.attr-value,
-.markdown-dark .token.keyword {
-    color: #569CD6;
-}
-
-.markdown-light .token.function {
-    color: #EAE378;
-}
-
-.markdown-dark .token.function {
-    color: #EAE378;
-}
-
-.markdown-light .token.class-name {
-    color: #59B294;
-}
-
-.markdown-dark .token.class-name {
-    color: #59B294;
 }
 
 .change-article {
@@ -900,4 +727,10 @@ pre[class*="language-"]::selection {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+pre[class^="language-"],
+pre.UNKNOWN {
+    background: #1f1f1f;
+    color: white;
 }

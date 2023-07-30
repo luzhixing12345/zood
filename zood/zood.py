@@ -1,11 +1,8 @@
 import shutil
 import os
-import MarkdownParser
-import json
 from .util import *
 
-
-def initZood(md_dir_name):
+def init_zood(md_dir_name):
     # 初始化 zood 文件
 
     if os.path.exists(md_dir_name):
@@ -18,13 +15,8 @@ def initZood(md_dir_name):
         if os.path.exists("README.md"):
             with open("README.md", "r", encoding="utf-8") as f:
                 readme = f.read()
-        # with open('.gitignore','a+',encoding='utf-8') as f:
-        #     gitignore_files = f.read()
-        #     if gitignore_files.find(f'/{md_dir_name}/') == -1:
-        #         gitignore_files += f'\n./{md_dir_name}/\n'
-        #         f.write(gitignore_files)
 
-        initDirYml(md_dir_name)
+        init_dir_yml(md_dir_name)
 
         with open(os.path.join(md_dir_name, "README.md"), "w", encoding="utf-8") as f:
             f.write(readme)
@@ -32,7 +24,7 @@ def initZood(md_dir_name):
         print_info(f"已初始化 [{md_dir_name}]", "green")
 
 
-def createNewFile(md_dir_name, dir_name, file_name):
+def create_new_file(md_dir_name, dir_name, file_name):
     file_path = os.path.join(md_dir_name, dir_name, file_name + ".md")
 
     if os.path.exists(file_path):
@@ -42,7 +34,7 @@ def createNewFile(md_dir_name, dir_name, file_name):
     if not os.path.exists(os.path.join(md_dir_name, dir_name)):
         os.makedirs(os.path.join(md_dir_name, dir_name))
 
-    updateDirYml(file_name, dir_name, md_dir_name)
+    update_dir_yml(file_name, dir_name, md_dir_name)
 
     with open(file_path, "w", encoding="utf-8") as f:
         basic_info = f"\n# {file_name}\n"
@@ -51,18 +43,18 @@ def createNewFile(md_dir_name, dir_name, file_name):
     print_info(f"创建文件 {file_path}", color="green")
 
 
-def initDirYml(md_dir_name):
+def init_dir_yml(md_dir_name):
     # 生成目录记录
     dir_yml = {".": [{"README": 1}]}
     writeConfigFile(dir_yml, os.path.join(md_dir_name, "dir.yml"))
 
 
-def updateDirYml(file_name, dir_name, md_dir_name):
+def update_dir_yml(file_name, dir_name, md_dir_name):
     # 更新当前路径下的 dir.yml
 
     current_dir = os.getcwd()
     dir_yml_path = os.path.join(current_dir, md_dir_name, "dir.yml")
-    dir_yml = readConfigFile(dir_yml_path)
+    dir_yml = read_configfile(dir_yml_path)
 
     sort(dir_yml)
 
@@ -76,32 +68,9 @@ def updateDirYml(file_name, dir_name, md_dir_name):
     writeConfigFile(dir_yml, dir_yml_path)
 
 
-def parseMarkdownFiles(md_dir_name):
-    current_dir = os.getcwd()
-    dir_yml_path = os.path.join(current_dir, md_dir_name, "dir.yml")
-    dir_yml = readConfigFile(dir_yml_path)
-    sort(dir_yml)
-    directory_tree = []
-    markdown_htmls = {}
-    for dir_name, files in dir_yml.items():
-        file_names = []
-        for i in files:
-            file_name = list(i.keys())[0]
-            file_path = os.path.join(md_dir_name, dir_name, file_name + ".md")
-            if not os.path.exists(file_path):
-                print_info("[zood解析失败]: 找不到文件" + file_path)
-                print("如手动删除md文件可使用 zood update 更新 dir.yml")
-                exit(0)
-            else:
-                with open(file_path, "r", encoding="utf-8") as f:
-                    markdown_htmls[file_path] = MarkdownParser.parse_toc(f.read())
-                file_names.append(file_name)
-        directory_tree.append({dir_name: file_names})
-
-    return directory_tree, markdown_htmls
 
 
-def parseConfig(config, markdown_htmls):
+def parse_config(config, markdown_htmls):
     html_dir_name = config["html_folder"]
     html_tempate_path = os.path.join(os.path.dirname(__file__), "config", "template.html")
     css_template_path = os.path.join(os.path.dirname(__file__), "config", "index.css")
@@ -110,22 +79,22 @@ def parseConfig(config, markdown_htmls):
         basic_html_template = f.read()
 
     # js 部分
-    js_scope = zoodJSOptions(config, markdown_htmls)
+    js_scope = zood_js_options(config, markdown_htmls)
     basic_html_template = basic_html_template.replace("js-scope", js_scope)
 
     # css 部分
-    prism_src = "../../../css/prism.css"
+    # prism_src = "../../../css/prism.css"
     index_src = "../../../css/index.css"
 
     css_scope = ""
-    if config["options"]["enable_highlight"]:
-        css_scope += f"<link rel='stylesheet' href={prism_src} />"
+    # if config["options"]["enable_highlight"]:
+    #     css_scope += f"<link rel='stylesheet' href={prism_src} />"
     css_scope += f"<link rel='stylesheet' href={index_src} />"
     basic_html_template = basic_html_template.replace("css-scope", css_scope)
 
     with open(css_template_path, "r", encoding="utf-8") as f:
         basic_css_template = f.read()
-    favicon_url = config["favicon"]
+    favicon_url: str = config["favicon"]
     if favicon_url[:4] == "http":
         basic_html_template = basic_html_template.replace("<%favicon%>", favicon_url)
 
@@ -137,7 +106,7 @@ def parseConfig(config, markdown_htmls):
     title = config["title"]
     basic_html_template = basic_html_template.replace("<%title%>", title)
 
-    custom_options = getCustomOptions(config, ["color", "font", "position"])
+    custom_options = get_custom_options(config, ["color", "font", "position"])
 
     for k, v in custom_options:
         basic_css_template = basic_css_template.replace(f'"<%{k}%>"', v)
@@ -150,14 +119,14 @@ def parseConfig(config, markdown_htmls):
     return basic_html_template
 
 
-def getCustomOptions(config, keys):
+def get_custom_options(config, keys):
     custom_options = []
     for k in keys:
         custom_options += list(config[k].items())
     return custom_options
 
 
-def zoodJSOptions(config, markdown_htmls):
+def zood_js_options(config, markdown_htmls):
     js_scope = ""
     html_dir_name = config["html_folder"]
     md_dir_name = config["markdown_folder"]
@@ -183,19 +152,19 @@ def zoodJSOptions(config, markdown_htmls):
         js_code = insertJScode("enable_navigator", html_dir_name)
         js_scope += js_code
 
-    if config["options"]["enable_highlight"]:
-        # 复制prismjs
-        shutil.copy(
-            os.path.join(os.path.dirname(__file__), "config", "js", "prismjs", "prism.css"),
-            f"{html_dir_name}/css",
-        )
-        shutil.copy(
-            os.path.join(os.path.dirname(__file__), "config", "js", "prismjs", "prism.js"),
-            f"{html_dir_name}/js",
-        )
-        src = "../../../js/prism.js"
-        highlight = f'<script type="text/javascript" src="{src}"></script>'
-        js_scope += highlight
+    # if config["options"]["enable_highlight"]:
+    #     # 复制prismjs
+    #     shutil.copy(
+    #         os.path.join(os.path.dirname(__file__), "config", "js", "prismjs", "prism.css"),
+    #         f"{html_dir_name}/css",
+    #     )
+    #     shutil.copy(
+    #         os.path.join(os.path.dirname(__file__), "config", "js", "prismjs", "prism.js"),
+    #         f"{html_dir_name}/js",
+    #     )
+    #     src = "../../../js/prism.js"
+    #     highlight = f'<script type="text/javascript" src="{src}"></script>'
+    #     js_scope += highlight
 
     if config["options"]["enable_picture_title"]:
         js_code = insertJScode("enable_picture_title", html_dir_name)
@@ -260,3 +229,5 @@ def insertJScode(file_name: str, html_dir_name):
     src = f"../../../js/{file_name}.js"
     js_code = f'<script type="text/javascript" src="{src}"></script>'
     return js_code
+
+
