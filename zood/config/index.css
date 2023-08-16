@@ -710,6 +710,7 @@ ul>li>ul>li {
 }
 
 .header-navigator a {
+    color: "<%text_color%>";
     text-decoration: none;
 }
 
