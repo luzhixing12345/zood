@@ -1,5 +1,5 @@
 import os
-import json
+import json5
 import shutil
 import MarkdownParser
 import syntaxlight
@@ -166,6 +166,6 @@ def generate_docs(directory_tree, markdown_htmls, md_dir_name):
 
     if os.path.exists(vscode_settings):
         with open(vscode_settings, 'r', encoding='utf-8') as f:
-            settings = json.load(f)
+            settings = json5.load(f)
             if "liveServer.settings.port" in settings:
                 print(f'\nlive server: http://127.0.0.1:{settings["liveServer.settings.port"]}/docs/index.html\n')
