@@ -2,6 +2,7 @@ import os
 import json5
 import shutil
 import MarkdownParser
+import sys
 import syntaxlight
 import types
 from .util import *
@@ -13,6 +14,7 @@ from .zood import (
 )
 
 LANGUAGE_USED = set()
+TOTAL_ERROR_NUMBER = 0
 
 def generate_web_docs(md_dir_name):
     directory_tree, markdown_htmls = parse_markdown(md_dir_name)
@@ -29,6 +31,11 @@ def parse_markdown(md_dir_name):
     directory_tree = []
     markdown_htmls = {}
     markdown_parser = MarkdownParser.Markdown()
+
+    # 将错误信息重定向到 error.log 中
+    error_log_file = open(os.path.join(os.path.dirname(__file__),'config', 'error.log'), 'w', encoding='utf-8')
+    sys.stderr = error_log_file
+
     for dir_name, files in dir_yml.items():
         file_names = []
         for i in files:
@@ -51,6 +58,12 @@ def parse_markdown(md_dir_name):
                 file_names.append(file_name)
         directory_tree.append({dir_name: file_names})
 
+    error_log_file.close()
+
+    global TOTAL_ERROR_NUMBER
+    if TOTAL_ERROR_NUMBER != 0:
+        print_info(f'[zood]: 代码段解析出现 {TOTAL_ERROR_NUMBER} 处错误, 已跳过高亮解析, 使用 zood log 查看错误信息')
+
     return directory_tree, markdown_htmls
 
 def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
@@ -63,6 +76,7 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
         return f'<pre class="language-{self.input["language"]}"><code>{self.input["code"]}</code></pre>'
 
     global LANGUAGE_USED
+    global TOTAL_ERROR_NUMBER
     for block in tree.sub_blocks:
         if block.block_name == "CodeBlock":
             language = block.input["language"]
@@ -75,7 +89,7 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
                     block.toHTML = types.MethodType(toHTML, block)
                     LANGUAGE_USED.add(language)
                 else:
-                    print_info(f"\n[zood]: 语法解析出错, 跳过该代码段高亮, 请按提示修改\n")
+                    TOTAL_ERROR_NUMBER += 1
         else:
             hightlight_codeblock(block, file_path)
 
@@ -91,7 +105,6 @@ def generate_docs(directory_tree, markdown_htmls, md_dir_name):
         exit()
 
     if os.path.exists(html_dir_name):
-        print_info(f"[zood]: 删除原 {html_dir_name}/")
         shutil.rmtree(html_dir_name)
     os.makedirs(os.path.join(html_dir_name, "articles"))
     os.makedirs(os.path.join(html_dir_name, "js"))
@@ -168,4 +181,4 @@ def generate_docs(directory_tree, markdown_htmls, md_dir_name):
         with open(vscode_settings, 'r', encoding='utf-8') as f:
             settings = json5.load(f)
             if "liveServer.settings.port" in settings:
-                print(f'\nlive server: http://127.0.0.1:{settings["liveServer.settings.port"]}/docs/index.html\n')
+                print(f'\nVscode live server: http://127.0.0.1:{settings["liveServer.settings.port"]}/docs/index.html\n')

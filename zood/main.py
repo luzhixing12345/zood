@@ -124,6 +124,11 @@ def main():
                 return
         update_vsce_package(choice=choice)
 
+    elif args.cmd[0] == 'log':
+        # 输出错误日志信息
+        with open(os.path.join(os.path.dirname(__file__),'config', 'error.log'), 'r', encoding='utf-8') as f:
+            print(f.read())
+
     else:
         print_info(f"未找到指令 zood {args.cmd[0]}")
         show_help_info()
@@ -138,6 +143,7 @@ def show_help_info():
     print("{:<20}生成docs/目录".format("  zood -g"))
     print("{:<20}删除docs/目录".format("  zood clean"))
     print("{:<20}获取配置文件".format("  zood config"))
+    print("{:<20}输出错误信息".format("  zood log"))
     print("{:<20}更新配置文件".format("  zood -s"))
 
     print("\n其他:")
