@@ -182,3 +182,5 @@ def generate_docs(directory_tree, markdown_htmls, md_dir_name):
             settings = json5.load(f)
             if "liveServer.settings.port" in settings:
                 print(f'\nVscode live server: http://127.0.0.1:{settings["liveServer.settings.port"]}/docs/index.html\n')
+    else:
+        print(f'\nVscode live server: http://127.0.0.1:5500/docs/index.html\n')
