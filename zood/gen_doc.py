@@ -72,8 +72,14 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
     https://github.com/luzhixing12345/syntaxlight
     """
 
-    def toHTML(self):
+    def code_toHTML(self):
         return f'<pre class="language-{self.input["language"]}"><code>{self.input["code"]}</code></pre>'
+    
+    def pic_toHTML(self):
+        word = self.input["word"]
+        url = self.input["url"]
+        return f'<a data-lightbox="example-1" href="{url}"><img src="{url}" alt="{word}"></a>'
+
 
     global LANGUAGE_USED
     global TOTAL_ERROR_NUMBER
@@ -86,10 +92,12 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
                 code = syntaxlight.parse(block.input["code"], language, file_path)
                 if code is not None:
                     block.input["code"] = code
-                    block.toHTML = types.MethodType(toHTML, block)
+                    block.toHTML = types.MethodType(code_toHTML, block)
                     LANGUAGE_USED.add(language)
                 else:
                     TOTAL_ERROR_NUMBER += 1
+        elif block.block_name == "PictureBlock":
+            block.toHTML = types.MethodType(pic_toHTML, block)
         else:
             hightlight_codeblock(block, file_path)
 
