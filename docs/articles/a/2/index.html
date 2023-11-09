@@ -9,7 +9,7 @@
         Document
     </title>
     <link rel='stylesheet' href=../../../css/index.css />
-    <link rel='stylesheet' href=../../../css/shell.css /><link rel='stylesheet' href=../../../css/json.css /><link rel='stylesheet' href=../../../css/xml.css /><link rel='stylesheet' href=../../../css/c.css /><link rel='stylesheet' href=../../../css/bnf.css /><link rel='stylesheet' href=../../../css/lua.css /><link rel='stylesheet' href=../../../css/toml.css /><link rel='stylesheet' href=../../../css/yaml.css />
+    <link rel='stylesheet' href=../../../css/python.css /><link rel='stylesheet' href=../../../css/json.css /><link rel='stylesheet' href=../../../css/xml.css /><link rel='stylesheet' href=../../../css/toml.css /><link rel='stylesheet' href=../../../css/c.css /><link rel='stylesheet' href=../../../css/lua.css /><link rel='stylesheet' href=../../../css/shell.css /><link rel='stylesheet' href=../../../css/yaml.css /><link rel='stylesheet' href=../../../css/bnf.css />
     <link rel="icon" href="https://raw.githubusercontent.com/learner-lu/picbed/master/logo.png">
 </head>
 
@@ -102,6 +102,7 @@ S1 -&gt; if a S1 else S2 | C
 S1 -&gt; if a S1 else S2 | if a else S</code></pre><p>这种文法的改写不是很好解释,见过,记住就好.</p></li></ul><ul><li>对于例5: S -&gt; S(S)S|ε<p>等效文法为: S -&gt; S(S) | ε 或者 S-&gt; (S)S|ε</p><p>这样做的原因是因为它出现二义性的原因就是对于多重括号的匹配展开方式有左右两种选择,但是实际上并不需要那么多S作为子推导,我们可以消去一个S,文法仍然等效</p></li></ul><h2 id="h2-9">习题</h2><blockquote><p><a href="https://github.com/fool2fish/dragon-book-exercise-answers/blob/master/ch02/2.2/2.2.md" target="_blank">dragon-book-exercise-answers 2.2</a></p></blockquote><p><a data-lightbox="example-1" href="https://raw.githubusercontent.com/learner-lu/picbed/master/20230703122532.png"><img src="https://raw.githubusercontent.com/learner-lu/picbed/master/20230703122532.png" alt="20230703122532"></a></p><pre class="language-grammar"><code>1. E   -&gt; E E op | num
    op  -&gt; + | - | * | /
    num -&gt; 0 | 1 | 2 | 3 | 4 | 5 | 6 |7 | 8 | 9
+
 2. list -&gt; list , id | id
 
 3. list -&gt; id , list | id
@@ -109,6 +110,7 @@ S1 -&gt; if a S1 else S2 | if a else S</code></pre><p>这种文法的改写不�
 4. expr -&gt; expr + term | expr - term | term
    term -&gt; term * factor | term / factor | factor
    factor -&gt; id | num | (expr)
+
 5. expr -&gt; expr + term | expr - term | term
    term -&gt; term * unary | term / unary | unary
    unary -&gt; + factor | - factor | factor

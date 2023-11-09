@@ -30,7 +30,7 @@ def main():
 
     if args.generate:
         if not os.path.exists(md_dir_name):
-            print_info("请先使用 zood init 初始化")
+            # 递归的在上级目录寻找
             return
         generate_web_docs(md_dir_name)
         return
