@@ -175,13 +175,13 @@ color:
   dir_tree_color: "#000"
 
   # 一级目录悬浮时(被选中)字体颜色
-  dir_tree_hover_color: "#0366d6"
+  dir_tree_hover_color: "#000"
 
   # 二级目录字体颜色
   dir_second_tree_color: "#000"
 
   # 二级目录悬浮时(被选中)字体颜色
-  dir_second_tree_hover_color: "#0366d6"
+  dir_second_tree_hover_color: "#000"
 
   # 图片下方文字颜色(需要在options中开启)
   picture_text_color: "#a3a1a1"
