@@ -31,6 +31,7 @@ def main():
     if args.generate:
         if not os.path.exists(md_dir_name):
             # 递归的在上级目录寻找
+            print(f'当前目录下未找到 {md_dir_name}')
             return
         generate_web_docs(md_dir_name)
         return

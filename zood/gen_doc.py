@@ -2,6 +2,7 @@ import os
 import json5
 import shutil
 import MarkdownParser
+import traceback
 import sys
 import syntaxlight
 import types
@@ -89,7 +90,13 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
             if syntaxlight.is_language_support(language):
                 language = syntaxlight.clean_language(language)
                 block.input["language"] = language
-                code = syntaxlight.parse(block.input["code"], language, file_path)
+                try:
+                    code = syntaxlight.parse(block.input["code"], language, file_path)
+                except Exception as e:
+                    code = None
+                    print_info(f"syntaxlight error exit: {e}")
+                    print(f'This is a bug, please issue in: https://github.com/luzhixing12345/syntaxlight/issues\n')
+                    traceback.print_exc()
                 if code is not None:
                     block.input["code"] = code
                     block.toHTML = types.MethodType(code_toHTML, block)

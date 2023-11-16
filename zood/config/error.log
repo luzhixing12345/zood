@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "H:\learner_lu\zood\zood\gen_doc.py", line 94, in hightlight_codeblock
+    code = syntaxlight.parse(block.input["code"], language, file_path)
+  File "D:\Anaconda\lib\site-packages\syntaxlight\syntax_parse.py", line 20, in parse
+    parser.parse()
+  File "D:\Anaconda\lib\site-packages\syntaxlight\parsers\c_parser.py", line 678, in parse
+    self.root = self.translation_unit()
+  File "D:\Anaconda\lib\site-packages\syntaxlight\parsers\c_parser.py", line 691, in translation_unit
+    declarations.append(self.external_declaration())
+  File "D:\Anaconda\lib\site-packages\syntaxlight\parsers\c_parser.py", line 709, in external_declaration
+    return self.declaration()
+  File "D:\Anaconda\lib\site-packages\syntaxlight\parsers\c_parser.py", line 1858, in declaration
+    init_declarator_list = self.init_declarator_list()
+  File "D:\Anaconda\lib\site-packages\syntaxlight\parsers\c_parser.py", line 1946, in init_declarator_list
+    result = [self.init_declarator()]
+  File "D:\Anaconda\lib\site-packages\syntaxlight\parsers\c_parser.py", line 1957, in init_declarator
+    node.update(declarator=self.declarator())
+  File "D:\Anaconda\lib\site-packages\syntaxlight\parsers\c_parser.py", line 994, in declarator
+    node.update(direct_declarator=self.direct_declaractor())
+  File "D:\Anaconda\lib\site-packages\syntaxlight\parsers\c_parser.py", line 1114, in direct_declaractor
+    sub_node.update(parameter_list=self.parameter_list())
+  File "D:\Anaconda\lib\site-packages\syntaxlight\parsers\c_parser.py", line 1154, in parameter_list
+    result.append(self.parameter_declaration())
+  File "D:\Anaconda\lib\site-packages\syntaxlight\parsers\c_parser.py", line 1716, in parameter_declaration
+    node.update(declarator=self.declarator())
+  File "D:\Anaconda\lib\site-packages\syntaxlight\parsers\c_parser.py", line 994, in declarator
+    node.update(direct_declarator=self.direct_declaractor())
+  File "D:\Anaconda\lib\site-packages\syntaxlight\parsers\c_parser.py", line 1107, in direct_declaractor
+    while _node.declarator is not None:
+AttributeError: 'DirectAbstractDeclaractor' object has no attribute 'declarator'
