@@ -5,7 +5,7 @@ import json
 import subprocess
 from typing import Dict, List
 
-def read_configfile(file_path: str) -> Dict[str, str]:
+def read_configfile(file_path: str) -> Dict[str, List[Dict[str, int]]]:
     if not os.path.exists(file_path):
         print_info("找不到文件" + file_path)
         exit(0)
