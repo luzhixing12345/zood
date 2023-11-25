@@ -17,6 +17,7 @@ from .zood import (
 LANGUAGE_USED = set()
 TOTAL_ERROR_NUMBER = 0
 
+
 def generate_web_docs(md_dir_name):
     directory_tree, markdown_htmls = parse_markdown(md_dir_name)
     # directory_tree 为当前项目的目录树
@@ -28,13 +29,13 @@ def parse_markdown(md_dir_name):
     current_dir = os.getcwd()
     dir_yml_path = os.path.join(current_dir, md_dir_name, "dir.yml")
     dir_yml = read_configfile(dir_yml_path)
-    sort(dir_yml)
+    yml_sort(dir_yml)
     directory_tree = []
     markdown_htmls = {}
     markdown_parser = MarkdownParser.Markdown()
 
     # 将错误信息重定向到 error.log 中
-    error_log_file = open(os.path.join(os.path.dirname(__file__),'config', 'error.log'), 'w', encoding='utf-8')
+    error_log_file = open(os.path.join(os.path.dirname(__file__), "config", "error.log"), "w", encoding="utf-8")
     sys.stderr = error_log_file
 
     for dir_name, files in dir_yml.items():
@@ -63,9 +64,10 @@ def parse_markdown(md_dir_name):
 
     global TOTAL_ERROR_NUMBER
     if TOTAL_ERROR_NUMBER != 0:
-        print_info(f'[zood]: 代码段解析出现 {TOTAL_ERROR_NUMBER} 处错误, 已跳过高亮解析, 使用 zood log 查看错误信息')
+        print_info(f"[zood]: 代码段解析出现 {TOTAL_ERROR_NUMBER} 处错误, 已跳过高亮解析, 使用 zood log 查看错误信息")
 
     return directory_tree, markdown_htmls
+
 
 def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
     """
@@ -75,12 +77,11 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
 
     def code_toHTML(self):
         return f'<pre class="language-{self.input["language"]}"><code>{self.input["code"]}</code></pre>'
-    
+
     def pic_toHTML(self):
         word = self.input["word"]
         url = self.input["url"]
         return f'<a data-lightbox="example-1" href="{url}"><img src="{url}" alt="{word}"></a>'
-
 
     global LANGUAGE_USED
     global TOTAL_ERROR_NUMBER
@@ -95,7 +96,7 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
                 except Exception as e:
                     code = None
                     print_info(f"syntaxlight error exit: {e}")
-                    print(f'This is a bug, please issue in: https://github.com/luzhixing12345/syntaxlight/issues\n')
+                    print(f"This is a bug, please issue in: https://github.com/luzhixing12345/syntaxlight/issues\n")
                     traceback.print_exc()
                 if code is not None:
                     block.input["code"] = code
@@ -107,7 +108,6 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
             block.toHTML = types.MethodType(pic_toHTML, block)
         else:
             hightlight_codeblock(block, file_path)
-
 
 
 def generate_docs(directory_tree, markdown_htmls, md_dir_name):
@@ -147,26 +147,24 @@ def generate_docs(directory_tree, markdown_htmls, md_dir_name):
     github_icon = get_github_icon(config["options"]["enable_github"])
 
     global LANGUAGE_USED
-    syntaxlight.export_css(LANGUAGE_USED, os.path.join(html_dir_name, 'css'))
+    list(LANGUAGE_USED).sort()
+    syntaxlight.export_css(LANGUAGE_USED, os.path.join(html_dir_name, "css"))
 
-    hightlight_css = ''
+    hightlight_css = ""
     for l in LANGUAGE_USED:
         hightlight_css += f"<link rel='stylesheet' href=../../../css/{l}.css />"
 
     html_template = parse_config(config, markdown_htmls)
     index_html_path = os.path.join(html_dir_name, "index.html")
-    html_template = html_template.replace('hightlight-css',hightlight_css)
+    html_template = html_template.replace("hightlight-css", hightlight_css)
     with open(index_html_path, "w", encoding="utf-8") as f:
         # index 的地址做一些修改
         index_html_template = html_template.replace("../../.", "")
         next_url = next_url.replace("../..", "./articles")
         index_dir_tree_html = dir_tree_html.replace("../..", "./articles")
         index_html_template = index_html_template.replace("../..", "./articles")
-        
 
-        index_html_template = index_html_template.replace(
-            "directory-tree-scope", index_dir_tree_html
-        )
+        index_html_template = index_html_template.replace("directory-tree-scope", index_dir_tree_html)
         index_html_template = index_html_template.replace("github-icon", github_icon)
         index_html_template = url_replace(index_html_template, front_url, next_url, "b")
         f.write(index_html_template.replace("html-scope", markdown_htmls[index_README_path]))
@@ -193,9 +191,11 @@ def generate_docs(directory_tree, markdown_htmls, md_dir_name):
     vscode_settings = os.path.join(".vscode", "settings.json")
 
     if os.path.exists(vscode_settings):
-        with open(vscode_settings, 'r', encoding='utf-8') as f:
+        with open(vscode_settings, "r", encoding="utf-8") as f:
             settings = json5.load(f)
             if "liveServer.settings.port" in settings:
-                print(f'\nVscode live server: http://127.0.0.1:{settings["liveServer.settings.port"]}/docs/index.html\n')
+                print(
+                    f'\nVscode live server: http://127.0.0.1:{settings["liveServer.settings.port"]}/docs/index.html\n'
+                )
     else:
-        print(f'\nVscode live server: http://127.0.0.1:5500/docs/index.html\n')
+        print(f"\nVscode live server: http://127.0.0.1:5500/docs/index.html\n")

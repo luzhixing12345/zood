@@ -2,6 +2,7 @@ import shutil
 import os
 from .util import *
 
+
 def init_zood(md_dir_name):
     # 初始化 zood 文件
 
@@ -56,7 +57,7 @@ def update_dir_yml(file_name, dir_name, md_dir_name):
     dir_yml_path = os.path.join(current_dir, md_dir_name, "dir.yml")
     dir_yml = read_configfile(dir_yml_path)
 
-    sort(dir_yml)
+    yml_sort(dir_yml)
 
     if dir_name in dir_yml.keys():
         number = list(dir_yml[dir_name][-1].values())[0] + 1
@@ -66,8 +67,6 @@ def update_dir_yml(file_name, dir_name, md_dir_name):
         dir_yml[dir_name].append({file_name: 1})
 
     writeConfigFile(dir_yml, dir_yml_path)
-
-
 
 
 def parse_config(config, markdown_htmls):
@@ -138,9 +137,7 @@ def zood_js_options(config, markdown_htmls):
 
     if config["options"]["enable_change_mode"]:
         js_code = insertJScode("enable_change_mode", html_dir_name)
-        js_code += (
-            f'<script>addChangeModeButton("../../../img/sun.png","../../../img/moon.png")</script>'
-        )
+        js_code += f'<script>addChangeModeButton("../../../img/sun.png","../../../img/moon.png")</script>'
         js_scope += js_code
 
     if config["options"]["enable_copy_code"]:
@@ -181,7 +178,9 @@ def zood_js_options(config, markdown_htmls):
             config["options"]["enable_search"]["search_scope"],
             md_dir_name,
         )
-        js_code += f'<script>addSearchBar({all_api_text},"../../../img/search.svg","../../../img/enter.svg","Ctrl+K")</script>'
+        js_code += (
+            f'<script>addSearchBar({all_api_text},"../../../img/search.svg","../../../img/enter.svg","Ctrl+K")</script>'
+        )
         js_scope += js_code
 
     if config["options"]["enable_mermaid"]:
@@ -229,5 +228,3 @@ def insertJScode(file_name: str, html_dir_name):
     src = f"../../../js/{file_name}.js"
     js_code = f'<script type="text/javascript" src="{src}"></script>'
     return js_code
-
-

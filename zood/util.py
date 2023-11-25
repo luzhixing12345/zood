@@ -5,6 +5,7 @@ import json
 import subprocess
 from typing import Dict, List
 
+
 def read_configfile(file_path: str) -> Dict[str, List[Dict[str, int]]]:
     if not os.path.exists(file_path):
         print_info("找不到文件" + file_path)
@@ -22,7 +23,7 @@ def writeConfigFile(data, file_path):
         yaml.dump(data, f, allow_unicode=True, sort_keys=False)
 
 
-def sort(yml):
+def yml_sort(yml):
     for _, files in yml.items():
         files.sort(key=lambda item: list(item.values())[0])
 
@@ -113,9 +114,7 @@ def treeItem(name, dir_url_link, sub_tree=False):
 
 
 def url_replace(html_template, front_url, next_url, control):
-    html_template = html_template.replace("<%front_url%>", front_url).replace(
-        "<%next_url%>", next_url
-    )
+    html_template = html_template.replace("<%front_url%>", front_url).replace("<%next_url%>", next_url)
     html_template = html_template.replace("<%control%>", f'"{control}"')
     return html_template
 
@@ -133,12 +132,7 @@ def getAllAPIText(markdown_htmls, search_scope, md_dir_name):
         if dir_name == ".":
             dir_name = md_dir_name
         file_name = splited_key[2].replace(".md", "")
-        markdown_text = (
-            re.sub(r"<.*?>", "", markdown_htmls[key])
-            .replace('"', "")
-            .replace("'", "")
-            .replace("\\", "")
-        )
+        markdown_text = re.sub(r"<.*?>", "", markdown_htmls[key]).replace('"', "").replace("'", "").replace("\\", "")
         path = f"../../{dir_name}/{file_name}"
         API_text[path] = markdown_text
 

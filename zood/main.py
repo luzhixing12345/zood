@@ -8,10 +8,30 @@ from .zood import *
 from .extensions import update_PYPI_package, update_vsce_package
 
 
+def find_md_dir(md_dir_name):
+    current_dir = os.getcwd()
+
+    while True:
+        target_dir = os.path.join(current_dir, md_dir_name)
+        if os.path.exists(target_dir) and os.path.isdir(target_dir):
+            os.chdir(current_dir)
+            return
+
+        # 获取上级目录的路径
+        parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
+
+        # 检查是否已经到达根目录
+        if parent_dir == current_dir:
+            # 如果到达根目录仍未找到,返回 None
+            print(f"找不到 {md_dir_name}")
+            exit()
+
+        # 更新当前目录为上级目录
+        current_dir = parent_dir
+
+
 def main():
-    parser = argparse.ArgumentParser(
-        description="zood: web page documentation & comment generation documentation"
-    )
+    parser = argparse.ArgumentParser(description="zood: web page documentation & comment generation documentation")
     parser.add_argument("cmd", type=str, nargs="*", help="initialize docs template")
     parser.add_argument("-g", "--generate", action="store_true", help="generate html doc")
     parser.add_argument(
@@ -25,14 +45,12 @@ def main():
     config = get_zood_config()  # 获取配置信息
     md_dir_name = config["markdown_folder"]
 
+    find_md_dir(md_dir_name)
+
     local_config_path = os.path.join(md_dir_name, "_config.yml")
     global_config_path = os.path.join(os.path.dirname(__file__), "config", "_config.yml")
 
     if args.generate:
-        if not os.path.exists(md_dir_name):
-            # 递归的在上级目录寻找
-            print(f'当前目录下未找到 {md_dir_name}')
-            return
         generate_web_docs(md_dir_name)
         return
 
@@ -83,7 +101,7 @@ def main():
         current_dir = os.getcwd()
         dir_yml_path = os.path.join(current_dir, md_dir_name, "dir.yml")
         dir_yml = read_configfile(dir_yml_path)
-        sort(dir_yml)
+        yml_sort(dir_yml)
         for dir_name, files in dir_yml.items():
             for i in range(len(files)):
                 file_name = list(files[i].keys())[0]
@@ -125,9 +143,9 @@ def main():
                 return
         update_vsce_package(choice=choice)
 
-    elif args.cmd[0] == 'log':
+    elif args.cmd[0] == "log":
         # 输出错误日志信息
-        with open(os.path.join(os.path.dirname(__file__),'config', 'error.log'), 'r', encoding='utf-8') as f:
+        with open(os.path.join(os.path.dirname(__file__), "config", "error.log"), "r", encoding="utf-8") as f:
             print(f.read())
 
     else:
