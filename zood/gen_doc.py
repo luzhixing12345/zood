@@ -16,7 +16,7 @@ from .zood import (
 
 LANGUAGE_USED = set()
 TOTAL_ERROR_NUMBER = 0
-
+CODE_BLOCK_NUMBER = 1
 
 def generate_web_docs(md_dir_name):
     directory_tree, markdown_htmls = parse_markdown(md_dir_name)
@@ -85,6 +85,7 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
 
     global LANGUAGE_USED
     global TOTAL_ERROR_NUMBER
+    global CODE_BLOCK_NUMBER
     for block in tree.sub_blocks:
         if block.block_name == "CodeBlock":
             language = block.input["language"]
@@ -104,6 +105,7 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
                     LANGUAGE_USED.add(language)
                 else:
                     TOTAL_ERROR_NUMBER += 1
+                CODE_BLOCK_NUMBER += 1
         elif block.block_name == "PictureBlock":
             block.toHTML = types.MethodType(pic_toHTML, block)
         else:
@@ -147,7 +149,8 @@ def generate_docs(directory_tree, markdown_htmls, md_dir_name):
     github_icon = get_github_icon(config["options"]["enable_github"])
 
     global LANGUAGE_USED
-    list(LANGUAGE_USED).sort()
+    LANGUAGE_USED = list(LANGUAGE_USED)
+    LANGUAGE_USED.sort()
     syntaxlight.export_css(LANGUAGE_USED, os.path.join(html_dir_name, "css"))
 
     hightlight_css = ""

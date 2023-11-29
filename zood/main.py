@@ -45,12 +45,12 @@ def main():
     config = get_zood_config()  # 获取配置信息
     md_dir_name = config["markdown_folder"]
 
-    find_md_dir(md_dir_name)
 
     local_config_path = os.path.join(md_dir_name, "_config.yml")
     global_config_path = os.path.join(os.path.dirname(__file__), "config", "_config.yml")
 
     if args.generate:
+        find_md_dir(md_dir_name)
         generate_web_docs(md_dir_name)
         return
 
