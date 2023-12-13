@@ -75,10 +75,10 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
     https://github.com/luzhixing12345/syntaxlight
     """
 
-    def code_toHTML(self):
+    def code_to_html(self):
         return f'<pre class="language-{self.input["language"]}"><code>{self.input["code"]}</code></pre>'
 
-    def pic_toHTML(self):
+    def pic_to_html(self):
         word = self.input["word"]
         url = self.input["url"]
         return f'<a data-lightbox="example-1" href="{url}"><img src="{url}" alt="{word}"></a>'
@@ -89,8 +89,11 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
     for block in tree.sub_blocks:
         if block.block_name == "CodeBlock":
             language = block.input["language"]
-            if syntaxlight.is_language_support(language):
-                language = syntaxlight.clean_language(language)
+            if syntaxlight.is_language_support(language) or language == 'UNKNOWN':
+                if language == "UNKNOWN":
+                    language = 'txt'
+                else:
+                    language = syntaxlight.clean_language(language)
                 block.input["language"] = language
                 try:
                     code = syntaxlight.parse(block.input["code"], language, file_path)
@@ -101,13 +104,13 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
                     traceback.print_exc()
                 if code is not None:
                     block.input["code"] = code
-                    block.toHTML = types.MethodType(code_toHTML, block)
+                    block.to_html = types.MethodType(code_to_html, block)
                     LANGUAGE_USED.add(language)
                 else:
                     TOTAL_ERROR_NUMBER += 1
                 CODE_BLOCK_NUMBER += 1
         elif block.block_name == "PictureBlock":
-            block.toHTML = types.MethodType(pic_toHTML, block)
+            block.to_html = types.MethodType(pic_to_html, block)
         else:
             hightlight_codeblock(block, file_path)
 
