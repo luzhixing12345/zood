@@ -54,7 +54,7 @@ def parse_markdown(md_dir_name):
                     tree = markdown_parser.tree_parser(root)
                     hightlight_codeblock(tree, file_path)
                     header_navigater = markdown_parser.get_toc(tree)
-                    markdown_html = tree.toHTML(header_navigater)
+                    markdown_html = tree.to_html(header_navigater)
 
                 markdown_htmls[file_path] = markdown_html
                 file_names.append(file_name)
