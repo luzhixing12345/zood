@@ -43,3 +43,8 @@ links.forEach(function(link) {
   }
 });
 
+var code_blocks = document.getElementsByTagName('pre');
+// when click code block, focus
+for (var i = 0; i < code_blocks.length; i++) {
+    code_blocks[i].setAttribute('contenteditable', 'true');
+}
