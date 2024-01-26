@@ -115,7 +115,7 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
             hightlight_codeblock(block, file_path)
 
 
-def generate_docs(directory_tree, markdown_htmls, md_dir_name):
+def generate_docs(directory_tree, markdown_htmls: Dict[str, str], md_dir_name):
     config = get_zood_config()
     html_dir_name = config["html_folder"]
 
@@ -160,7 +160,7 @@ def generate_docs(directory_tree, markdown_htmls, md_dir_name):
     for l in LANGUAGE_USED:
         hightlight_css += f"<link rel='stylesheet' href=../../../css/{l}.css />"
 
-    html_template = parse_config(config, markdown_htmls)
+    html_template = parse_config(config)
     index_html_path = os.path.join(html_dir_name, "index.html")
     html_template = html_template.replace("hightlight-css", hightlight_css)
     with open(index_html_path, "w", encoding="utf-8") as f:
@@ -172,7 +172,7 @@ def generate_docs(directory_tree, markdown_htmls, md_dir_name):
 
         index_html_template = index_html_template.replace("directory-tree-scope", index_dir_tree_html)
         index_html_template = index_html_template.replace("github-icon", github_icon)
-        index_html_template = url_replace(index_html_template, front_url, next_url, "b")
+        index_html_template = url_replace(index_html_template, front_url, next_url, "ab")
         f.write(index_html_template.replace("html-scope", markdown_htmls[index_README_path]))
 
     html_template = html_template.replace("directory-tree-scope", dir_tree_html)

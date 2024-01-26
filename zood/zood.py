@@ -69,7 +69,7 @@ def update_dir_yml(file_name, dir_name, md_dir_name):
     writeConfigFile(dir_yml, dir_yml_path)
 
 
-def parse_config(config, markdown_htmls):
+def parse_config(config):
     html_dir_name = config["html_folder"]
     html_tempate_path = os.path.join(os.path.dirname(__file__), "config", "template.html")
     css_template_path = os.path.join(os.path.dirname(__file__), "config", "index.css")
@@ -78,7 +78,7 @@ def parse_config(config, markdown_htmls):
         basic_html_template = f.read()
 
     # js 部分
-    js_scope = zood_js_options(config, markdown_htmls)
+    js_scope = zood_js_options(config)
     basic_html_template = basic_html_template.replace("js-scope", js_scope)
 
     # css 部分
@@ -125,62 +125,35 @@ def get_custom_options(config, keys):
     return custom_options
 
 
-def zood_js_options(config, markdown_htmls):
+def zood_js_options(config):
     js_scope = ""
     html_dir_name = config["html_folder"]
-    md_dir_name = config["markdown_folder"]
 
     if config["options"]["enable_next_front"]:
-        js_code = insertJScode("enable_next_front", html_dir_name)
+        js_code = insert_js_code("enable_next_front", html_dir_name)
         js_code += f"<script>addLink(<%front_url%>,<%next_url%>,<%control%>)</script>"
         js_scope += js_code
 
     if config["options"]["enable_change_mode"]:
-        js_code = insertJScode("enable_change_mode", html_dir_name)
+        js_code = insert_js_code("enable_change_mode", html_dir_name)
         js_code += f'<script>addChangeModeButton("../../../img/sun.png","../../../img/moon.png")</script>'
         js_scope += js_code
 
     if config["options"]["enable_copy_code"]:
-        js_code = insertJScode("enable_copy_code", html_dir_name)
+        js_code = insert_js_code("enable_copy_code", html_dir_name)
         js_code += f'<script>addCodeCopy("../../../img/before_copy.png","../../../img/after_copy.png")</script>'
         js_scope += js_code
 
     if config["options"]["enable_navigator"]:
-        js_code = insertJScode("enable_navigator", html_dir_name)
+        js_code = insert_js_code("enable_navigator", html_dir_name)
         js_scope += js_code
 
-    # if config["options"]["enable_highlight"]:
-    #     # 复制prismjs
-    #     shutil.copy(
-    #         os.path.join(os.path.dirname(__file__), "config", "js", "prismjs", "prism.css"),
-    #         f"{html_dir_name}/css",
-    #     )
-    #     shutil.copy(
-    #         os.path.join(os.path.dirname(__file__), "config", "js", "prismjs", "prism.js"),
-    #         f"{html_dir_name}/js",
-    #     )
-    #     src = "../../../js/prism.js"
-    #     highlight = f'<script type="text/javascript" src="{src}"></script>'
-    #     js_scope += highlight
-
     if config["options"]["enable_picture_title"]:
-        js_code = insertJScode("enable_picture_title", html_dir_name)
+        js_code = insert_js_code("enable_picture_title", html_dir_name)
         js_scope += js_code
 
     if config["options"]["enable_picture_preview"]:
-        js_code = insertJScode("enable_picture_preview", html_dir_name)
-        js_scope += js_code
-
-    if config["options"]["enable_search"]["enable"]:
-        js_code = insertJScode("enable_search", html_dir_name)
-        all_api_text = getAllAPIText(
-            markdown_htmls,
-            config["options"]["enable_search"]["search_scope"],
-            md_dir_name,
-        )
-        js_code += (
-            f'<script>addSearchBar({all_api_text},"../../../img/search.svg","../../../img/enter.svg","Ctrl+K")</script>'
-        )
+        js_code = insert_js_code("enable_picture_preview", html_dir_name)
         js_scope += js_code
 
     if config["options"]["enable_mermaid"]:
@@ -210,12 +183,12 @@ mermaid.initialize({ startOnLoad: true });\
         """
         js_scope += js_code
 
-    js_scope += insertJScode("global_js_configuration", html_dir_name)
+    js_scope += insert_js_code("global_js_configuration", html_dir_name)
 
     return js_scope
 
 
-def insertJScode(file_name: str, html_dir_name):
+def insert_js_code(file_name: str, html_dir_name):
     if file_name.startswith("enable_"):
         # 跳过enable_
         file_name = file_name[7:]

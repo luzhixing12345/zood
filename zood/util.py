@@ -54,7 +54,7 @@ def get_zood_config():
     return read_configfile(config_path)
 
 
-def caculate_front_next_url(flat_paths: list, path, md_dir_name):
+def caculate_front_next_url(flat_paths: list, path: str, md_dir_name):
     dir_name = path.split(os.sep)[1]
     file_name = path.split(os.sep)[2].replace(".md", "")
     if dir_name == ".":
@@ -113,31 +113,10 @@ def treeItem(name, dir_url_link, sub_tree=False):
         return f"<ul><li>{link}</li></ul>"
 
 
-def url_replace(html_template, front_url, next_url, control):
+def url_replace(html_template: str, front_url, next_url, control):
     html_template = html_template.replace("<%front_url%>", front_url).replace("<%next_url%>", next_url)
     html_template = html_template.replace("<%control%>", f'"{control}"')
     return html_template
-
-
-def getAllAPIText(markdown_htmls, search_scope, md_dir_name):
-    all_keys = markdown_htmls.keys()
-    API_text = {}
-    for key in all_keys:
-        splited_key = key.split(os.sep)
-        dir_name = splited_key[1]
-
-        if len(search_scope) != 0:
-            if dir_name not in search_scope:
-                continue
-        if dir_name == ".":
-            dir_name = md_dir_name
-        file_name = splited_key[2].replace(".md", "")
-        markdown_text = re.sub(r"<.*?>", "", markdown_htmls[key]).replace('"', "").replace("'", "").replace("\\", "")
-        path = f"../../{dir_name}/{file_name}"
-        API_text[path] = markdown_text
-
-    json_API_text = json.dumps(API_text).replace('"', '\\"').replace("\\n", "")
-    return f'"{json_API_text}"'
 
 
 def get_github_icon(enable_github):
@@ -158,6 +137,7 @@ def get_github_repo_url(url: str):
             username, repo = username_and_repo.split("/")
             url = f"https://github.com/{username}/{repo}"
 
+    # https://tholman.com/github-corners/
     github_icon = (
         '<a href="'
         + url

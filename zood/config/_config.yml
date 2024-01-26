@@ -75,14 +75,11 @@ position:
   # markdown右侧距离
   markdown_body_right: "20%"
 
-  # 搜索栏顶部距离
-  search_top: "8%"
-
   # 目录左侧距离
   dir_left: "6%"
 
   # 目录顶部距离
-  dir_top: "15%"
+  dir_top: "10%"
 
   # 目录宽度
   dir_width: "10%"
