@@ -254,6 +254,21 @@ ul>li>ul>li {
     /* 通过调整10px来设置上边距大小 */
 }
 
+/* ul 后面的文字加一个间距 */
+.markdown-body>ul~p,
+.markdown-body>ol~p,
+.markdown-body>ul~blockquote,
+.markdown-body>ol~blockquote .markdown-body>ul~pre,
+.markdown-body>ol~pre,
+.markdown-body>ul~a,
+.markdown-body>ol~a {
+    margin-top: 16px;
+}
+
+.markdown-body p:has(> a)+p {
+    margin-top: 30px;
+}
+
 .markdown-body table {
     border-spacing: 0;
     border-collapse: collapse;
