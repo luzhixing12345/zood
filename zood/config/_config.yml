@@ -70,28 +70,31 @@ options:
 position:
 
   # markdown左侧距离
-  markdown_body_left: "20%"
+  markdown_body_left: 20%
   
   # markdown右侧距离
-  markdown_body_right: "20%"
+  markdown_body_right: 20%
 
   # 目录左侧距离
-  dir_left: "6%"
+  dir_left: 6%
 
   # 目录顶部距离
-  dir_top: "10%"
+  dir_top: 10%
 
   # 目录宽度
-  dir_width: "10%"
+  dir_width: 10%
+
+  # 目录(最大)高度
+  dir_height: 80%
 
   # 按钮的右侧距离
-  button_right: 6%;
+  button_right: 6%
 
   # 按钮顶部距离
-  button_top: 60%;
+  button_top: 60%
 
   # 按钮宽度
-  button_width: 10%;
+  button_width: 10%
 
   # 导航栏距离左侧距离 -> 左对齐
   navigator_left: 83%
@@ -103,23 +106,23 @@ position:
   navigator_max_width: 15%
 
   # 一级条目上下间距
-  dir_item_margin: "25px"
+  dir_item_margin: 25px
 
   # 一级条目左间距
-  dir_item_margin_left: "-10px"
+  dir_item_margin_left: -10px
 
   # 二级条目上下间距
-  dir_second_item_margin: "0px"
+  dir_second_item_margin: 0px
 
   # 二级条目左间距
-  dir_second_item_margin_left: "5px"
+  dir_second_item_margin_left: 5px
 
-  navigator_margin: "10px"
+  navigator_margin: 10px
 
-  navigator_item_margin_left: "-10px"
+  navigator_item_margin_left: -10px
 
   # 图片被放大后的宽度
-  image_preview_width: "60%"
+  image_preview_width: 60%
 
 # 主题颜色配置,其他不生效的地方请使用自定义 css 解决,配色可以在下方链接中获得启发
 # Theme color, please use custom CSS to solve other colors, color schema can be inspired by the links below

@@ -440,7 +440,7 @@ ul>li>ul>li {
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     background-color: #f6f8fa;
     border-radius: 10px;
-    max-height: 80%;
+    max-height: "<%dir_height%>";
     overflow: auto;
     scrollbar-width: none;
     /* Firefox */

@@ -407,9 +407,9 @@ ul>li>ul>li {
 /* 切换文章按钮 */
 .next-front {
     position: fixed;
-    right: 6%;;
-    top: 60%;;
-    width: 10%;;
+    right: 6%;
+    top: 60%;
+    width: 10%;
     /* white-space:nowrap; */
 }
 
