@@ -90,7 +90,10 @@ def main():
         create_new_file(md_dir_name, dir_name, file_name)
 
     elif args.cmd[0] == "clean":
-        shutil.rmtree("docs")
+        if not os.path.exists(config['html_folder']):
+            print_info(f"没有找到 {config['html_folder']}")
+            return
+        shutil.rmtree(config['html_folder'])
         print_info(f"已删除 docs")
 
     elif args.cmd[0] == "config":
