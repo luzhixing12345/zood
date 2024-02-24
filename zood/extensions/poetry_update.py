@@ -15,6 +15,7 @@ import os
 import json
 import subprocess
 
+
 def print_info(msg, color="red"):
     if color == "red":
         print(f"\033[1;31m{msg}\033[0m")
@@ -74,56 +75,57 @@ def update_PYPI_package(choice=None):
 
     print(f"{old_version} -> {new_version}")
 
-    result = subprocess.run(['poetry', 'build'], capture_output=True, text=True)
+    result = subprocess.run(["poetry", "build"], capture_output=True, text=True)
     if result.returncode != 0:
         print_info("库更新失败, pyproject.toml 版本已回退")
         with open(pyproject_path, "w", encoding="utf-8") as f:
             f.write(file)
         return
-    result = subprocess.run(['poetry', 'publish'], capture_output=True, text=True)
+    result = subprocess.run(["poetry", "publish"], capture_output=True, text=True)
     if result.returncode != 0:
         print_info("库更新失败, pyproject.toml 版本已回退")
         with open(pyproject_path, "w", encoding="utf-8") as f:
             f.write(file)
         return
-    print_info('更新成功','green')
+    print_info("更新成功", "green")
 
 
 def update_vsce_package(choice=None):
-    
-    if not os.path.exists('package.json'):
-        print('package.json 不存在')
+
+    if not os.path.exists("package.json"):
+        print("package.json 不存在")
         return
 
-    with open('package.json', 'r') as f:
+    with open("package.json", "r") as f:
         file = json.load(f)
-    version = file['version']
-    major, minor, patch = map(int, version.split('.'))
-    old_version = f'{major}.{minor}.{patch}'
+    version = file["version"]
+    major, minor, patch = map(int, version.split("."))
+    old_version = f"{major}.{minor}.{patch}"
 
     if choice is None:
         patch += 1
-    elif choice == 'sub':
+    elif choice == "sub":
         minor += 1
         patch = 0
     else:
         major += 1
         minor = 0
         patch = 0
-    
-    new_version = f'{major}.{minor}.{patch}'
+
+    new_version = f"{major}.{minor}.{patch}"
     print(f"{old_version} -> {new_version}")
 
-    result = subprocess.run(['pnpm', 'vsce','package','--no-dependencies'], capture_output=True, text=True)
+    result = subprocess.run(["pnpm", "vsce", "package", "--no-dependencies"], capture_output=True, text=True)
     if result.returncode != 0:
         print_info("库更新失败, package.json 版本已回退")
-        with open('package.json', "w", encoding="utf-8") as f:
-            f.write(file)
+        with open("package.json", "w", encoding="utf-8") as f:
+            json.dump(file, f, ensure_ascii=False, indent=4)
         return
-    result = subprocess.run(['pnpm', 'vsce','publish','--no-dependencies'], capture_output=True, text=True)
+    result = subprocess.run(["pnpm", "vsce", "publish", "--no-dependencies"], capture_output=True, text=True)
     if result.returncode != 0:
         print_info("库更新失败, pyproject.toml 版本已回退")
-        with open('package.json', "w", encoding="utf-8") as f:
-            f.write(file)
+        # 将 json 文件写回
+        with open("package.json", "w", encoding="utf-8") as f:
+            json.dump(file, f, ensure_ascii=False, indent=4)
         return
-    print_info('更新成功','green')
+    print_info("更新成功", "green")

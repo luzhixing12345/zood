@@ -265,10 +265,6 @@ ul>li>ul>li {
     margin-top: 16px;
 }
 
-.markdown-body p:has(> a)+p {
-    margin-top: 30px;
-}
-
 .markdown-body table {
     border-spacing: 0;
     border-collapse: collapse;
@@ -573,9 +569,16 @@ ul>li>ul>li {
     text-decoration: underline;
 }
 
-.markdown-body input {
-    margin-top: 10px;
-    margin-bottom: 10px;
+
+.markdown-body ul:has(input[type="checkbox"]) {
+    list-style-type: none;
+    padding-left: 0.5em;
+    /* margin-bottom: 8px; */
+}
+
+.markdown-body input[type="checkbox"] {
+    margin-right: 0.5em;
+    /* 复选框和文本之间的间距 */
 }
 
 .header-navigator {
