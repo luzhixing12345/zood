@@ -77,13 +77,13 @@ def update_PYPI_package(choice=None):
 
     result = subprocess.run(["poetry", "build"], capture_output=True, text=True)
     if result.returncode != 0:
-        print_info("库更新失败, pyproject.toml 版本已回退")
+        print_info("poetry build failed, pyproject.toml 版本已回退")
         with open(pyproject_path, "w", encoding="utf-8") as f:
             f.write(file)
         return
     result = subprocess.run(["poetry", "publish"], capture_output=True, text=True)
     if result.returncode != 0:
-        print_info("库更新失败, pyproject.toml 版本已回退")
+        print_info("poetry publish failed, pyproject.toml 版本已回退")
         with open(pyproject_path, "w", encoding="utf-8") as f:
             f.write(file)
         return
