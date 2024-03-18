@@ -1,0 +1,8 @@
+
+[91mParserError[0m: Unexpected token ')' [RPAREN]
+ [94m--> [0mmd-docs/a/1111111111111111111.md:1:3
+[94m1 | [0mx [91m[4m)[0m 1
+[94m  | [0mx ) 1
+[94m  | [0mx ) 1
+ [94m = [0m[93mnote[0m: should match ; but got )
+

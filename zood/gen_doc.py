@@ -95,18 +95,12 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
                 else:
                     language = syntaxlight.clean_language(language)
                 block.input["language"] = language
-                try:
-                    code = syntaxlight.parse(block.input["code"], language, file_path)
-                except Exception as e:
-                    code = None
-                    print_info(f"syntaxlight error exit: {e}")
-                    print(f"This is a bug, please issue in: https://github.com/luzhixing12345/syntaxlight/issues\n")
-                    traceback.print_exc()
-                if code is not None:
-                    block.input["code"] = code
-                    block.to_html = types.MethodType(code_to_html, block)
-                    LANGUAGE_USED.add(language)
-                else:
+                
+                code, success = syntaxlight.parse(block.input["code"], language, file_path)
+                block.input["code"] = code
+                block.to_html = types.MethodType(code_to_html, block)
+                LANGUAGE_USED.add(language)
+                if not success:
                     TOTAL_ERROR_NUMBER += 1
                 CODE_BLOCK_NUMBER += 1
         elif block.block_name == "PictureBlock":
