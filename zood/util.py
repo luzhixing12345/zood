@@ -122,21 +122,31 @@ def url_replace(html_template: str, front_url, next_url, control):
 def get_github_icon(enable_github):
     if enable_github is False:
         return ""
+    
+    url = get_github_repo_url()
+    if url == "":
+        return ""
+    else:
+        return join_github_icon(url)
+
+
+def get_github_repo_url() -> str:
+    url = ""
     try:
         output = subprocess.check_output(["git", "config", "--get", "remote.origin.url"]).strip()
-        return get_github_repo_url(output.decode("utf-8"))
+        url = output.decode("utf-8")
+        if url.startswith("git@"):
+            parts = url.split(":")
+            if len(parts) == 2:
+                username_and_repo = parts[1]
+                username, repo = username_and_repo.split("/")
+                url = f"https://github.com/{username}/{repo}"
     except subprocess.CalledProcessError:
-        return ""
+        return url
+    return url
 
 
-def get_github_repo_url(url: str):
-    if url.startswith("git@"):
-        parts = url.split(":")
-        if len(parts) == 2:
-            username_and_repo = parts[1]
-            username, repo = username_and_repo.split("/")
-            url = f"https://github.com/{username}/{repo}"
-
+def join_github_icon(url: str):
     # https://tholman.com/github-corners/
     github_icon = (
         '<a href="'
