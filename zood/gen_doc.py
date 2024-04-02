@@ -18,6 +18,7 @@ LANGUAGE_USED = set()
 TOTAL_ERROR_NUMBER = 0
 CODE_BLOCK_NUMBER = 1
 
+
 def generate_web_docs(md_dir_name):
     directory_tree, markdown_htmls = parse_markdown(md_dir_name)
     # directory_tree 为当前项目的目录树
@@ -38,6 +39,7 @@ def parse_markdown(md_dir_name):
     error_log_file = open(os.path.join(os.path.dirname(__file__), "config", "error.log"), "w", encoding="utf-8")
     sys.stderr = error_log_file
 
+    github_repo_url = get_github_repo_url()
     for dir_name, files in dir_yml.items():
         file_names = []
         for i in files:
@@ -52,7 +54,7 @@ def parse_markdown(md_dir_name):
                     lines = markdown_parser.preprocess_parser(f.read())
                     root = markdown_parser.block_parser(lines)
                     tree = markdown_parser.tree_parser(root)
-                    hightlight_codeblock(tree, file_path)
+                    markdown_tree_preprocess(tree, file_path, github_repo_url)
                     header_navigater = markdown_parser.get_toc(tree)
                     markdown_html = tree.to_html(header_navigater)
 
@@ -69,7 +71,7 @@ def parse_markdown(md_dir_name):
     return directory_tree, markdown_htmls
 
 
-def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
+def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_repo_url: str):
     """
     使用 syntaxlight 更新其中代码段的高亮
     https://github.com/luzhixing12345/syntaxlight
@@ -79,8 +81,18 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
         return f'<pre class="language-{self.input["language"]}"><code>{self.input["code"]}</code></pre>'
 
     def pic_to_html(self):
-        word = self.input["word"]
-        url = self.input["url"]
+        word: str = self.input["word"]
+        url: str = self.input["url"]
+        # 判断一下是否是本地图片
+        if not url.startswith("http"):
+            # 图片文件可能的后缀
+            img_suffix = ["png", "jpg", "jpeg", "gif", "svg", "webp"]
+            if url.split(".")[-1] in img_suffix:
+                url = os.path.normpath(os.path.join(os.path.dirname(file_path), url))
+                # https://raw.githubusercontent.com/luzhixing12345/paperplotlib/master/
+                # https://github.com/luzhixing12345/paperplotlib/
+                server_url = github_repo_url.replace("github.com", "raw.githubusercontent.com") + "/master/"
+                url = server_url + url
         return f'<a data-lightbox="example-1" href="{url}"><img src="{url}" alt="{word}"></a>'
 
     global LANGUAGE_USED
@@ -89,13 +101,13 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
     for block in tree.sub_blocks:
         if block.block_name == "CodeBlock":
             language = block.input["language"]
-            if syntaxlight.is_language_support(language) or language == 'UNKNOWN':
+            if syntaxlight.is_language_support(language) or language == "UNKNOWN":
                 if language == "UNKNOWN":
-                    language = 'txt'
+                    language = "txt"
                 else:
                     language = syntaxlight.clean_language(language)
                 block.input["language"] = language
-                
+
                 code, success = syntaxlight.parse(block.input["code"], language, file_path)
                 block.input["code"] = code
                 block.to_html = types.MethodType(code_to_html, block)
@@ -106,7 +118,7 @@ def hightlight_codeblock(tree: MarkdownParser.Block, file_path: str):
         elif block.block_name == "PictureBlock":
             block.to_html = types.MethodType(pic_to_html, block)
         else:
-            hightlight_codeblock(block, file_path)
+            markdown_tree_preprocess(block, file_path, github_repo_url)
 
 
 def generate_docs(directory_tree, markdown_htmls: Dict[str, str], md_dir_name):

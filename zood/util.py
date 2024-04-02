@@ -122,7 +122,7 @@ def url_replace(html_template: str, front_url, next_url, control):
 def get_github_icon(enable_github):
     if enable_github is False:
         return ""
-    
+
     url = get_github_repo_url()
     if url == "":
         return ""
@@ -139,7 +139,7 @@ def get_github_repo_url() -> str:
             parts = url.split(":")
             if len(parts) == 2:
                 username_and_repo = parts[1]
-                username, repo = username_and_repo.split("/")
+                username, repo = username_and_repo[:-4].split("/")
                 url = f"https://github.com/{username}/{repo}"
     except subprocess.CalledProcessError:
         return url
