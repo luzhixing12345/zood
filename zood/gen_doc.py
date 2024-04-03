@@ -2,7 +2,7 @@ import os
 import json5
 import shutil
 import MarkdownParser
-import traceback
+from urllib.parse import unquote
 import sys
 import syntaxlight
 import types
@@ -84,16 +84,29 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
         word: str = self.input["word"]
         url: str = self.input["url"]
         # 判断一下是否是本地图片
-        if not url.startswith("http"):
-            # 图片文件可能的后缀
-            img_suffix = ["png", "jpg", "jpeg", "gif", "svg", "webp"]
-            if url.split(".")[-1] in img_suffix:
-                url = os.path.normpath(os.path.join(os.path.dirname(file_path), url))
-                # https://raw.githubusercontent.com/luzhixing12345/paperplotlib/master/
-                # https://github.com/luzhixing12345/paperplotlib/
-                server_url = github_repo_url.replace("github.com", "raw.githubusercontent.com") + "/master/"
-                url = server_url + url
+        local_url = os.path.normpath(os.path.join(os.path.dirname(file_path), unquote(url)))
+        if not url.startswith("http") and os.path.exists(local_url):
+            # https://raw.githubusercontent.com/luzhixing12345/paperplotlib/master/
+            # https://github.com/luzhixing12345/paperplotlib/
+
+            # 默认 master 分支
+            server_url = github_repo_url.replace("github.com", "raw.githubusercontent.com") + "/master/"
+            url = server_url + local_url
         return f'<a data-lightbox="example-1" href="{url}"><img src="{url}" alt="{word}"></a>'
+
+    def ref_to_html(self):
+        url = self.input["url"]
+        # 判断一下是否是本地的跳转链接
+        # print(unquote(url))
+        local_url = os.path.normpath(os.path.join(os.path.dirname(file_path), unquote(url)))
+        if not url.startswith("http") and os.path.exists(local_url) and local_url.endswith(".md"):
+            local_url = local_url.rstrip(".md").lstrip("md-docs").lstrip("\\").lstrip("/")
+            url = f"../../{local_url}"
+            self.target = "_self"
+        content = ""
+        for block in self.sub_blocks:
+            content += block.to_html()
+        return f'<a href="{url}" target="{self.target}">{content}</a>'
 
     global LANGUAGE_USED
     global TOTAL_ERROR_NUMBER
@@ -117,6 +130,8 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
                 CODE_BLOCK_NUMBER += 1
         elif block.block_name == "PictureBlock":
             block.to_html = types.MethodType(pic_to_html, block)
+        elif block.block_name == "ReferenceBlock":
+            block.to_html = types.MethodType(ref_to_html, block)
         else:
             markdown_tree_preprocess(block, file_path, github_repo_url)
 
