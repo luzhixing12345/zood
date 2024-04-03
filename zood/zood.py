@@ -47,7 +47,7 @@ def create_new_file(md_dir_name, dir_name, file_name):
 def init_dir_yml(md_dir_name):
     # 生成目录记录
     dir_yml = {".": [{"README": 1}]}
-    writeConfigFile(dir_yml, os.path.join(md_dir_name, "dir.yml"))
+    save_yml(dir_yml, os.path.join(md_dir_name, "dir.yml"))
 
 
 def update_dir_yml(file_name, dir_name, md_dir_name):
@@ -55,7 +55,7 @@ def update_dir_yml(file_name, dir_name, md_dir_name):
 
     current_dir = os.getcwd()
     dir_yml_path = os.path.join(current_dir, md_dir_name, "dir.yml")
-    dir_yml = read_configfile(dir_yml_path)
+    dir_yml = load_yml(dir_yml_path)
 
     yml_sort(dir_yml)
 
@@ -66,7 +66,7 @@ def update_dir_yml(file_name, dir_name, md_dir_name):
         dir_yml[dir_name] = []
         dir_yml[dir_name].append({file_name: 1})
 
-    writeConfigFile(dir_yml, dir_yml_path)
+    save_yml(dir_yml, dir_yml_path)
 
 
 def parse_config(config):

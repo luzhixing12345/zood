@@ -29,10 +29,10 @@ def generate_web_docs(md_dir_name):
 def parse_markdown(md_dir_name):
     current_dir = os.getcwd()
     dir_yml_path = os.path.join(current_dir, md_dir_name, "dir.yml")
-    dir_yml = read_configfile(dir_yml_path)
+    dir_yml = load_yml(dir_yml_path)
     yml_sort(dir_yml)
-    directory_tree = []
-    markdown_htmls = {}
+    directory_tree: List[Dict[str, List[str]]] = []
+    markdown_htmls: Dict[str, str] = {}
     markdown_parser = MarkdownParser.Markdown()
 
     # 将错误信息重定向到 error.log 中
@@ -42,8 +42,8 @@ def parse_markdown(md_dir_name):
     github_repo_url = get_github_repo_url()
     for dir_name, files in dir_yml.items():
         file_names = []
-        for i in files:
-            file_name = list(i.keys())[0]
+        for file in files:
+            file_name = list(file.keys())[0]
             file_path = os.path.join(md_dir_name, dir_name, file_name + ".md")
             if not os.path.exists(file_path):
                 print_info("[zood解析失败]: 找不到文件" + file_path)
@@ -54,7 +54,7 @@ def parse_markdown(md_dir_name):
                     lines = markdown_parser.preprocess_parser(f.read())
                     root = markdown_parser.block_parser(lines)
                     tree = markdown_parser.tree_parser(root)
-                    markdown_tree_preprocess(tree, file_path, github_repo_url)
+                    markdown_tree_preprocess(tree, file_path, github_repo_url, md_dir_name)
                     header_navigater = markdown_parser.get_toc(tree)
                     markdown_html = tree.to_html(header_navigater)
 
@@ -71,7 +71,7 @@ def parse_markdown(md_dir_name):
     return directory_tree, markdown_htmls
 
 
-def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_repo_url: str):
+def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_repo_url: str, md_dir_name: str):
     """
     使用 syntaxlight 更新其中代码段的高亮
     https://github.com/luzhixing12345/syntaxlight
@@ -100,7 +100,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
         # print(unquote(url))
         local_url = os.path.normpath(os.path.join(os.path.dirname(file_path), unquote(url)))
         if not url.startswith("http") and os.path.exists(local_url) and local_url.endswith(".md"):
-            local_url = local_url.rstrip(".md").lstrip("md-docs").lstrip("\\").lstrip("/")
+            local_url = local_url.rstrip(".md").lstrip(md_dir_name).lstrip("\\").lstrip("/")
             url = f"../../{local_url}"
             self.target = "_self"
         content = ""
@@ -133,7 +133,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
         elif block.block_name == "ReferenceBlock":
             block.to_html = types.MethodType(ref_to_html, block)
         else:
-            markdown_tree_preprocess(block, file_path, github_repo_url)
+            markdown_tree_preprocess(block, file_path, github_repo_url, md_dir_name)
 
 
 def generate_docs(directory_tree, markdown_htmls: Dict[str, str], md_dir_name):

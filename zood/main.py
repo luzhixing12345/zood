@@ -34,17 +34,11 @@ def main():
     parser = argparse.ArgumentParser(description="zood: web page documentation & comment generation documentation")
     parser.add_argument("cmd", type=str, nargs="*", help="initialize docs template")
     parser.add_argument("-g", "--generate", action="store_true", help="generate html doc")
-    parser.add_argument(
-        "-s",
-        "--save",
-        action="store_true",
-        help="save _config.yml and use in every environment",
-    )
+    parser.add_argument("-s", "--save", action="store_true", help="save global config")
     args = parser.parse_args()
 
     config = get_zood_config()  # 获取配置信息
     md_dir_name = config["markdown_folder"]
-
 
     local_config_path = os.path.join(md_dir_name, "_config.yml")
     global_config_path = os.path.join(os.path.dirname(__file__), "config", "_config.yml")
@@ -90,10 +84,10 @@ def main():
         create_new_file(md_dir_name, dir_name, file_name)
 
     elif args.cmd[0] == "clean":
-        if not os.path.exists(config['html_folder']):
+        if not os.path.exists(config["html_folder"]):
             print_info(f"没有找到 {config['html_folder']}")
             return
-        shutil.rmtree(config['html_folder'])
+        shutil.rmtree(config["html_folder"])
         print_info(f"已删除 docs")
 
     elif args.cmd[0] == "config":
@@ -103,7 +97,7 @@ def main():
     elif args.cmd[0] == "update":
         current_dir = os.getcwd()
         dir_yml_path = os.path.join(current_dir, md_dir_name, "dir.yml")
-        dir_yml = read_configfile(dir_yml_path)
+        dir_yml = load_yml(dir_yml_path)
         yml_sort(dir_yml)
         for dir_name, files in dir_yml.items():
             for i in range(len(files)):
@@ -113,7 +107,7 @@ def main():
                     print("未找到", file_name)
                 files[i][file_name] = i + 1
 
-        writeConfigFile(dir_yml, dir_yml_path)
+        save_yml(dir_yml, dir_yml_path)
         print("已更新排序")
 
     elif args.cmd[0] == "poetry":
