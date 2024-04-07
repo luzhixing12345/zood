@@ -49,14 +49,22 @@ def get_zood_config():
         # 如果本地 config 比全局 config 的 key 少, 则说明更新了 zood 版本
         local_config = load_yml(local_config_path)
         global_config = load_yml(global_config_path)
-        if set(local_config.keys()) < set(global_config.keys()):
-            key_names = set(global_config.keys()) - set(local_config.keys())
-            print_info(f'当前 zood 版本更新了配置项: {key_names}, 请使用 zood config 进行同步', color="red")
-            exit()
+        check_zood_config_key(local_config, global_config)
         return local_config
     else:
         return load_yml(global_config_path)
 
+def check_zood_config_key(local_config: DIR_TREE, global_config: DIR_TREE):
+    '''
+    递归的判断 zood 配置文件中的 key 是否存在于全局配置文件中
+    '''
+    if set(local_config.keys()) < set(global_config.keys()):
+        key_names = set(global_config.keys()) - set(local_config.keys())
+        print_info(f'当前 zood 版本更新了配置项: {key_names}, 请使用 zood config 进行同步', color="red")
+        exit()
+    for key in local_config.keys():
+        if isinstance(local_config[key], dict):
+            check_zood_config_key(local_config[key], global_config[key])
 
 def caculate_front_next_url(flat_paths: list, path: str, md_dir_name):
     dir_name = path.split(os.sep)[1]
