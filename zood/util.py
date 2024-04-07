@@ -29,9 +29,9 @@ def yml_sort(yml:DIR_TREE):
 
 def print_info(msg, color="red"):
     if color == "red":
-        print(f"\033[1;31m{msg}\033[0m")
+        print(f"\033[1;31m[zood]: {msg}\033[0m")
     elif color == "green":
-        print(f"\033[1;32m{msg}\033[0m")
+        print(f"\033[1;32m[zood]: {msg}\033[0m")
 
 
 def get_zood_config():
@@ -50,6 +50,7 @@ def get_zood_config():
         local_config = load_yml(local_config_path)
         global_config = load_yml(global_config_path)
         check_zood_config_key(local_config, global_config)
+        save_yml(local_config, local_config_path)
         return local_config
     else:
         return load_yml(global_config_path)
@@ -60,8 +61,10 @@ def check_zood_config_key(local_config: DIR_TREE, global_config: DIR_TREE):
     '''
     if set(local_config.keys()) < set(global_config.keys()):
         key_names = set(global_config.keys()) - set(local_config.keys())
-        print_info(f'当前 zood 版本更新了配置项: {key_names}, 请使用 zood config 进行同步', color="red")
-        exit()
+        # 同步缺少的全局配置
+        for key_name in key_names:
+            local_config[key_name] = global_config[key_name]
+        print_info(f'当前 zood 版本更新了配置项: {key_names}, 已自动同步', color="green")
     for key in local_config.keys():
         if isinstance(local_config[key], dict):
             check_zood_config_key(local_config[key], global_config[key])

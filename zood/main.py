@@ -45,7 +45,7 @@ def main():
 
     if args.generate:
         find_md_dir(md_dir_name)
-        generate_web_docs(md_dir_name)
+        generate_web_docs(config)
         return
 
     if args.save:

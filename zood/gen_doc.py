@@ -19,15 +19,16 @@ TOTAL_ERROR_NUMBER = 0
 CODE_BLOCK_NUMBER = 1
 
 
-def generate_web_docs(md_dir_name):
-    directory_tree, markdown_htmls = parse_markdown(md_dir_name)
+def generate_web_docs(config: DIR_TREE):
+    directory_tree, markdown_htmls = parse_markdown(config)
     # directory_tree 为当前项目的目录树
     # markdown_htmls 为markdown 文档对应的 html
-    generate_docs(directory_tree, markdown_htmls, md_dir_name)
+    generate_docs(directory_tree, markdown_htmls, config)
 
 
-def parse_markdown(md_dir_name):
+def parse_markdown(config: DIR_TREE):
     current_dir = os.getcwd()
+    md_dir_name = config["markdown_folder"]
     dir_yml_path = os.path.join(current_dir, md_dir_name, "dir.yml")
     dir_yml = load_yml(dir_yml_path)
     yml_sort(dir_yml)
@@ -46,7 +47,7 @@ def parse_markdown(md_dir_name):
             file_name = list(file.keys())[0]
             file_path = os.path.join(md_dir_name, dir_name, file_name + ".md")
             if not os.path.exists(file_path):
-                print_info("[zood解析失败]: 找不到文件" + file_path)
+                print_info("找不到文件" + file_path)
                 print("如手动删除md文件可使用 zood update 更新 dir.yml")
                 exit(1)
             else:
@@ -66,7 +67,7 @@ def parse_markdown(md_dir_name):
 
     global TOTAL_ERROR_NUMBER
     if TOTAL_ERROR_NUMBER != 0:
-        print_info(f"[zood]: 代码段解析出现 {TOTAL_ERROR_NUMBER} 处错误, 已跳过高亮解析, 使用 zood log 查看错误信息")
+        print_info(f"代码段解析出现 {TOTAL_ERROR_NUMBER} 处错误, 已跳过高亮解析, 使用 zood log 查看错误信息")
 
     return directory_tree, markdown_htmls
 
@@ -136,10 +137,9 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
             markdown_tree_preprocess(block, file_path, github_repo_url, md_dir_name)
 
 
-def generate_docs(directory_tree, markdown_htmls: Dict[str, str], md_dir_name):
-    config = get_zood_config()
+def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TREE):
     html_dir_name = config["html_folder"]
-
+    md_dir_name = config["markdown_folder"]
     index_README_path = os.path.join(md_dir_name, ".", "README.md")
     if not os.path.exists(index_README_path):
         print_info(f"您需要保留 {md_dir_name}/README.md 作为首页")
@@ -212,7 +212,7 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], md_dir_name):
             final_html = url_replace(html_template, front_url, next_url, "ab")
             f.write(final_html.replace("html-scope", markdown_html))
 
-    print_info(f"[zood]: 已生成 {html_dir_name}/", color="green")
+    print_info(f"已生成 {html_dir_name}/", color="green")
 
     # 对于 vscode 的 live server 的优化
     vscode_settings = os.path.join(".vscode", "settings.json")
