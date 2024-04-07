@@ -46,11 +46,16 @@ def get_zood_config():
 
     local_config_path = os.path.join(md_dir_name, "_config.yml")
     if os.path.exists(local_config_path):
-        config_path = local_config_path
+        # 如果本地 config 比全局 config 的 key 少, 则说明更新了 zood 版本
+        local_config = load_yml(local_config_path)
+        global_config = load_yml(global_config_path)
+        if set(local_config.keys()) < set(global_config.keys()):
+            key_names = set(global_config.keys()) - set(local_config.keys())
+            print_info(f'当前 zood 版本更新了配置项: {key_names}, 请使用 zood config 进行同步', color="red")
+            exit()
+        return local_config
     else:
-        config_path = global_config_path
-
-    return load_yml(config_path)
+        return load_yml(global_config_path)
 
 
 def caculate_front_next_url(flat_paths: list, path: str, md_dir_name):
