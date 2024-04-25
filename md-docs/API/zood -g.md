@@ -17,3 +17,20 @@ hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 - gem5源码阅读
 - cxl的gem5实现
 - cxl驱动实现
+
+```c
+# define A
+# ifdef A // 123
+
+# endif
+
+struct x {
+    int;
+    int;
+};
+
+int f(struct x) {
+    
+}
+
+```

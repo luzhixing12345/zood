@@ -99,14 +99,19 @@ def main():
         dir_yml_path = os.path.join(current_dir, md_dir_name, "dir.yml")
         dir_yml = load_yml(dir_yml_path)
         yml_sort(dir_yml)
+        
+        removed_files = []
         for dir_name, files in dir_yml.items():
             for i in range(len(files)):
                 file_name = list(files[i].keys())[0]
                 file_path = os.path.join(md_dir_name, dir_name, file_name + ".md")
                 if not os.path.exists(file_path):
-                    print("未找到", file_name)
+                    print_info(f'未找到文件 {file_path}, 已删除对应项', color="green")
+                    removed_files.append(file_name)
                 files[i][file_name] = i + 1
 
+        for file_name in removed_files:
+            del dir_yml[file_name]
         save_yml(dir_yml, dir_yml_path)
         print("已更新排序")
 

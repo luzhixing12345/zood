@@ -48,7 +48,7 @@ def parse_markdown(config: DIR_TREE):
             file_path = os.path.join(md_dir_name, dir_name, file_name + ".md")
             if not os.path.exists(file_path):
                 print_info("找不到文件" + file_path)
-                print("如手动删除md文件可使用 zood update 更新 dir.yml")
+                print("如手动删除md文件请同步更新 dir.yml")
                 exit(1)
             else:
                 with open(file_path, "r", encoding="utf-8") as f:
@@ -78,10 +78,10 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
     https://github.com/luzhixing12345/syntaxlight
     """
 
-    def code_to_html(self):
+    def code_to_html(self: MarkdownParser.Block):
         return f'<pre class="language-{self.input["language"]}"><code>{self.input["code"]}</code></pre>'
 
-    def pic_to_html(self):
+    def pic_to_html(self: MarkdownParser.Block):
         word: str = self.input["word"]
         url: str = self.input["url"]
         # 判断一下是否是本地图片
@@ -95,13 +95,12 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
             url = server_url + local_url
         return f'<a data-lightbox="example-1" href="{url}"><img src="{url}" alt="{word}"></a>'
 
-    def ref_to_html(self):
-        url = self.input["url"]
+    def ref_to_html(self: MarkdownParser.Block):
+        url:str = self.input["url"]
         # 判断一下是否是本地的跳转链接
-        # print(unquote(url))
         local_url = os.path.normpath(os.path.join(os.path.dirname(file_path), unquote(url)))
         if not url.startswith("http") and os.path.exists(local_url) and local_url.endswith(".md"):
-            local_url = local_url.rstrip(".md").lstrip(md_dir_name).lstrip("\\").lstrip("/")
+            local_url = local_url[len(md_dir_name):-3].lstrip("\\").lstrip("/")
             url = f"../../{local_url}"
             self.target = "_self"
         content = ""
