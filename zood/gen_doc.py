@@ -121,12 +121,13 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
                     language = syntaxlight.clean_language(language)
                 block.input["language"] = language
 
-                code, success = syntaxlight.parse(block.input["code"], language, file_path)
+                code, exception = syntaxlight.parse(block.input["code"], language, file_path)
                 block.input["code"] = code
                 block.to_html = types.MethodType(code_to_html, block)
                 LANGUAGE_USED.add(language)
-                if not success:
+                if exception is not None:
                     TOTAL_ERROR_NUMBER += 1
+                    sys.stderr.write(str(exception))
                 CODE_BLOCK_NUMBER += 1
         elif block.block_name == "PictureBlock":
             block.to_html = types.MethodType(pic_to_html, block)
