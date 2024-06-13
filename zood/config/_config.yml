@@ -129,10 +129,8 @@ position:
 # See: https://www.webdesignrankings.com/resources/lolcolors/
 color:
   # body 背景色
-  # Color of body background
   body_bg_color: "#eee"
   # 暗色模式下的 body 背景色,下同
-  # Color in dark mode, the same below
   body_bg_color_dark: "#181c27"
 
   # markdown部分的背景色
@@ -155,6 +153,10 @@ color:
   # Color of global text
   text_color: "#3c4858"
   text_color_dark: "#c4c6c9"
+
+  # 文章文字选中时字体色
+  text_hover_color: "#d1ecf9"
+  text_hover_color_dark: "#3f4041"
 
   # 文章正文字体色(h1 h2 h3...)
   # Color of Article heading (h1 h2 h3...)

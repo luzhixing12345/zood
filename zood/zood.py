@@ -131,17 +131,17 @@ def zood_js_options(config):
 
     if config["options"]["enable_next_front"]:
         js_code = insert_js_code("enable_next_front", html_dir_name)
-        js_code += f"<script>addLink(<%front_url%>,<%next_url%>,<%control%>)</script>"
+        js_code += f"<script>addLink(<%front_url%>,<%next_url%>,<%control%>);</script>"
         js_scope += js_code
 
     if config["options"]["enable_change_mode"]:
         js_code = insert_js_code("enable_change_mode", html_dir_name)
-        js_code += f'<script>addChangeModeButton("../../../img/sun.png","../../../img/moon.png")</script>'
+        js_code += f'<script>addChangeModeButton("../../../img/sun.png","../../../img/moon.png");</script>'
         js_scope += js_code
 
     if config["options"]["enable_copy_code"]:
         js_code = insert_js_code("enable_copy_code", html_dir_name)
-        js_code += f'<script>addCodeCopy("../../../img/before_copy.png","../../../img/after_copy.png")</script>'
+        js_code += f'<script>addCodeCopy("../../../img/before_copy.png","../../../img/after_copy.png");</script>'
         js_scope += js_code
 
     if config["options"]["enable_navigator"]:
