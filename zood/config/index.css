@@ -378,14 +378,17 @@ ul>li>ul>li {
 
 .markdown-body kbd {
     display: inline-block;
-    padding: 3px 5px;
-    font-size: 0.9em;
-    color: #333;
-    background-color: #f7f7f7;
-    border: 1px solid #ccc;
+    padding: 5px 5px;
+    font: 11px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    line-height: 10px;
+    color: #444d56;
+    vertical-align: middle;
+    background-color: #fafbfc;
+    border: solid 1px #d1d5da;
+    border-bottom-color: #c6cbd1;
     border-radius: 3px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    font-family: "Courier New", Courier, monospace;
+    -webkit-box-shadow: inset 0 -1px 0 #c6cbd1;
+    box-shadow: inset 0 -1px 0 #c6cbd1;
 }
 
 .markdown-light ::selection {
@@ -398,6 +401,12 @@ ul>li>ul>li {
 
 .markdown-body pre code ::selection {
     background-color: #264f78;
+}
+
+.markdown-body h1,
+.markdown-body h2 {
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #eaecef;
 }
 
 .changeMode {

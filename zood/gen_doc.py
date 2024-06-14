@@ -120,8 +120,12 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
                 else:
                     language = syntaxlight.clean_language(language)
                 block.input["language"] = language
-
-                code, exception = syntaxlight.parse(block.input["code"], language, file_path)
+                try:
+                    code, exception = syntaxlight.parse(block.input["code"], language, file_path)
+                except Exception as e:
+                    exception = e
+                    print(f"解析错误: {file_path}: {exception}")
+                    print(f'```{language}\n{block.input["code"]}\n```')
                 block.input["code"] = code
                 block.to_html = types.MethodType(code_to_html, block)
                 LANGUAGE_USED.add(language)
