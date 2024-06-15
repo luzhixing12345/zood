@@ -73,7 +73,7 @@ options:
   # 该仓库是公开的,否则访客将无法查看 discussion. 
   # giscus app 已安装,否则访客将无法评论和回应.
   # Discussions 功能已在你的仓库中启用.
-  enable_comment: true
+  enable_comment: false
 
 # 页面布局
 position:
