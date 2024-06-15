@@ -5,10 +5,11 @@ from typing import Dict, List, NewType
 
 DIR_TREE = NewType("DIR_TREE", Dict[str, List[Dict[str, str]]])
 
+
 def get_github_repo_url() -> str:
-    '''
+    """
     暂时只考虑从 origin 获取的 git 地址
-    '''
+    """
     url = ""
     try:
         output = subprocess.check_output(["git", "config", "--get", "remote.origin.url"]).strip()
@@ -21,10 +22,12 @@ def get_github_repo_url() -> str:
         return url
     return url
 
+
 # 获取 github 地址
 GITHUB_REPO_URL = get_github_repo_url()
 
-def load_yml(file_path: str) -> DIR_TREE:
+
+def load_yml(file_path: str):
     if not os.path.exists(file_path):
         print_info("找不到文件" + file_path)
         exit(0)
@@ -41,16 +44,19 @@ def save_yml(data, file_path):
         yaml.dump(data, f, allow_unicode=True, sort_keys=False)
 
 
-def yml_sort(yml:DIR_TREE):
+def yml_sort(yml: DIR_TREE):
     for _, files in yml.items():
         files.sort(key=lambda item: list(item.values())[0])
 
 
-def print_info(msg, color="red"):
+def print_info(msg, color="red", hide_zood = False):
+    zood_mark = "[zood]: " if not hide_zood else ""
     if color == "red":
-        print(f"\033[1;31m[zood]: {msg}\033[0m")
+        print(f"\033[1;31m{zood_mark}{msg}\033[0m")
     elif color == "green":
-        print(f"\033[1;32m[zood]: {msg}\033[0m")
+        print(f"\033[1;32m{zood_mark}{msg}\033[0m")
+    elif color == "grey":
+        print(f"\033[1;30m{zood_mark}{msg}\033[0m")
 
 
 def get_zood_config():
@@ -60,33 +66,36 @@ def get_zood_config():
     """
     global_config_path = os.path.join(os.path.dirname(__file__), "config", "_config.yml")
 
-    global_zood_config = load_yml(global_config_path)
-    md_dir_name = global_zood_config["markdown_folder"]
+    global_config = load_yml(global_config_path)
+    md_dir_name = global_config["markdown_folder"]
 
     local_config_path = os.path.join(md_dir_name, "_config.yml")
     if os.path.exists(local_config_path):
         # 如果本地 config 比全局 config 的 key 少, 则说明更新了 zood 版本
         local_config = load_yml(local_config_path)
-        global_config = load_yml(global_config_path)
         check_zood_config_key(local_config, global_config)
-        save_yml(local_config, local_config_path)
         return local_config
     else:
-        return load_yml(global_config_path)
+        return global_config
 
-def check_zood_config_key(local_config: DIR_TREE, global_config: DIR_TREE):
-    '''
+
+def check_zood_config_key(local_config: DIR_TREE, global_config: DIR_TREE, parent_keys=[]):
+    """
     递归的判断 zood 配置文件中的 key 是否存在于全局配置文件中
-    '''
+    """
     if set(local_config.keys()) < set(global_config.keys()):
         key_names = set(global_config.keys()) - set(local_config.keys())
         # 同步缺少的全局配置
         for key_name in key_names:
+            option_name = ":".join(parent_keys + [key_name])
+            print_info(f"当前 zood 版本更新了配置项: {option_name}: {global_config[key_name]}", color="grey")  
             local_config[key_name] = global_config[key_name]
-        print_info(f'当前 zood 版本更新了配置项: {key_names}, 已自动同步', color="green")
+            print_info(f'已使用默认值, 启用请手动同步\n', color="grey")
+
     for key in local_config.keys():
         if isinstance(local_config[key], dict):
-            check_zood_config_key(local_config[key], global_config[key])
+            check_zood_config_key(local_config[key], global_config[key], parent_keys + [key])
+
 
 def caculate_front_next_url(flat_paths: list, path: str, md_dir_name):
     dir_name = path.split(os.sep)[1]
@@ -162,6 +171,7 @@ def get_github_icon(enable_github):
         return ""
     else:
         return join_github_icon(url)
+
 
 def join_github_icon(url: str):
     # https://tholman.com/github-corners/

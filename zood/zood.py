@@ -3,6 +3,7 @@ import os
 from .util import *
 import re
 
+
 def init_zood(md_dir_name):
     # 初始化 zood 文件
 
@@ -183,7 +184,7 @@ mermaid.initialize({ startOnLoad: true });\
         """
         js_scope += js_code
 
-    if config["options"]["enable_comment"]:
+    if config["options"]["enable_comment"]['enable']:
         
         # https://github.com/luzhixing12345/zood.git
         # data_repo = {user_name}/{repo_name}
@@ -191,9 +192,11 @@ mermaid.initialize({ startOnLoad: true });\
             print_info("没有从 git 找到有效的 github 地址, 无法启用评论功能")
         else:
             data_repo = re.match(r"https://github.com/([^/]+)/([^/]+).git", GITHUB_REPO_URL).groups()
+            data_repo_id = config["options"]["enable_comment"]['repoid']
+            data_category_id = config["options"]["enable_comment"]['categoryid']
             js_code = f"""
-            <script src="https://giscus.app/client.js" data-repo="{data_repo[0]}/{data_repo[1]}"
-            data-category="Q&A" data-mapping="pathname" data-strict="0"
+            <script src="https://giscus.app/client.js" data-repo="{data_repo[0]}/{data_repo[1]}" 
+            data-repo-id="{data_repo_id}" data-category="Q&A" data-category-id="{data_category_id}" data-mapping="pathname" data-strict="0"
             data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom"
             data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async>
             </script>
