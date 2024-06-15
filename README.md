@@ -23,3 +23,4 @@ pip install zood
 - [UI](https://remixicon.com/)
 - [tholman github-corners](https://tholman.com/github-corners/)
 - [lokeshdhakar lightbox2](https://lokeshdhakar.com/projects/lightbox2/)
+- [giscus zh-CN](https://giscus.app/zh-CN)

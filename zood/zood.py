@@ -1,7 +1,7 @@
 import shutil
 import os
 from .util import *
-
+import re
 
 def init_zood(md_dir_name):
     # 初始化 zood 文件
@@ -182,6 +182,23 @@ mermaid.initialize({ startOnLoad: true });\
         </script>
         """
         js_scope += js_code
+
+    if config["options"]["enable_comment"]:
+        
+        # https://github.com/luzhixing12345/zood.git
+        # data_repo = {user_name}/{repo_name}
+        if GITHUB_REPO_URL == "":
+            print_info("没有从 git 找到有效的 github 地址, 无法启用评论功能")
+        else:
+            data_repo = re.match(r"https://github.com/([^/]+)/([^/]+).git", GITHUB_REPO_URL).groups()
+            js_code = f"""
+            <script src="https://giscus.app/client.js" data-repo="{data_repo[0]}/{data_repo[1]}"
+            data-category="Q&A" data-mapping="pathname" data-strict="0"
+            data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom"
+            data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async>
+            </script>
+            """
+            js_scope += js_code
 
     js_scope += insert_js_code("global_js_configuration", html_dir_name)
 

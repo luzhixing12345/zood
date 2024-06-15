@@ -1,3 +1,4 @@
+---
 #---------------------------
 #    Zood Configuration
 # Author: kamilu
@@ -9,7 +10,6 @@
 # Guide: https://luzhixing12345.github.io/zood/
 # You can get more detailed help from the guide
 #---------------------------
-
 
 #---------------------------
 # 全局
@@ -30,7 +30,6 @@ markdown_folder: md-docs
 html_folder: docs
 
 options:
-
   # 是否启用dark主题
   enable_change_mode: true
 
@@ -66,12 +65,21 @@ options:
   # 支持 latex 数学公式
   enable_latex: false
 
+  # 开启评论
+
+  # https://giscus.app/zh-CN
+  # 选择 giscus 连接到的仓库.请确保:
+
+  # 该仓库是公开的,否则访客将无法查看 discussion. 
+  # giscus app 已安装,否则访客将无法评论和回应.
+  # Discussions 功能已在你的仓库中启用.
+  enable_comment: true
+
 # 页面布局
 position:
-
   # markdown左侧距离
   markdown_body_left: 20%
-  
+
   # markdown右侧距离
   markdown_body_right: 20%
 

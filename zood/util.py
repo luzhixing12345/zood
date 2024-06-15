@@ -5,6 +5,25 @@ from typing import Dict, List, NewType
 
 DIR_TREE = NewType("DIR_TREE", Dict[str, List[Dict[str, str]]])
 
+def get_github_repo_url() -> str:
+    '''
+    暂时只考虑从 origin 获取的 git 地址
+    '''
+    url = ""
+    try:
+        output = subprocess.check_output(["git", "config", "--get", "remote.origin.url"]).strip()
+        url = output.decode("utf-8")
+        if url.startswith("git@"):
+            parts = url.split(":")
+            if len(parts) == 2:
+                url = f"https://github.com/{parts[1]}"
+    except subprocess.CalledProcessError:
+        return url
+    return url
+
+# 获取 github 地址
+GITHUB_REPO_URL = get_github_repo_url()
+
 def load_yml(file_path: str) -> DIR_TREE:
     if not os.path.exists(file_path):
         print_info("找不到文件" + file_path)
@@ -138,28 +157,11 @@ def get_github_icon(enable_github):
     if enable_github is False:
         return ""
 
-    url = get_github_repo_url()
+    url = GITHUB_REPO_URL
     if url == "":
         return ""
     else:
         return join_github_icon(url)
-
-
-def get_github_repo_url() -> str:
-    url = ""
-    try:
-        output = subprocess.check_output(["git", "config", "--get", "remote.origin.url"]).strip()
-        url = output.decode("utf-8")
-        if url.startswith("git@"):
-            parts = url.split(":")
-            if len(parts) == 2:
-                username_and_repo = parts[1]
-                username, repo = username_and_repo[:-4].split("/")
-                url = f"https://github.com/{username}/{repo}"
-    except subprocess.CalledProcessError:
-        return url
-    return url
-
 
 def join_github_icon(url: str):
     # https://tholman.com/github-corners/
