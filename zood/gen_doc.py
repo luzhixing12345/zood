@@ -37,33 +37,34 @@ def parse_markdown(config: DIR_TREE):
     markdown_parser = MarkdownParser.Markdown()
 
     # 将错误信息重定向到 error.log 中
-    error_log_file = open(os.path.join(os.path.dirname(__file__), "config", "error.log"), "w", encoding="utf-8")
-    sys.stderr = error_log_file
+    with open(os.path.join(os.path.dirname(__file__), "config", "error.log"), "w", encoding="utf-8") as f:
+        sys.stderr = f
 
-    github_repo_url = get_github_repo_url()
-    for dir_name, files in dir_yml.items():
-        file_names = []
-        for file in files:
-            file_name = list(file.keys())[0]
-            file_path = os.path.join(md_dir_name, dir_name, file_name + ".md")
-            if not os.path.exists(file_path):
-                print_info("找不到文件" + file_path)
-                print("如手动删除md文件请同步更新 dir.yml")
-                exit(1)
-            else:
-                with open(file_path, "r", encoding="utf-8") as f:
-                    lines = markdown_parser.preprocess_parser(f.read())
-                    root = markdown_parser.block_parser(lines)
-                    tree = markdown_parser.tree_parser(root)
-                    markdown_tree_preprocess(tree, file_path, github_repo_url, md_dir_name)
-                    header_navigater = markdown_parser.get_toc(tree)
-                    markdown_html = tree.to_html(header_navigater)
+        github_repo_url = get_github_repo_url()
+        for dir_name, files in dir_yml.items():
+            file_names = []
+            for file in files:
+                file_name = list(file.keys())[0]
+                file_path = os.path.join(md_dir_name, dir_name, file_name + ".md")
+                if not os.path.exists(file_path):
+                    print_info("找不到文件" + file_path)
+                    print("如手动删除md文件请同步更新 dir.yml")
+                    exit(1)
+                else:
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        lines = markdown_parser.preprocess_parser(f.read())
+                        root = markdown_parser.block_parser(lines)
+                        tree = markdown_parser.tree_parser(root)
+                        markdown_tree_preprocess(tree, file_path, github_repo_url, md_dir_name)
+                        header_navigater = markdown_parser.get_toc(tree)
+                        markdown_html = tree.to_html(header_navigater)
 
-                markdown_htmls[file_path] = markdown_html
-                file_names.append(file_name)
-        directory_tree.append({dir_name: file_names})
+                    markdown_htmls[file_path] = markdown_html
+                    file_names.append(file_name)
+            directory_tree.append({dir_name: file_names})
 
-    error_log_file.close()
+    # 恢复错误信息重定向
+    sys.stderr = sys.__stderr__
 
     global TOTAL_ERROR_NUMBER
     if TOTAL_ERROR_NUMBER != 0:
@@ -114,6 +115,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
     for block in tree.sub_blocks:
         if block.block_name == "CodeBlock":
             language = block.input["language"]
+            highlight_lines = block.input["highlight_lines"]
             if syntaxlight.is_language_support(language) or language == "UNKNOWN":
                 if language == "UNKNOWN":
                     language = "txt"
@@ -121,7 +123,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
                     language = syntaxlight.clean_language(language)
                 block.input["language"] = language
                 try:
-                    code, exception = syntaxlight.parse(block.input["code"], language, file_path)
+                    code, exception = syntaxlight.parse(block.input["code"], language, file_path, highlight_lines=highlight_lines)
                 except Exception as e:
                     exception = e
                     print(f"解析错误: {file_path}: {exception}")

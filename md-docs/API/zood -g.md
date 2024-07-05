@@ -18,7 +18,7 @@ hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 - cxl的gem5实现
 - cxl驱动实现
 
-```c
+```c {2-5}
 # define A
 # ifdef A // 123
 
@@ -28,9 +28,4 @@ struct x {
     int;
     int;
 };
-
-int f(struct x) {
-    
-}
-
 ```
