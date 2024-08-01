@@ -23,17 +23,20 @@ pre[class*="language-txt"] .Token.BraceDepth-2 {
 }
 
 pre[class*="language-txt"] .Token.HighlightLine {
-    background-color: #264f78;
+    background-color: #2d3c4d;
+    padding: 2px 0;
 }
 
 pre[class*="language-txt"] .Token.NUMBER {
     color: #A2CEA8;
 }
 
-pre[class*="language-txt"] .Token.YES, pre[class*="language-txt"] .Token.OK {
+pre[class*="language-txt"] .Token.YES,
+pre[class*="language-txt"] .Token.OK {
     color: #16c60c;
 }
 
-pre[class*="language-txt"] .Token.NO, pre[class*="language-txt"] .Token.FAIL {
+pre[class*="language-txt"] .Token.NO,
+pre[class*="language-txt"] .Token.FAIL {
     color: #e74856;
 }

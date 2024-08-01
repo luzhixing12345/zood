@@ -94,7 +94,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
             # 默认 master 分支
             server_url = github_repo_url.replace("github.com", "raw.githubusercontent.com") + "/master/"
             url = server_url + local_url
-        return f'<a data-lightbox="example-1" href="{url}"><img src="{url}" alt="{word}"></a>'
+        return f'<a data-lightbox="example-1" href="{url}"><img loading="lazy" src="{url}" alt="{word}"></a>'
 
     def ref_to_html(self: MarkdownParser.Block):
         url:str = self.input["url"]
@@ -108,7 +108,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
         for block in self.sub_blocks:
             content += block.to_html()
         return f'<a href="{url}" target="{self.target}">{content}</a>'
-
+    
     global LANGUAGE_USED
     global TOTAL_ERROR_NUMBER
     global CODE_BLOCK_NUMBER
@@ -152,7 +152,7 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
         exit()
 
     if os.path.exists(html_dir_name):
-        shutil.rmtree(html_dir_name)
+        remove_directory(html_dir_name)
     os.makedirs(os.path.join(html_dir_name, "articles"))
     os.makedirs(os.path.join(html_dir_name, "js"))
     os.makedirs(os.path.join(html_dir_name, "css"))

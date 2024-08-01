@@ -19,7 +19,8 @@ pre[class*="language-lua"] .Token.BraceDepth-2 {
 }
 
 pre[class*="language-lua"] .Token.HighlightLine {
-    background-color: #264f78;
+    background-color: #2d3c4d;
+    padding: 2px 0;
 }
 
 pre[class*="language-lua"] .Token.STR {
