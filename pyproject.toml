@@ -12,8 +12,8 @@ documentation = "https://luzhixing12345.github.io/zood/"
 [tool.poetry.dependencies]
 python = "^3.7"
 PyYAML = "*"
-MarkdownParser = "^0.5.30"
-syntaxlight = '^0.1.46'
+MarkdownParser = "^0.5.32"
+syntaxlight = '^0.1.50'
 
 [build-system]
 requires = ["poetry-core"]

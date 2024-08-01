@@ -116,6 +116,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
         if block.block_name == "CodeBlock":
             language = block.input["language"]
             highlight_lines = block.input["highlight_lines"]
+            highlight_tokens = block.input["highlight_tokens"]
             if syntaxlight.is_language_support(language) or language == "UNKNOWN":
                 if language == "UNKNOWN":
                     language = "txt"
@@ -123,7 +124,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
                     language = syntaxlight.clean_language(language)
                 block.input["language"] = language
                 try:
-                    code, exception = syntaxlight.parse(block.input["code"], language, file_path, highlight_lines=highlight_lines)
+                    code, exception = syntaxlight.parse(block.input["code"], language, file_path, highlight_lines=highlight_lines, highlight_tokens=highlight_tokens)
                 except Exception as e:
                     exception = e
                     print(f"解析错误: {file_path}: {exception}")
