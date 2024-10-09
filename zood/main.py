@@ -31,6 +31,7 @@ def main():
         return
     
     if args.open:
+        chdir_md(md_dir_name)
         start_http_server(config)
         return
 
