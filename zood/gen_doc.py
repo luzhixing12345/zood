@@ -18,6 +18,27 @@ LANGUAGE_USED = set()
 TOTAL_ERROR_NUMBER = 0
 CODE_BLOCK_NUMBER = 1
 
+def chdir_md(md_dir_name):
+    current_dir = os.getcwd()
+
+    while True:
+        target_dir = os.path.join(current_dir, md_dir_name)
+        if os.path.exists(target_dir) and os.path.isdir(target_dir):
+            os.chdir(current_dir)
+            return
+
+        # 获取上级目录的路径
+        parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
+
+        # 检查是否已经到达根目录
+        if parent_dir == current_dir:
+            # 如果到达根目录仍未找到,返回 None
+            print(f"找不到 {md_dir_name}")
+            exit()
+
+        # 更新当前目录为上级目录
+        current_dir = parent_dir
+
 
 def generate_web_docs(config: DIR_TREE):
     directory_tree, markdown_htmls = parse_markdown(config)
@@ -221,15 +242,15 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
 
     print_info(f"已生成 {html_dir_name}/", color="green")
 
-    # 对于 vscode 的 live server 的优化
-    vscode_settings = os.path.join(".vscode", "settings.json")
+    # # 对于 vscode 的 live server 的优化
+    # vscode_settings = os.path.join(".vscode", "settings.json")
 
-    if os.path.exists(vscode_settings):
-        with open(vscode_settings, "r", encoding="utf-8") as f:
-            settings = json5.load(f)
-            if "liveServer.settings.port" in settings:
-                print(
-                    f'\nVscode live server: http://127.0.0.1:{settings["liveServer.settings.port"]}/docs/index.html\n'
-                )
-    else:
-        print(f"\nVscode live server: http://127.0.0.1:5500/docs/index.html\n")
+    # if os.path.exists(vscode_settings):
+    #     with open(vscode_settings, "r", encoding="utf-8") as f:
+    #         settings = json5.load(f)
+    #         if "liveServer.settings.port" in settings:
+    #             print(
+    #                 f'\nVscode live server: http://127.0.0.1:{settings["liveServer.settings.port"]}/docs/index.html\n'
+    #             )
+    # else:
+    #     print(f"\nVscode live server: http://127.0.0.1:5500/docs/index.html\n")
