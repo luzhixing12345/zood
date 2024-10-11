@@ -130,6 +130,51 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
             content += block.to_html()
         return f'<a href="{url}" target="{self.target}">{content}</a>'
     
+    def quote_to_html(self: MarkdownParser.Block):
+        content = ""
+        for block in self.sub_blocks:
+            content += block.to_html()
+            
+        # check if content start with bullet list
+        built_in_tags = {
+            # matched name: ("css class", "tag color", "background color")
+            "[!NOTE]": ("note", "#0969da", "#e8f3ff"),
+            "[!TIP]": ("tip", "#1a7f37", "#e5f6ea"),
+            "[!IMPORTANT]": ("important", "#8250df", "#eee4ff"),
+            "[!WARNING]": ("warning", "#9a6700", "#fff4dd"),
+            "[!CAUTION]": ("caution", "#d1242f", "#f7e5e6"),
+            "[!QUESTION]": ("question", "#f08833", "#ffefe3"),
+        }
+        # > [!NOTE]  
+        # > Highlights information that users should take into account, even when skimming.
+
+        # > [!TIP]
+        # > Optional information to help a user be more successful.
+
+        # > [!IMPORTANT]  
+        # > Crucial information necessary for users to succeed.
+
+        # > [!WARNING]  
+        # > Critical content demanding immediate user attention due to potential risks.
+
+        # > [!CAUTION]
+        # > Negative potential consequences of an action.
+        blockquote_border_color = None
+        blockquote_border_bg_color = None
+        for tag, (icon, color, bg_color) in built_in_tags.items():
+            if content.startswith(f"<p>{tag}"):
+                content = content.replace(tag, f'<div style="color: {color};"><img class="icon-{icon}" loading="lazy" src="../../../img/{icon}.svg" alt="{tag}"> {icon.upper()} </div>', 1)
+                # change blockquote border-left color
+                blockquote_border_color = color
+                blockquote_border_bg_color = bg_color
+                break
+            
+        # print(blockquote_border_color)
+        if blockquote_border_color is not None:
+            return f'<blockquote style="border-left-color: {blockquote_border_color}; background-color: {blockquote_border_bg_color};">{content}</blockquote>'
+        else:
+            return f'<blockquote>{content}</blockquote>'
+    
     global LANGUAGE_USED
     global TOTAL_ERROR_NUMBER
     global CODE_BLOCK_NUMBER
@@ -161,6 +206,8 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
             block.to_html = types.MethodType(pic_to_html, block)
         elif block.block_name == "ReferenceBlock":
             block.to_html = types.MethodType(ref_to_html, block)
+        elif block.block_name == "QuoteBlock":
+            block.to_html = types.MethodType(quote_to_html, block)
         else:
             markdown_tree_preprocess(block, file_path, github_repo_url, md_dir_name)
 
@@ -201,12 +248,12 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
     github_icon = get_github_icon(config["options"]["enable_github"])
 
     global LANGUAGE_USED
-    LANGUAGE_USED = list(LANGUAGE_USED)
-    LANGUAGE_USED.sort()
-    syntaxlight.export_css(LANGUAGE_USED, os.path.join(html_dir_name, "css"))
+    language_used = list(LANGUAGE_USED)
+    language_used.sort()
+    syntaxlight.export_css(language_used, os.path.join(html_dir_name, "css"))
 
     hightlight_css = ""
-    for l in LANGUAGE_USED:
+    for l in language_used:
         hightlight_css += f"<link rel='stylesheet' href=../../../css/{l}.css />"
 
     html_template = parse_config(config)

@@ -32,6 +32,7 @@ def main():
     
     if args.open:
         chdir_md(md_dir_name)
+        generate_web_docs(config)
         start_http_server(config)
         return
 
