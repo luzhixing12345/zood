@@ -39,7 +39,7 @@ def start_http_server(config):
 
         try:
             while True:
-                command = input("Press 'r' to regenerate docs or 'q' to quit: ")
+                command = input("\nPress 'r' to regenerate docs or 'q' to quit: ")
                 if command.lower() == 'r':
                     generate_web_docs(config)
                 elif command.lower() == 'q':

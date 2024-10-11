@@ -151,7 +151,7 @@ blockquote {
 .markdown-body table,
 .markdown-body ul {
     margin-top: 0;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     cursor: pointer;
 }
 
@@ -427,6 +427,7 @@ ul>li>ul>li {
     align-items: center;
     display: flex;
     justify-content: left;
+    margin-bottom: 5px;
 }
 
 .changeMode {
