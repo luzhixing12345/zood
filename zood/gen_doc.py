@@ -208,8 +208,8 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
             block.to_html = types.MethodType(ref_to_html, block)
         elif block.block_name == "QuoteBlock":
             block.to_html = types.MethodType(quote_to_html, block)
-        else:
-            markdown_tree_preprocess(block, file_path, github_repo_url, md_dir_name)
+        
+        markdown_tree_preprocess(block, file_path, github_repo_url, md_dir_name)
 
 
 def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TREE):
