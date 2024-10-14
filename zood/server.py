@@ -10,13 +10,18 @@ class SilentHTTPRequestHandler(SimpleHTTPRequestHandler):
         # 重写这个方法来抑制日志输出
         pass
     
-def find_available_port():
+def find_available_port(start_port=8000, end_port=9000):
     # 创建一个socket对象
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # 使得端口可以被重用
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    # # 使得端口可以被重用
+    # sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     # 绑定到地址和端口,但端口设置为0,让系统自动分配一个可用的端口
-    sock.bind(('', 0))
+    for port in range(start_port, end_port + 1):
+        try:
+            sock.bind(('', port))
+            break
+        except OSError:
+            continue
     # 获取绑定的地址和端口
     host, port = sock.getsockname()
     # 关闭socket
