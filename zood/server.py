@@ -9,6 +9,16 @@ class SilentHTTPRequestHandler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         # 重写这个方法来抑制日志输出
         pass
+    def do_GET(self):
+        try:
+            # 这里放你发送数据的代码,例如发送文件或响应
+            super().do_GET()  # 调用父类的 GET 处理方法
+        except BrokenPipeError:
+            # 捕获并处理 BrokenPipeError
+            print("Client disconnected before sending the response.")
+        except Exception as e:
+            # 捕获其他异常,避免服务器崩溃
+            print(f"An error occurred: {e}")
     
 def find_available_port(start_port=8000, end_port=9000):
     # 创建一个socket对象
