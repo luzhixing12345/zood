@@ -8,7 +8,7 @@ from .zood import *
 from .extensions import update_PYPI_package, update_vsce_package
 from .server import start_http_server
 
-
+ZOOD_VERSION = "0.12.8"
 
 def main():
     parser = argparse.ArgumentParser(description="zood: web page documentation & comment generation documentation")
@@ -17,6 +17,7 @@ def main():
     parser.add_argument("-s", "--save", action="store_true", help="save global config")
     # start http server
     parser.add_argument("-o", "--open", action="store_true", help="start http server")
+    parser.add_argument("-v", "--version", action="store_true", help="show version")
     args = parser.parse_args()
 
     config = get_zood_config()  # 获取配置信息
@@ -28,6 +29,10 @@ def main():
     if args.generate:
         chdir_md(md_dir_name)
         generate_web_docs(config)
+        return
+    
+    if args.version:
+        print(f"zood version: {ZOOD_VERSION}")
         return
     
     if args.open:
