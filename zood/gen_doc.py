@@ -1,5 +1,5 @@
 import os
-import json5
+import re
 import shutil
 import MarkdownParser
 from urllib.parse import unquote
@@ -262,8 +262,9 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
     html_template = parse_config(config)
     index_html_path = os.path.join(html_dir_name, "index.html")
     html_template = html_template.replace("hightlight-css", hightlight_css)
+    
+    # 修正 index html
     with open(index_html_path, "w", encoding="utf-8") as f:
-        # index 的地址做一些修改
         index_html_template = html_template.replace("../../.", "")
         next_url = next_url.replace("../..", "./articles")
         index_dir_tree_html = dir_tree_html.replace("../..", "./articles")
@@ -272,7 +273,11 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
         index_html_template = index_html_template.replace("directory-tree-scope", index_dir_tree_html)
         index_html_template = index_html_template.replace("github-icon", github_icon)
         index_html_template = url_replace(index_html_template, front_url, next_url, "ab")
-        f.write(index_html_template.replace("html-scope", markdown_htmls[index_README_path]))
+        
+        index_markdown_html = markdown_htmls[index_README_path]
+        # 把 index html 中的 ../../../img/{note}.svg 替换为 img/{note}.svg
+        index_markdown_html = re.sub(r'../../../img/([a-zA-Z0-9_-]+)\.svg', r'img/\1.svg', index_markdown_html)
+        f.write(index_html_template.replace("html-scope", index_markdown_html))
 
     html_template = html_template.replace("directory-tree-scope", dir_tree_html)
     html_template = html_template.replace("github-icon", github_icon)
@@ -291,16 +296,3 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
             f.write(final_html.replace("html-scope", markdown_html))
 
     print_info(f"已生成 {html_dir_name}/", color="green")
-
-    # # 对于 vscode 的 live server 的优化
-    # vscode_settings = os.path.join(".vscode", "settings.json")
-
-    # if os.path.exists(vscode_settings):
-    #     with open(vscode_settings, "r", encoding="utf-8") as f:
-    #         settings = json5.load(f)
-    #         if "liveServer.settings.port" in settings:
-    #             print(
-    #                 f'\nVscode live server: http://127.0.0.1:{settings["liveServer.settings.port"]}/docs/index.html\n'
-    #             )
-    # else:
-    #     print(f"\nVscode live server: http://127.0.0.1:5500/docs/index.html\n")

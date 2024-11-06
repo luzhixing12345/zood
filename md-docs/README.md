@@ -9,3 +9,6 @@ zood 基于 [MarkdownParser](https://github.com/luzhixing12345/MarkdownParser) �
 您可前往 [【项目分享】zood:项目文档生成工具](https://www.bilibili.com/video/BV1dK411r77d) 浏览一个相关视频介绍
 
 欢迎各位提出宝贵使用建议, 新增功能需求, 以及报告bug
+
+> [!NOTE]
+> 123
