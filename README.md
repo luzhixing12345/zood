@@ -16,6 +16,14 @@ zood 的页面风格更倾向于纯文档内容而非博客, 您可利用 Github
 pip install zood
 ```
 
+## 快速开始
+
+```bash
+zood init
+zood new mydoc
+zood -o
+```
+
 参见 [用户使用文档](https://luzhixing12345.github.io/zood/)
 
 ## 参考
