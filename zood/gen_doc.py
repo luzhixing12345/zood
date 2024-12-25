@@ -6,6 +6,7 @@ from urllib.parse import unquote
 import sys
 import syntaxlight
 import types
+import traceback
 from .util import *
 from .zood import (
     parse_config,
@@ -58,8 +59,8 @@ def parse_markdown(config: DIR_TREE):
     markdown_parser = MarkdownParser.Markdown()
 
     # 将错误信息重定向到 error.log 中
-    with open(os.path.join(os.path.dirname(__file__), "config", "error.log"), "w", encoding="utf-8") as f:
-        sys.stderr = f
+    with open(os.path.join(os.path.dirname(__file__), "config", "error.log"), "w", encoding="utf-8") as error_log:
+        sys.stderr = error_log
 
         github_repo_url = get_github_repo_url()
         for dir_name, files in dir_yml.items():
@@ -72,13 +73,21 @@ def parse_markdown(config: DIR_TREE):
                     print("如手动删除md文件请同步更新 dir.yml")
                     exit(1)
                 else:
-                    with open(file_path, "r", encoding="utf-8") as f:
-                        lines = markdown_parser.preprocess_parser(f.read())
-                        root = markdown_parser.block_parser(lines)
-                        tree = markdown_parser.tree_parser(root)
-                        markdown_tree_preprocess(tree, file_path, github_repo_url, md_dir_name)
-                        header_navigater = markdown_parser.get_toc(tree)
-                        markdown_html = tree.to_html(header_navigater)
+                    try:
+                        with open(file_path, "r", encoding="utf-8") as f:
+                            lines = markdown_parser.preprocess_parser(f.read())
+                            root = markdown_parser.block_parser(lines)
+                            tree = markdown_parser.tree_parser(root)
+                            markdown_tree_preprocess(tree, file_path, github_repo_url, md_dir_name)
+                            header_navigater = markdown_parser.get_toc(tree)
+                            markdown_html = tree.to_html(header_navigater)
+                    except Exception as e:
+                        print_info(f"解析文件 {file_path} 失败", "red")
+                        # 输出 traceback
+                        sys.stderr = sys.__stderr__
+                        traceback.print_exc()
+                        print_info(f'欢迎反馈错误信息到 https://github.com/luzhixing12345/zood/issues/new, 感谢您的支持')
+                        markdown_html = ""
 
                     markdown_htmls[file_path] = markdown_html
                     file_names.append(file_name)
@@ -184,8 +193,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
     for block in tree.sub_blocks:
         if block.block_name == "CodeBlock":
             language = block.input["language"]
-            highlight_lines = block.input["highlight_lines"]
-            highlight_tokens = block.input["highlight_tokens"]
+            highlight_lines, highlight_tokens = parse_highlight_info(block.input["append_text"])
             if syntaxlight.is_language_support(language) or language == "UNKNOWN":
                 if language == "UNKNOWN":
                     language = "txt"

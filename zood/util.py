@@ -57,6 +57,8 @@ def print_info(msg, color="red", hide_zood = False):
         print(f"\033[1;32m{zood_mark}{msg}\033[0m")
     elif color == "grey":
         print(f"\033[1;30m{zood_mark}{msg}\033[0m")
+    else:
+        print(msg)
 
 
 def get_zood_config():
@@ -189,3 +191,36 @@ def remove_directory(path):
         for name in dirs:
             os.rmdir(os.path.join(root, name))
     os.rmdir(path)
+    
+    
+def parse_highlight_info(append_text: str):
+    
+    if append_text == "" or append_text is None:
+        return [], []
+    
+    highlight_tokens = []
+    highlight_lines = []
+    
+    lines = append_text.split(",")
+    for line in lines:
+        line = line.strip()
+        if line == "":
+            continue
+        if line.startswith("#"):
+            # 高亮某一个 token
+            line = line[1:]
+            if line.find("-") != -1:
+                start, end = line.split("-")
+                for i in range(int(start), int(end) + 1):
+                    highlight_tokens.append(i)
+            else:
+                highlight_tokens.append(int(line))
+        else:
+            if line.find("-") != -1:
+                start, end = line.split("-")
+                for i in range(int(start), int(end) + 1):
+                    highlight_lines.append(i)
+            else:
+                highlight_lines.append(int(line))
+                
+    return highlight_tokens, highlight_lines
