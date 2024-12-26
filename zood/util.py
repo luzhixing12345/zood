@@ -223,4 +223,4 @@ def parse_highlight_info(append_text: str):
             else:
                 highlight_lines.append(int(line))
                 
-    return highlight_tokens, highlight_lines
+    return highlight_lines, highlight_tokens
