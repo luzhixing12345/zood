@@ -19,6 +19,7 @@ LANGUAGE_USED = set()
 TOTAL_ERROR_NUMBER = 0
 CODE_BLOCK_NUMBER = 1
 
+
 def chdir_md(md_dir_name):
     current_dir = os.getcwd()
 
@@ -69,7 +70,7 @@ def parse_markdown(config: DIR_TREE):
                 file_name = list(file.keys())[0]
                 file_path = os.path.join(md_dir_name, dir_name, file_name + ".md")
                 if not os.path.exists(file_path):
-                    print_info("找不到文件" + file_path)
+                    zood_info("找不到文件" + file_path)
                     print("如手动删除md文件请同步更新 dir.yml")
                     exit(1)
                 else:
@@ -82,11 +83,11 @@ def parse_markdown(config: DIR_TREE):
                             header_navigater = markdown_parser.get_toc(tree)
                             markdown_html = tree.to_html(header_navigater)
                     except Exception as e:
-                        print_info(f"解析文件 {file_path} 失败", "red")
+                        zood_info(f"解析文件 {file_path} 失败", "red")
                         # 输出 traceback
                         sys.stderr = sys.__stderr__
                         traceback.print_exc()
-                        print_info(f'欢迎反馈错误信息到 https://github.com/luzhixing12345/zood/issues/new, 感谢您的支持')
+                        zood_info(f"欢迎反馈错误信息到 https://github.com/luzhixing12345/zood/issues/new, 感谢您的支持")
                         markdown_html = ""
 
                     markdown_htmls[file_path] = markdown_html
@@ -98,7 +99,7 @@ def parse_markdown(config: DIR_TREE):
 
     global TOTAL_ERROR_NUMBER
     if TOTAL_ERROR_NUMBER != 0:
-        print_info(f"代码段解析出现 {TOTAL_ERROR_NUMBER} 处错误, 已跳过高亮解析, 使用 zood log 查看错误信息")
+        zood_info(f"代码段解析出现 {TOTAL_ERROR_NUMBER} 处错误, 已跳过高亮解析, 使用 zood log 查看错误信息")
 
     return directory_tree, markdown_htmls
 
@@ -127,11 +128,11 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
         return f'<a data-lightbox="example-1" href="{url}"><img loading="lazy" src="{url}" alt="{word}"></a>'
 
     def ref_to_html(self: MarkdownParser.Block):
-        url:str = self.input["url"]
+        url: str = self.input["url"]
         # 判断一下是否是本地的跳转链接
         local_url = os.path.normpath(os.path.join(os.path.dirname(file_path), unquote(url)))
         if not url.startswith("http") and os.path.exists(local_url) and local_url.endswith(".md"):
-            local_url = local_url[len(md_dir_name):-3].lstrip("\\").lstrip("/")
+            local_url = local_url[len(md_dir_name) : -3].lstrip("\\").lstrip("/")
             # 如果 url 没有父目录, 加上 md_dir_name
             if not os.path.dirname(local_url):
                 local_url = os.path.join(md_dir_name, local_url)
@@ -141,12 +142,12 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
         for block in self.sub_blocks:
             content += block.to_html()
         return f'<a href="{url}" target="{self.target}">{content}</a>'
-    
+
     def quote_to_html(self: MarkdownParser.Block):
         content = ""
         for block in self.sub_blocks:
             content += block.to_html()
-            
+
         # check if content start with bullet list
         built_in_tags = {
             # matched name: ("css class", "tag color", "background color")
@@ -157,16 +158,16 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
             "[!CAUTION]": ("caution", "#d1242f", "#f7e5e6"),
             "[!QUESTION]": ("question", "#f08833", "#ffefe3"),
         }
-        # > [!NOTE]  
+        # > [!NOTE]
         # > Highlights information that users should take into account, even when skimming.
 
         # > [!TIP]
         # > Optional information to help a user be more successful.
 
-        # > [!IMPORTANT]  
+        # > [!IMPORTANT]
         # > Crucial information necessary for users to succeed.
 
-        # > [!WARNING]  
+        # > [!WARNING]
         # > Critical content demanding immediate user attention due to potential risks.
 
         # > [!CAUTION]
@@ -175,25 +176,29 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
         blockquote_border_bg_color = None
         for tag, (icon, color, bg_color) in built_in_tags.items():
             if content.startswith(f"<p>{tag}"):
-                content = content.replace(tag, f'<div style="color: {color};"><img class="icon-{icon}" loading="lazy" src="../../../img/{icon}.svg" alt="{tag}"> {icon.upper()} </div>', 1)
+                content = content.replace(
+                    tag,
+                    f'<div style="color: {color};"><img class="icon-{icon}" loading="lazy" src="../../../img/{icon}.svg" alt="{tag}"> {icon.upper()} </div>',
+                    1,
+                )
                 # change blockquote border-left color
                 blockquote_border_color = color
                 blockquote_border_bg_color = bg_color
                 break
-            
+
         # print(blockquote_border_color)
         if blockquote_border_color is not None:
             return f'<blockquote style="border-left-color: {blockquote_border_color}; background-color: {blockquote_border_bg_color};">{content}</blockquote>'
         else:
-            return f'<blockquote>{content}</blockquote>'
-    
+            return f"<blockquote>{content}</blockquote>"
+
     global LANGUAGE_USED
     global TOTAL_ERROR_NUMBER
     global CODE_BLOCK_NUMBER
     for block in tree.sub_blocks:
         if block.block_name == "CodeBlock":
             language = block.input["language"]
-            highlight_lines, highlight_tokens = parse_highlight_info(block.input["append_text"])
+            append_text = block.input["append_text"]
             if syntaxlight.is_language_support(language) or language == "UNKNOWN":
                 if language == "UNKNOWN":
                     language = "txt"
@@ -201,12 +206,22 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
                     language = syntaxlight.clean_language(language)
                 block.input["language"] = language
                 try:
-                    code, exception = syntaxlight.parse(block.input["code"], language, file_path, highlight_lines=highlight_lines, highlight_tokens=highlight_tokens)
+                    parse_result = syntaxlight.parse(block.input["code"], language, file_path)
+                    if append_text == "?" or append_text == "??":
+                        zood_info(f"请根据提示信息进行高亮定位 file: {file_path}", "green")
+                        show_highlight_position_info(parse_result.parser, show_token_id=append_text == "??")
+                        exit()
+                    else:
+                        highlight_lines, highlight_tokens = parse_highlight_info(append_text)
+                    exception = parse_result.error
                 except Exception as e:
                     exception = e
                     print(f"解析错误: {file_path}: {exception}")
                     print(f'```{language}\n{block.input["code"]}\n```')
-                block.input["code"] = code
+
+                block.input["code"] = parse_result.parser.to_html(
+                    highlight_lines=highlight_lines, highlight_tokens=highlight_tokens
+                )
                 block.to_html = types.MethodType(code_to_html, block)
                 LANGUAGE_USED.add(language)
                 if exception is not None:
@@ -219,7 +234,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
             block.to_html = types.MethodType(ref_to_html, block)
         elif block.block_name == "QuoteBlock":
             block.to_html = types.MethodType(quote_to_html, block)
-        
+
         markdown_tree_preprocess(block, file_path, github_repo_url, md_dir_name)
 
 
@@ -228,7 +243,7 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
     md_dir_name = config["markdown_folder"]
     index_README_path = os.path.join(md_dir_name, ".", "README.md")
     if not os.path.exists(index_README_path):
-        print_info(f"您需要保留 {md_dir_name}/README.md 作为首页")
+        zood_info(f"您需要保留 {md_dir_name}/README.md 作为首页")
         exit()
 
     if os.path.exists(html_dir_name):
@@ -270,7 +285,7 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
     html_template = parse_config(config)
     index_html_path = os.path.join(html_dir_name, "index.html")
     html_template = html_template.replace("hightlight-css", hightlight_css)
-    
+
     # 修正 index html
     with open(index_html_path, "w", encoding="utf-8") as f:
         index_html_template = html_template.replace("../../.", "")
@@ -281,10 +296,10 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
         index_html_template = index_html_template.replace("directory-tree-scope", index_dir_tree_html)
         index_html_template = index_html_template.replace("github-icon", github_icon)
         index_html_template = url_replace(index_html_template, front_url, next_url, "ab")
-        
+
         index_markdown_html = markdown_htmls[index_README_path]
         # 把 index html 中的 ../../../img/{note}.svg 替换为 img/{note}.svg
-        index_markdown_html = re.sub(r'../../../img/([a-zA-Z0-9_-]+)\.svg', r'img/\1.svg', index_markdown_html)
+        index_markdown_html = re.sub(r"../../../img/([a-zA-Z0-9_-]+)\.svg", r"img/\1.svg", index_markdown_html)
         f.write(index_html_template.replace("html-scope", index_markdown_html))
 
     html_template = html_template.replace("directory-tree-scope", dir_tree_html)
@@ -303,4 +318,4 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
             final_html = url_replace(html_template, front_url, next_url, "ab")
             f.write(final_html.replace("html-scope", markdown_html))
 
-    print_info(f"已生成 {html_dir_name}/", color="green")
+    zood_info(f"已生成 {html_dir_name}/", color="green")

@@ -10,6 +10,7 @@ from .server import start_http_server
 
 ZOOD_VERSION = "0.12.8"
 
+
 def main():
     parser = argparse.ArgumentParser(description="zood: web page documentation & comment generation documentation")
     parser.add_argument("cmd", type=str, nargs="*", help="initialize docs template")
@@ -30,11 +31,11 @@ def main():
         chdir_md(md_dir_name)
         generate_web_docs(config)
         return
-    
+
     if args.version:
         print(f"zood version: {ZOOD_VERSION}")
         return
-    
+
     if args.open:
         chdir_md(md_dir_name)
         generate_web_docs(config)
@@ -44,7 +45,7 @@ def main():
     if args.save:
         if os.path.exists(local_config_path):
             shutil.copy(local_config_path, global_config_path)
-            print_info("已更新全局配置文件 _config.yml", color="green")
+            zood_info("已更新全局配置文件 _config.yml", color="green")
         else:
             print("未找到", local_config_path)
 
@@ -65,10 +66,10 @@ def main():
             dir_name = args.cmd[1]
             file_name = args.cmd[2]
             if dir_name == md_dir_name:
-                print_info(f"您不能创建一个和 {md_dir_name} 同名的子文件夹")
+                zood_info(f"您不能创建一个和 {md_dir_name} 同名的子文件夹")
                 return
         else:
-            print_info(f"创建新文件的命令为 zood new [目录] [文件名]")
+            zood_info(f"创建新文件的命令为 zood new [目录] [文件名]")
             return
 
         if not os.path.exists(md_dir_name):
@@ -78,28 +79,28 @@ def main():
 
     elif args.cmd[0] == "clean":
         if not os.path.exists(config["html_folder"]):
-            print_info(f"没有找到 {config['html_folder']}")
+            zood_info(f"没有找到 {config['html_folder']}")
             return
         shutil.rmtree(config["html_folder"])
-        print_info(f"已删除 docs")
+        zood_info(f"已删除 docs")
 
     elif args.cmd[0] == "config":
         shutil.copy(global_config_path, local_config_path)
-        print_info(f"生成配置文件 {local_config_path}", color="green")
+        zood_info(f"生成配置文件 {local_config_path}", color="green")
 
     elif args.cmd[0] == "update":
         current_dir = os.getcwd()
         dir_yml_path = os.path.join(current_dir, md_dir_name, "dir.yml")
         dir_yml = load_yml(dir_yml_path)
         yml_sort(dir_yml)
-        
+
         removed_files = []
         for dir_name, files in dir_yml.items():
             for i in range(len(files)):
                 file_name = list(files[i].keys())[0]
                 file_path = os.path.join(md_dir_name, dir_name, file_name + ".md")
                 if not os.path.exists(file_path):
-                    print_info(f'未找到文件 {file_path}, 已删除对应项', color="green")
+                    zood_info(f"未找到文件 {file_path}, 已删除对应项", color="green")
                     removed_files.append(file_name)
                 files[i][file_name] = i + 1
 
@@ -110,7 +111,7 @@ def main():
 
     elif args.cmd[0] == "poetry":
         if len(args.cmd) > 2:
-            print_info("peotry 接收0/1个参数")
+            zood_info("peotry 接收0/1个参数")
             show_help_info()
             return
 
@@ -118,14 +119,14 @@ def main():
         if len(args.cmd) == 2:
             choice = args.cmd[1]
             if choice not in ("sub", "main"):
-                print_info("choice 选项为 (sub, main)")
+                zood_info("choice 选项为 (sub, main)")
                 show_help_info()
                 return
         update_PYPI_package(choice)
 
     elif args.cmd[0] == "vsce":
         if len(args.cmd) > 2:
-            print_info("vsce 接收0/1个参数")
+            zood_info("vsce 接收0/1个参数")
             show_help_info()
             return
 
@@ -133,7 +134,7 @@ def main():
         if len(args.cmd) == 2:
             choice = args.cmd[1]
             if choice not in ("sub", "main"):
-                print_info("choice 选项为 (sub, main)")
+                zood_info("choice 选项为 (sub, main)")
                 show_help_info()
                 return
         update_vsce_package(choice=choice)
@@ -144,7 +145,7 @@ def main():
             print(f.read())
 
     else:
-        print_info(f"未找到指令 zood {args.cmd[0]}")
+        zood_info(f"未找到指令 zood {args.cmd[0]}")
         show_help_info()
 
 

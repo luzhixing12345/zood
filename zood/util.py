@@ -1,7 +1,9 @@
+import syntaxlight.parsers
 import yaml
 import os
 import subprocess
 from typing import Dict, List, NewType
+import syntaxlight
 
 DIR_TREE = NewType("DIR_TREE", Dict[str, List[Dict[str, str]]])
 
@@ -29,7 +31,7 @@ GITHUB_REPO_URL = get_github_repo_url()
 
 def load_yml(file_path: str):
     if not os.path.exists(file_path):
-        print_info("找不到文件" + file_path)
+        zood_info("找不到文件" + file_path)
         exit(0)
 
     with open(file_path, "r", encoding="utf-8") as f:
@@ -49,17 +51,26 @@ def yml_sort(yml: DIR_TREE):
         files.sort(key=lambda item: list(item.values())[0])
 
 
-def print_info(msg, color="red", hide_zood = False):
+def zood_info(msg, color="red", hide_zood=False, end="\n"):
     zood_mark = "[zood]: " if not hide_zood else ""
     if color == "red":
-        print(f"\033[1;31m{zood_mark}{msg}\033[0m")
+        print(f"\033[1;31m{zood_mark}{msg}\033[0m", end=end)
     elif color == "green":
-        print(f"\033[1;32m{zood_mark}{msg}\033[0m")
+        print(f"\033[1;32m{zood_mark}{msg}\033[0m", end=end)
     elif color == "grey":
-        print(f"\033[1;30m{zood_mark}{msg}\033[0m")
+        print(f"\033[1;30m{zood_mark}{msg}\033[0m", end=end)
     else:
-        print(msg)
+        print(msg, end=end)
 
+def info(msg, color=None, end=""):
+    if color == "red":
+        print(f"\033[1;31m{msg}\033[0m", end=end)
+    elif color == "green":
+        print(f"\033[1;32m{msg}\033[0m", end=end)
+    elif color == "grey":
+        print(f"\033[1;30m{msg}\033[0m", end=end)
+    else:
+        print(msg, end=end)
 
 def get_zood_config():
     """
@@ -90,9 +101,9 @@ def check_zood_config_key(local_config: DIR_TREE, global_config: DIR_TREE, paren
         # 同步缺少的全局配置
         for key_name in key_names:
             option_name = ":".join(parent_keys + [key_name])
-            print_info(f"当前 zood 版本更新了配置项: {option_name}: {global_config[key_name]}", color="grey")  
+            zood_info(f"当前 zood 版本更新了配置项: {option_name}: {global_config[key_name]}", color="grey")
             local_config[key_name] = global_config[key_name]
-            print_info(f'已使用默认值, 启用请手动同步\n', color="grey")
+            zood_info(f"已使用默认值, 启用请手动同步\n", color="grey")
 
     for key in local_config.keys():
         if isinstance(local_config[key], dict):
@@ -184,6 +195,7 @@ def join_github_icon(url: str):
     )
     return github_icon
 
+
 def remove_directory(path):
     for root, dirs, files in os.walk(path, topdown=False):
         for name in files:
@@ -191,16 +203,16 @@ def remove_directory(path):
         for name in dirs:
             os.rmdir(os.path.join(root, name))
     os.rmdir(path)
-    
-    
+
+
 def parse_highlight_info(append_text: str):
-    
+
     if append_text == "" or append_text is None:
         return [], []
-    
+
     highlight_tokens = []
     highlight_lines = []
-    
+
     lines = append_text.split(",")
     for line in lines:
         line = line.strip()
@@ -222,5 +234,20 @@ def parse_highlight_info(append_text: str):
                     highlight_lines.append(i)
             else:
                 highlight_lines.append(int(line))
-                
+
     return highlight_lines, highlight_tokens
+
+
+def show_highlight_position_info(parser: syntaxlight.Parser, show_token_id = False):
+
+    current_line = 0
+    max_line = parser.token_list[-1].line
+    for i, token in enumerate(parser.token_list):
+        if current_line != token.line:
+            current_line = token.line
+            # 以 max_line 对齐
+            info(f"{current_line:>{len(str(max_line))}} | ", color="grey")
+            
+        info(token.value)
+        if show_token_id and token.value not in ["\n", "\r"]:
+            info(f'[{i}]', color="grey")
