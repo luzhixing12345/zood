@@ -142,7 +142,7 @@ def zood_js_options(config):
 
     if config["options"]["enable_copy_code"]:
         js_code = insert_js_code("enable_copy_code", html_dir_name)
-        js_code += f'<script>addCodeCopy("../../../img/before_copy.png","../../../img/after_copy.png");</script>'
+        js_code += f'<script>addCodeCopy("../../../img/clipboard.svg","../../../img/clipboard-check.svg");</script>'
         js_scope += js_code
 
     if config["options"]["enable_navigator"]:

@@ -8,9 +8,6 @@ from .zood import *
 from .extensions import update_PYPI_package, update_vsce_package
 from .server import start_http_server
 
-ZOOD_VERSION = "0.12.8"
-
-
 def main():
     parser = argparse.ArgumentParser(description="zood: web page documentation & comment generation documentation")
     parser.add_argument("cmd", type=str, nargs="*", help="initialize docs template")
@@ -33,7 +30,7 @@ def main():
         return
 
     if args.version:
-        print(f"zood version: {ZOOD_VERSION}")
+        print(f"zood version: {get_version()}")
         return
 
     if args.open:

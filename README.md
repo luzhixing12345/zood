@@ -28,7 +28,7 @@ zood -o
 
 ## 参考
 
-- [UI](https://remixicon.com/)
+- [UI](https://www.streamlinehq.com/)
 - [tholman github-corners](https://tholman.com/github-corners/)
 - [lokeshdhakar lightbox2](https://lokeshdhakar.com/projects/lightbox2/)
 - [giscus zh-CN](https://giscus.app/zh-CN)

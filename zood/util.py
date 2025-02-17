@@ -4,9 +4,9 @@ import os
 import subprocess
 from typing import Dict, List, NewType
 import syntaxlight
+from importlib.metadata import version
 
 DIR_TREE = NewType("DIR_TREE", Dict[str, List[Dict[str, str]]])
-
 
 def get_github_repo_url() -> str:
     """
@@ -24,6 +24,8 @@ def get_github_repo_url() -> str:
         return url
     return url
 
+def get_version():
+    return version("zood")
 
 # 获取 github 地址
 GITHUB_REPO_URL = get_github_repo_url()
@@ -69,6 +71,10 @@ def info(msg, color=None, end=""):
         print(f"\033[1;32m{msg}\033[0m", end=end)
     elif color == "grey":
         print(f"\033[1;30m{msg}\033[0m", end=end)
+    elif color == 'blue':
+        print(f"\033[1;34m{msg}\033[0m", end=end)
+    elif color == 'cyan':
+        print(f"\033[1;36m{msg}\033[0m", end=end)
     else:
         print(msg, end=end)
 
@@ -251,3 +257,8 @@ def show_highlight_position_info(parser: syntaxlight.Parser, show_token_id = Fal
         info(token.value)
         if show_token_id and token.value not in ["\n", "\r"]:
             info(f'[{i}]', color="grey")
+            
+
+# 清屏
+def clear_screen():
+    os.system("cls" if os.name == "nt" else "clear")

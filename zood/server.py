@@ -4,6 +4,7 @@ import socket
 import threading
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from .gen_doc import generate_web_docs
+from .util import clear_screen, info
 
 class SilentHTTPRequestHandler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
@@ -41,6 +42,10 @@ def find_available_port(start_port=8000, end_port=9000):
     sock.close()
     return port
 
+def show_server_info(time, port: int):
+    ...
+    
+
 def start_http_server(config):
     # 切换到指定的目录
     directory = os.path.join(os.getcwd(), config['html_folder'])
@@ -57,6 +62,7 @@ def start_http_server(config):
 
         try:
             while True:
+                clear_screen()
                 command = input("\nPress 'r' to regenerate docs or 'q' to quit: ")
                 if command.lower() == 'r':
                     generate_web_docs(config)
