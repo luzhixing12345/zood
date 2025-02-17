@@ -4,7 +4,9 @@ import socket
 import threading
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from .gen_doc import generate_web_docs
-from .util import clear_screen, info
+from .util import *
+import time
+import webbrowser
 
 class SilentHTTPRequestHandler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
@@ -42,28 +44,52 @@ def find_available_port(start_port=8000, end_port=9000):
     sock.close()
     return port
 
+ARROW_CHAR = "➜  "
+
 def show_server_info(time, port: int):
-    ...
-    
+    info("\n    ")
+    info(f"ZOOD v{get_version()}", "green")
+    info("  ready in ", "grey")
+    info(f"{time} ms")
+    info("\n\n    ")
+    info(ARROW_CHAR, "green")
+    info("Local:  ", "strong")
+    info(f"http://127.0.0.1:{port}/docs/index.html", "blue")
+    info("\n    ")
+    info(ARROW_CHAR, "green")
+    info("press ", "grey")
+    info("r + enter", "strong")
+    info(" to regenerate docs", "grey")
+    info("\n    ")
+    info(ARROW_CHAR, "green")
+    info("press ", "grey")
+    info("q + enter", "strong")
+    info(" to quit", "grey")
+    info("\n\n    ")
 
 def start_http_server(config):
     # 切换到指定的目录
     directory = os.path.join(os.getcwd(), config['html_folder'])
     port = find_available_port()
+    start_time = time.time()
 
     # 创建 HTTP 服务器
     with HTTPServer(('', port), SilentHTTPRequestHandler) as httpd:
-        print(f"\nZood live server: http://127.0.0.1:{httpd.server_address[1]}/docs/index.html")
+        port = httpd.server_address[1]
+        print(f"\nZood live server: http://127.0.0.1:{port}/docs/index.html")
         httpd.RequestHandlerClass.directory = directory
         # 创建一个线程来运行服务器
         server_thread = threading.Thread(target=httpd.serve_forever)
         server_thread.daemon = True
         server_thread.start()
-
+        end_time = time.time()
+        webbrowser.open(f"http://127.0.0.1:{port}/docs/index.html")
+        
         try:
             while True:
                 clear_screen()
-                command = input("\nPress 'r' to regenerate docs or 'q' to quit: ")
+                show_server_info((int((end_time - start_time) * 1000)), port)
+                command = input()
                 if command.lower() == 'r':
                     generate_web_docs(config)
                 elif command.lower() == 'q':

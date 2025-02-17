@@ -24,6 +24,8 @@ zood new mydoc
 zood -o
 ```
 
+![20250217212702](https://raw.githubusercontent.com/learner-lu/picbed/master/20250217212702.png)
+
 参见 [用户使用文档](https://luzhixing12345.github.io/zood/)
 
 ## 参考

@@ -75,6 +75,8 @@ def info(msg, color=None, end=""):
         print(f"\033[1;34m{msg}\033[0m", end=end)
     elif color == 'cyan':
         print(f"\033[1;36m{msg}\033[0m", end=end)
+    elif color == "strong":
+        print(f"\033[1m{msg}\033[0m", end=end)
     else:
         print(msg, end=end)
 
