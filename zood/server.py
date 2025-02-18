@@ -76,7 +76,7 @@ def start_http_server(config):
     # 创建 HTTP 服务器
     with HTTPServer(('', port), SilentHTTPRequestHandler) as httpd:
         port = httpd.server_address[1]
-        print(f"\nZood live server: http://127.0.0.1:{port}/docs/index.html")
+        # print(f"\nZood live server: http://127.0.0.1:{port}/docs/index.html")
         httpd.RequestHandlerClass.directory = directory
         # 创建一个线程来运行服务器
         server_thread = threading.Thread(target=httpd.serve_forever)

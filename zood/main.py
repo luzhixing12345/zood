@@ -27,6 +27,7 @@ def main():
     if args.generate:
         chdir_md(md_dir_name)
         generate_web_docs(config)
+        zood_info("已生成文档 docs/", color="green")
         return
 
     if args.version:

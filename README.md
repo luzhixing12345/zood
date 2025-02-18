@@ -20,7 +20,6 @@ pip install zood
 
 ```bash
 zood init
-zood new mydoc
 zood -o
 ```
 

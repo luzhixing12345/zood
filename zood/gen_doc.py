@@ -317,5 +317,3 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
             # print(html_path,front_url,next_url)
             final_html = url_replace(html_template, front_url, next_url, "ab")
             f.write(final_html.replace("html-scope", markdown_html))
-
-    zood_info(f"已生成 {html_dir_name}/", color="green")
