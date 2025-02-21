@@ -8,6 +8,17 @@ from .util import *
 import time
 import webbrowser
 
+ARROW_CHAR = "➜  "
+
+def is_wsl():
+    try:
+        with open("/proc/version", "r") as f:
+            version_info = f.read()
+            return "microsoft-standard-WSL" in version_info
+    except FileNotFoundError:
+        # 如果没有该文件,说明不是 WSL 环境
+        return False
+
 class SilentHTTPRequestHandler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         # 重写这个方法来抑制日志输出
@@ -44,7 +55,7 @@ def find_available_port(start_port=8000, end_port=9000):
     sock.close()
     return port
 
-ARROW_CHAR = "➜  "
+
 
 def show_server_info(time, port: int):
     info("\n    ")
@@ -83,7 +94,9 @@ def start_http_server(config):
         server_thread.daemon = True
         server_thread.start()
         end_time = time.time()
-        webbrowser.open(f"http://127.0.0.1:{port}/docs/index.html")
+        
+        if not is_wsl():
+            webbrowser.open(f"http://127.0.0.1:{port}/docs/index.html")
         
         try:
             while True:
