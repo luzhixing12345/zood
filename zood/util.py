@@ -260,6 +260,8 @@ def show_highlight_position_info(parser: syntaxlight.Parser, show_token_id = Fal
         if show_token_id and token.value not in ["\n", "\r"]:
             info(f'[{i}]', color="grey")
             
+    print("")
+            
 
 # 清屏
 def clear_screen():
