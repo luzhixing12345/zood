@@ -7,6 +7,7 @@ from .gen_doc import generate_web_docs
 from .util import *
 import time
 import webbrowser
+import errno
 
 ARROW_CHAR = "➜  "
 
@@ -78,10 +79,23 @@ def show_server_info(time, port: int):
     info(" to quit", "grey")
     info("\n\n    ")
 
-def start_http_server(config):
+def start_http_server(config, port=8000):
     # 切换到指定的目录
     directory = os.path.join(os.getcwd(), config['html_folder'])
-    port = find_available_port()
+    if port is None:
+        port = find_available_port()
+    else:
+        # check if port is available
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(('localhost', port))
+            except socket.error as e:
+                if e.errno == errno.EADDRINUSE:
+                    print(f"Port {port} is already in use. Please choose another port.")
+                    return
+                else:
+                    raise
+                
     start_time = time.time()
 
     # 创建 HTTP 服务器

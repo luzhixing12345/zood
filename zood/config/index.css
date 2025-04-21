@@ -227,6 +227,11 @@ blockquote {
     margin-top: 10px;
 }
 
+.markdown-body ul p,
+.markdown-body ol p {
+    margin-bottom: 10px;
+}
+
 .markdown-body ol li blockquote {
     margin-top: 10px;
 }

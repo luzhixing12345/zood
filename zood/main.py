@@ -15,6 +15,7 @@ def main():
     parser.add_argument("-s", "--save", action="store_true", help="save global config")
     # start http server
     parser.add_argument("-o", "--open", action="store_true", help="start http server")
+    parser.add_argument("-p", "--port", type=int, help="http server port")
     parser.add_argument("-v", "--version", action="store_true", help="show version")
     args = parser.parse_args()
 
@@ -37,7 +38,7 @@ def main():
     if args.open:
         chdir_md(md_dir_name)
         generate_web_docs(config)
-        start_http_server(config)
+        start_http_server(config, args.port)
         return
 
     if args.save:

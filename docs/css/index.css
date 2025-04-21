@@ -211,7 +211,7 @@ blockquote {
 .markdown-body ol {
     margin-top: 0;
     margin-bottom: 8px;
-    padding-left: 2.5em;
+    padding-left: 2.3em;
 }
 
 
@@ -225,6 +225,11 @@ blockquote {
 .markdown-body ul ol {
     padding-left: 1.75em;
     margin-top: 10px;
+}
+
+.markdown-body ul p,
+.markdown-body ol p {
+    margin-bottom: 10px;
 }
 
 .markdown-body ol li blockquote {
@@ -634,7 +639,7 @@ ol>li>ul>li {
 
 .markdown-body ul:has(input[type="checkbox"]) {
     list-style-type: none;
-    padding-left: 0em;
+    padding-left: 0.5em;
     margin-bottom: 8px;
 }
 
