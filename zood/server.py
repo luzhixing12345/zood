@@ -56,30 +56,44 @@ def find_available_port(start_port=8000, end_port=9000):
     sock.close()
     return port
 
-
+def get_ip_address():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # doesn't even have to be reachable
+        s.connect(('10.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except Exception:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
 
 def show_server_info(time, port: int):
     info("\n    ")
     info(f"ZOOD v{get_version()}", "green")
-    info("  ready in ", "grey")
-    info(f"{time} ms")
+    info(f"  ready in {time} ms")
     info("\n\n    ")
     info(ARROW_CHAR, "green")
     info("Local:  ", "strong")
     info(f"http://127.0.0.1:{port}/docs/index.html", "blue")
     info("\n    ")
     info(ARROW_CHAR, "green")
-    info("press ", "grey")
-    info("r + enter", "strong")
-    info(" to regenerate docs", "grey")
+    info("Remote:  ", "strong")
+    ip = get_ip_address()
+    info(f"http://{ip}:{port}/docs/index.html", "blue")
     info("\n    ")
     info(ARROW_CHAR, "green")
-    info("press ", "grey")
+    info("press ")
+    info("r + enter", "strong")
+    info(" to regenerate docs")
+    info("\n    ")
+    info(ARROW_CHAR, "green")
+    info("press ")
     info("q + enter", "strong")
-    info(" to quit", "grey")
+    info(" to quit")
     info("\n\n    ")
 
-def start_http_server(config, port=8000):
+def start_http_server(config, port=36001):
     # 切换到指定的目录
     directory = os.path.join(os.getcwd(), config['html_folder'])
     if port is None:
