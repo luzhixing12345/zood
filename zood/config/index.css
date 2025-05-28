@@ -670,6 +670,10 @@ ol>li>ul>li {
     list-style: none;
     max-height: 50%;
     overflow: auto;
+    border-left: 2px solid #e0e0e0;
+    /* 添加左侧灰色竖线 */
+    padding-left: -5px;
+    /* 增加左侧内边距，与竖线保持适当距离 */
 }
 
 .header-navigator::-webkit-scrollbar {

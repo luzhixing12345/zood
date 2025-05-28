@@ -44,6 +44,12 @@ def update_PYPI_package(choice=None):
     except:
         pass
 
+    # check if poetry is installed
+    result = subprocess.run(["poetry", "--version"], capture_output=True, text=True)
+    if result.returncode != 0:
+        print_info("poetry 未安装", "red")
+        return
+
     with open(pyproject_path, "r", encoding="utf-8") as f:
         file = f.read()
 

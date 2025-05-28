@@ -37,7 +37,17 @@ class SilentHTTPRequestHandler(SimpleHTTPRequestHandler):
         except Exception as e:
             # 捕获其他异常,避免服务器崩溃
             print(f"An error occurred: {e}")
-    
+
+def check_port_available(port):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        try:
+            s.bind(('localhost', port))
+            return True
+        except socket.error as e:
+            return False
+        except Exception as e:
+            return False
+
 def find_available_port(start_port=8000, end_port=9000):
     # 创建一个socket对象
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -96,7 +106,7 @@ def show_server_info(time, port: int):
 def start_http_server(config, port=36001):
     # 切换到指定的目录
     directory = os.path.join(os.getcwd(), config['html_folder'])
-    if port is None:
+    if port is None or not check_port_available(port):
         port = find_available_port()
     else:
         # check if port is available
