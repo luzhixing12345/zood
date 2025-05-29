@@ -132,7 +132,9 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
         url: str = self.input["url"]
         # 判断一下是否是本地的跳转链接
         local_url = os.path.normpath(os.path.join(os.path.dirname(file_path), unquote(url)))
-        if not url.startswith("http") and os.path.exists(local_url) and local_url.endswith(".md"):
+        if not url.startswith("http") and local_url.endswith(".md"):
+            if not os.path.exists(local_url):
+                zood_info(f"[!] 文件 {file_path} 引用不存在的文件 {local_url}", 'red')
             local_url = local_url[len(md_dir_name) : -3].lstrip("\\").lstrip("/")
             # 如果 url 没有父目录, 加上 md_dir_name
             if not os.path.dirname(local_url):

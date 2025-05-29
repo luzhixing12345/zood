@@ -143,6 +143,7 @@ def start_http_server(config, port=36001):
             while True:
                 clear_screen()
                 show_server_info((int((end_time - start_time) * 1000)), port)
+                show_error_info()
                 command = input()
                 if command.lower() == 'r':
                     set_start_time()

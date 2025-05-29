@@ -7,6 +7,7 @@ import syntaxlight
 from importlib.metadata import version
 
 DIR_TREE = NewType("DIR_TREE", Dict[str, List[Dict[str, str]]])
+zood_error_info = []
 
 def get_github_repo_url() -> str:
     """
@@ -57,12 +58,14 @@ def zood_info(msg, color="red", hide_zood=False, end="\n"):
     zood_mark = "[zood]: " if not hide_zood else ""
     if color == "red":
         print(f"\033[1;31m{zood_mark}{msg}\033[0m", end=end)
+        zood_error_info.append(msg)
     elif color == "green":
         print(f"\033[1;32m{zood_mark}{msg}\033[0m", end=end)
     elif color == "grey":
         print(f"\033[1;30m{zood_mark}{msg}\033[0m", end=end)
     else:
         print(msg, end=end)
+
 
 def info(msg, color=None, end=""):
     if color == "red":
@@ -79,6 +82,12 @@ def info(msg, color=None, end=""):
         print(f"\033[1m{msg}\033[0m", end=end)
     else:
         print(msg, end=end)
+
+def show_error_info():
+    if zood_error_info:
+        info("zood 执行过程中出现错误, 请检查以下信息\n", color="red")
+        for i in zood_error_info:
+            info(i, color="red", end='\n')
 
 def get_zood_config():
     """
