@@ -9,7 +9,12 @@ import time
 import webbrowser
 import errno
 
+start_time = 0
 ARROW_CHAR = "➜  "
+
+def set_start_time():
+    global start_time
+    start_time = time.time()
 
 def is_wsl():
     try:
@@ -119,8 +124,6 @@ def start_http_server(config, port=36001):
                     return
                 else:
                     raise
-                
-    start_time = time.time()
 
     # 创建 HTTP 服务器
     with HTTPServer(('', port), SilentHTTPRequestHandler) as httpd:
@@ -142,7 +145,10 @@ def start_http_server(config, port=36001):
                 show_server_info((int((end_time - start_time) * 1000)), port)
                 command = input()
                 if command.lower() == 'r':
+                    set_start_time()
+                    config = get_zood_config()
                     generate_web_docs(config)
+                    end_time = time.time()
                 elif command.lower() == 'q':
                     break
         except KeyboardInterrupt:

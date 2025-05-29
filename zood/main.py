@@ -6,7 +6,7 @@ from .util import *
 from .gen_doc import generate_web_docs, chdir_md
 from .zood import *
 from .extensions import update_PYPI_package, update_vsce_package
-from .server import start_http_server
+from .server import start_http_server, set_start_time
 
 def main():
     parser = argparse.ArgumentParser(description="zood: web page documentation & comment generation documentation")
@@ -36,6 +36,7 @@ def main():
         return
 
     if args.open:
+        set_start_time()
         chdir_md(md_dir_name)
         generate_web_docs(config)
         start_http_server(config, args.port)

@@ -88,6 +88,7 @@ def parse_markdown(config: DIR_TREE):
                         sys.stderr = sys.__stderr__
                         traceback.print_exc()
                         zood_info(f"欢迎反馈错误信息到 https://github.com/luzhixing12345/zood/issues/new, 感谢您的支持")
+                        exit()
                         markdown_html = ""
 
                     markdown_htmls[file_path] = markdown_html
@@ -218,6 +219,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
                     exception = e
                     print(f"解析错误: {file_path}: {exception}")
                     print(f'```{language}\n{block.input["code"]}\n```')
+                    exit()
 
                 block.input["code"] = parse_result.parser.to_html(
                     highlight_lines=highlight_lines, highlight_tokens=highlight_tokens
