@@ -69,6 +69,8 @@ function handleResize() {
             if (found && closestHeading) {
                 var link = document.querySelector(`a[href="#${closestHeading.id}"]`);
                 if (link) {
+                    // set color to black
+                    link.style.color = 'black';
                     link.style.fontWeight = '900';  // 使用更重的字重
                     currentHeading = closestHeading;
                 }
@@ -76,6 +78,7 @@ function handleResize() {
                 // 如果没有找到可见的标题，保持当前标题的高亮状态
                 var link = document.querySelector(`a[href="#${currentHeading.id}"]`);
                 if (link) {
+                    link.style.color = 'black';
                     link.style.fontWeight = '900';  // 使用更重的字重
                 }
             }

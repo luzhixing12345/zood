@@ -535,6 +535,21 @@ ol>li>ul>li {
     white-space: nowrap;
 }
 
+.dir-tree ul ul {
+    overflow: hidden;
+    transform-origin: top;
+}
+
+.dir-tree ul ul.collapsed {
+    transform: scaleY(0);
+    opacity: 0;
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 .dir-tree ul ul li {
     font-family: "<%font_family%>";
     letter-spacing: "<%letter_spacing%>";
@@ -552,22 +567,6 @@ ol>li>ul>li {
 /* .dir-tree ul ul li:hover {
   background-color: "<%body_bg_color%>";
 } */
-
-.dir-tree a {
-    text-decoration: none;
-    color: "<%dir_tree_color%>";
-    /* https://www.bilibili.com/video/BV1Dc41147sW */
-    /* background: linear-gradient(to right, #000, #000) no-repeat right bottom;
-    background-size: 0 2px;
-    transition: background-size 1000ms; */
-}
-
-.dir-tree a:hover {
-    font-weight: bold;
-    color: "<%dir_tree_hover_color%>";
-    /* background-position-x: left;
-    background-size: 100% 2px; */
-}
 
 .dir-tree ul ul li a {
     color: "<%dir_second_tree_color%>";
@@ -952,4 +951,20 @@ body.lb-disable-scrolling {
     .zood {
         display: none;
     }
+}
+
+.dir-tree a {
+    text-decoration: none;
+    color: "<%dir_tree_color%>";
+    /* https://www.bilibili.com/video/BV1Dc41147sW */
+    /* background: linear-gradient(to right, #000, #000) no-repeat right bottom;
+    background-size: 0 2px;
+    transition: background-size 1000ms; */
+}
+
+.dir-tree a:hover {
+    font-weight: bold;
+    color: "<%dir_tree_hover_color%>";
+    /* background-position-x: left;
+    background-size: 100% 2px; */
 }

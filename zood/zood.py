@@ -203,6 +203,7 @@ mermaid.initialize({ startOnLoad: true });\
             """
             js_scope += js_code
 
+    js_scope += insert_js_code("dir_tree_toggle", html_dir_name)
     js_scope += insert_js_code("global_js_configuration", html_dir_name)
 
     return js_scope

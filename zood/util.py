@@ -9,6 +9,7 @@ from importlib.metadata import version
 DIR_TREE = NewType("DIR_TREE", Dict[str, List[Dict[str, str]]])
 zood_error_info = []
 
+
 def get_github_repo_url() -> str:
     """
     暂时只考虑从 origin 获取的 git 地址
@@ -25,8 +26,10 @@ def get_github_repo_url() -> str:
         return url
     return url
 
+
 def get_version():
     return version("zood")
+
 
 # 获取 github 地址
 GITHUB_REPO_URL = get_github_repo_url()
@@ -74,20 +77,24 @@ def info(msg, color=None, end=""):
         print(f"\033[1;32m{msg}\033[0m", end=end)
     elif color == "grey":
         print(f"\033[1;30m{msg}\033[0m", end=end)
-    elif color == 'blue':
+    elif color == "blue":
         print(f"\033[1;34m{msg}\033[0m", end=end)
-    elif color == 'cyan':
+    elif color == "cyan":
         print(f"\033[1;36m{msg}\033[0m", end=end)
     elif color == "strong":
         print(f"\033[1m{msg}\033[0m", end=end)
     else:
         print(msg, end=end)
 
+
 def show_error_info():
     if zood_error_info:
         info("zood 执行过程中出现错误, 请检查以下信息\n", color="red")
         for i in zood_error_info:
-            info(i, color="red", end='\n')
+            info(i, color="red", end="\n")
+
+        zood_error_info.clear()
+
 
 def get_zood_config():
     """
@@ -255,7 +262,7 @@ def parse_highlight_info(append_text: str):
     return highlight_lines, highlight_tokens
 
 
-def show_highlight_position_info(parser: syntaxlight.Parser, show_token_id = False):
+def show_highlight_position_info(parser: syntaxlight.Parser, show_token_id=False):
 
     current_line = 0
     max_line = parser.token_list[-1].line
@@ -264,13 +271,13 @@ def show_highlight_position_info(parser: syntaxlight.Parser, show_token_id = Fal
             current_line = token.line
             # 以 max_line 对齐
             info(f"{current_line:>{len(str(max_line))}} | ", color="grey")
-            
+
         info(token.value)
         if show_token_id and token.value not in ["\n", "\r"]:
-            info(f'[{i}]', color="grey")
-            
+            info(f"[{i}]", color="grey")
+
     print("")
-            
+
 
 # 清屏
 def clear_screen():
