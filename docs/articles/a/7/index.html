@@ -32,6 +32,54 @@
 </span><span class="Token Program ID">Failed</span><span class="Token SPACE"> </span><span class="Token ID">to</span><span class="Token SPACE"> </span><span class="Token ID">generate</span><span class="Token SPACE"> </span><span class="Token ID">BTF</span><span class="Token SPACE"> </span><span class="Token Keyword FOR">for</span><span class="Token SPACE"> </span><span class="Token ID">vmlinux</span><span class="Token LF">
 </span><span class="Token Program ID">Try</span><span class="Token SPACE"> </span><span class="Token ID">to</span><span class="Token SPACE"> </span><span class="Token ID">disable</span><span class="Token SPACE"> </span><span class="Token ID">CONFIG_DEBUG_INFO_BTF</span><span class="Token LF">
 </span><span class="Token Program ID">make:</span><span class="Token SPACE"> </span><span class="Token MUL">*</span><span class="Token MUL">*</span><span class="Token MUL">*</span><span class="Token SPACE"> </span><span class="Token BraceDepth-0 LSQUAR_PAREN">[</span><span class="Token ID">Makefile:1199:</span><span class="Token SPACE"> </span><span class="Token ID">vmlinux</span><span class="Token BraceDepth-0 RSQUAR_PAREN">]</span><span class="Token SPACE"> </span><span class="Token ID">Error</span><span class="Token SPACE"> </span><span class="Token NUMBER">1</span></code></pre><p>在.config把CONFIG_DEBUG_INFO_BTF注释掉</p><h3 id="h3-12">其他</h3><ul><li><a href="https://blog.csdn.net/nongchaoer201012/article/details/114609518" target="_blank">https://blog.csdn.net/nongchaoer201012/article/details/114609518</a></li></ul><ul><li><a href="https://blog.csdn.net/Luckiers/article/details/124544179" target="_blank">https://blog.csdn.net/Luckiers/article/details/124544179</a></li></ul><ul><li><a href="https://www.zhihu.com/search?q=%E7%BC%96%E8%AF%91linux%E5%86%85%E6%A0%B8&type=content&vertical=article" target="_blank">https://www.zhihu.com/search?q=%E7%BC%96%E8%AF%91linux%E5%86%85%E6%A0%B8&amp;type=content&amp;vertical=article</a></li></ul><ul><li><a href="https://lantern.cool/note-pwn-kernel-compilation-problem/#gcc-%E7%89%88%E6%9C%AC%E9%97%AE%E9%A2%98" target="_blank">https://lantern.cool/note-pwn-kernel-compilation-problem/#gcc-%E7%89%88%E6%9C%AC%E9%97%AE%E9%A2%98</a></li></ul><ul><li><a href="https://richardweiyang-2.gitbook.io/kernel-exploring/00_index/10_those_buddy_in_kbuild" target="_blank">https://richardweiyang-2.gitbook.io/kernel-exploring/00_index/10_those_buddy_in_kbuild</a></li></ul><h2 id="h2-13">参考</h2><ul><li><a href="https://github.com/dibingfa/flash-linux0.11-talk" target="_blank">品读 Linux 0.11 核心代码</a></li></ul><ul><li><a href="https://github.com/liexusong/linux-source-code-analyze" target="_blank">Linux源码分析</a></li></ul><ul><li><a href="https://howardlau.me/programming/debugging-linux-kernel-with-vscode-qemu.html" target="_blank">使用 VSCode + qemu 搭建 Linux 内核调试环境</a></li></ul></div>
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var markdownBody = document.querySelector('.markdown-body');
+                    var giscusDiv = markdownBody.querySelector('.giscus');
+                    var referenceHtml = `<div class="references-tabs-container">
+<div class="references-tabs-nav">
+<button class="references-tab-btn active" data-tab="references-in">本文被引用</button>
+</div>
+<div class="references-tabs-content">
+<div class="references-tab-pane active" id="references-in">
+<ul class="reference-list">
+<li><a href="../../a/4">📄 4</a></li>
+</ul>
+</div>
+</div>
+</div>`;
+                    
+                    if (giscusDiv) {
+                        giscusDiv.insertAdjacentHTML('beforebegin', referenceHtml);
+                    } else {
+                        markdownBody.insertAdjacentHTML('beforeend', referenceHtml);
+                    }
+                    
+                    // 添加选项卡切换功能
+                    setTimeout(function() {
+                        var tabButtons = document.querySelectorAll('.references-tab-btn');
+                        var tabPanes = document.querySelectorAll('.references-tab-pane');
+                        
+                        tabButtons.forEach(function(button) {
+                            button.addEventListener('click', function() {
+                                var targetTab = this.getAttribute('data-tab');
+                                
+                                // 移除所有active类
+                                tabButtons.forEach(btn => btn.classList.remove('active'));
+                                tabPanes.forEach(pane => pane.classList.remove('active'));
+                                
+                                // 添加active类到当前选中的选项卡
+                                this.classList.add('active');
+                                var targetPane = document.getElementById(targetTab);
+                                if (targetPane) {
+                                    targetPane.classList.add('active');
+                                }
+                            });
+                        });
+                    }, 100);
+                });
+                </script>
+                
     <div class="dir-tree"><ul><li><a href="../../md-docs/README" >README</a></li></ul><ul><li><a href="../../快速开始/安装与使用" >快速开始</a><ul><li><a href="../../快速开始/安装与使用" >安装与使用</a></li></ul><ul><li><a href="../../快速开始/配置信息" >配置信息</a></li></ul><ul><li><a href="../../快速开始/功能演示" >功能演示</a></li></ul><ul><li><a href="../../快速开始/代码高亮" >代码高亮</a></li></ul></li></ul><ul><li><a href="../../API/zood init" >API</a><ul><li><a href="../../API/zood init" >zood init</a></li></ul><ul><li><a href="../../API/zood config" >zood config</a></li></ul><ul><li><a href="../../API/zood -g" >zood -g</a></li></ul></li></ul><ul><li><a href="../../a/1" >a</a><ul><li><a href="../../a/1" >1</a></li></ul><ul><li><a href="../../a/1111111111111111111" >1111111111111111111</a></li></ul><ul><li><a href="../../a/2" >2</a></li></ul><ul><li><a href="../../a/3" >3</a></li></ul><ul><li><a href="../../a/4" >4</a></li></ul><ul><li><a href="../../a/5" >5</a></li></ul><ul><li><a href="../../a/6" >6</a></li></ul><ul><li><a href="../../a/7" >7</a></li></ul><ul><li><a href="../../a/8" >8</a></li></ul></li></ul></div>
     <div class="zood"><a class="" href="https://github.com/luzhixing12345/zood" target="_blank">zood</a></div>
     <script type="text/javascript" src="../../../js/next_front.js"></script><script>addLink("../../a/6","../../a/8","ab");</script><script type="text/javascript" src="../../../js/change_mode.js"></script><script>addChangeModeButton("../../../img/sun.png","../../../img/moon.png");</script><script type="text/javascript" src="../../../js/copy_code.js"></script><script>addCodeCopy("../../../img/clipboard.svg","../../../img/clipboard-check.svg");</script><script type="text/javascript" src="../../../js/navigator.js"></script><script type="text/javascript" src="../../../js/picture_preview.js"></script>
@@ -40,7 +88,7 @@
             data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom"
             data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async>
             </script>
-            <script type="text/javascript" src="../../../js/global_js_configuration.js"></script>
+            <script type="text/javascript" src="../../../js/dir_tree_toggle.js"></script><script type="text/javascript" src="../../../js/global_js_configuration.js"></script>
 </body>
 
 </html>

@@ -19,6 +19,10 @@ LANGUAGE_USED = set()
 TOTAL_ERROR_NUMBER = 0
 CODE_BLOCK_NUMBER = 1
 
+# 添加全局变量来跟踪引用关系
+REFERENCE_GRAPH = {}  # 存储文档间的引用关系 {source_file: [target_files]}
+CURRENT_FILE_PATH = ""  # 当前正在处理的文件路径
+
 
 def chdir_md(md_dir_name):
     current_dir = os.getcwd()
@@ -111,6 +115,13 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
     https://github.com/luzhixing12345/syntaxlight
     """
 
+    global CURRENT_FILE_PATH, REFERENCE_GRAPH
+    CURRENT_FILE_PATH = file_path
+
+    # 初始化当前文件的引用列表
+    if file_path not in REFERENCE_GRAPH:
+        REFERENCE_GRAPH[file_path] = []
+
     def code_to_html(self: MarkdownParser.Block):
         return f'<pre class="language-{self.input["language"]}"><code>{self.input["code"]}</code></pre>'
 
@@ -129,12 +140,21 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
         return f'<a data-lightbox="example-1" href="{url}"><img loading="lazy" src="{url}" alt="{word}"></a>'
 
     def ref_to_html(self: MarkdownParser.Block):
+        global CURRENT_FILE_PATH, REFERENCE_GRAPH
         url: str = self.input["url"]
         # 判断一下是否是本地的跳转链接
         local_url = os.path.normpath(os.path.join(os.path.dirname(file_path), unquote(url)))
         if not url.startswith("http") and local_url.endswith(".md"):
             if not os.path.exists(local_url):
-                zood_info(f"[!] 文件 {file_path} 引用不存在的文件 {local_url}", 'red')
+                zood_info(f"[!] 文件 {file_path} 引用不存在的文件 {local_url}", "red")
+            else:
+                # 记录引用关系
+                normalized_target = local_url.replace(os.sep, "/")
+                normalized_source = CURRENT_FILE_PATH.replace(os.sep, "/")
+
+                if normalized_target not in REFERENCE_GRAPH[normalized_source]:
+                    REFERENCE_GRAPH[normalized_source].append(normalized_target)
+
             local_url = local_url[len(md_dir_name) : -3].lstrip("\\").lstrip("/")
             # 如果 url 没有父目录, 加上 md_dir_name
             if not os.path.dirname(local_url):
@@ -242,6 +262,99 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
         markdown_tree_preprocess(block, file_path, github_repo_url, md_dir_name)
 
 
+def generate_reference_section(current_file_path: str, md_dir_name: str, directory_tree) -> str:
+    """
+    生成本文引用和本文被引用的HTML部分，使用选项卡形式
+    """
+    global REFERENCE_GRAPH
+
+    # 标准化当前文件路径
+    normalized_current = current_file_path.replace(os.sep, "/")
+
+    # 获取本文引用的文件
+    references_out = REFERENCE_GRAPH.get(normalized_current, [])
+
+    # 获取引用本文的文件
+    references_in = []
+    for source_file, target_files in REFERENCE_GRAPH.items():
+        if normalized_current in target_files:
+            references_in.append(source_file)
+
+    # 如果没有任何引用关系，返回空字符串
+    if not references_out and not references_in:
+        return ""
+
+    # 构建文件路径到标题的映射
+    file_to_title = {}
+    for item in directory_tree:
+        dir_name = list(item.keys())[0]
+        files = item[dir_name]
+        actual_dir = md_dir_name if dir_name == "." else dir_name
+        for file_name in files:
+            file_path = os.path.join(actual_dir, file_name + ".md").replace(os.sep, "/")
+            # 简单使用文件名作为标题，你也可以从markdown中提取实际标题
+            title = file_name.replace("_", " ").replace("-", " ")
+            file_to_title[file_path] = title
+
+    html_parts = []
+
+    # 创建选项卡容器
+    html_parts.append('<div class="references-tabs-container">')
+
+    # 创建选项卡导航
+    html_parts.append('<div class="references-tabs-nav">')
+
+    if references_out:
+        html_parts.append('<button class="references-tab-btn active" data-tab="references-out">本文引用</button>')
+
+    if references_in:
+        active_class = "active" if not references_out else ""
+        html_parts.append(
+            f'<button class="references-tab-btn {active_class}" data-tab="references-in">本文被引用</button>'
+        )
+
+    html_parts.append("</div>")
+
+    # 创建选项卡内容
+    html_parts.append('<div class="references-tabs-content">')
+
+    # 本文引用选项卡内容
+    if references_out:
+        html_parts.append('<div class="references-tab-pane active" id="references-out">')
+        html_parts.append('<ul class="reference-list">')
+        for ref_file in references_out:
+            title = file_to_title.get(ref_file, os.path.basename(ref_file).replace(".md", ""))
+            # 构建相对URL
+            ref_path = ref_file[len(md_dir_name) :].lstrip("/").replace(".md", "")
+            if "/" not in ref_path:
+                ref_path = f"{md_dir_name}/{ref_path}"
+            ref_url = f"../../{ref_path}"
+            html_parts.append(f'<li><a href="{ref_url}">📄 {title}</a></li>')
+        html_parts.append("</ul>")
+        html_parts.append("</div>")
+
+    # 本文被引用选项卡内容
+    if references_in:
+        active_class = "active" if not references_out else ""
+        html_parts.append(f'<div class="references-tab-pane {active_class}" id="references-in">')
+        html_parts.append('<ul class="reference-list">')
+        for ref_file in references_in:
+            title = file_to_title.get(ref_file, os.path.basename(ref_file).replace(".md", ""))
+            # 构建相对URL
+            ref_path = ref_file[len(md_dir_name) :].lstrip("/").replace(".md", "")
+            if "/" not in ref_path:
+                ref_path = f"{md_dir_name}/{ref_path}"
+            ref_url = f"../../{ref_path}"
+            html_parts.append(f'<li><a href="{ref_url}">📄 {title}</a></li>')
+        html_parts.append("</ul>")
+        html_parts.append("</div>")
+
+    html_parts.append("</div>")  # 结束 references-tabs-content
+    html_parts.append("</div>")  # 结束 references-tabs-container
+
+    return "\n".join(html_parts)
+
+
 def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TREE):
     html_dir_name = config["html_folder"]
     md_dir_name = config["markdown_folder"]
@@ -318,6 +431,51 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
         html_path = os.path.join(doc_path, "index.html")
         with open(html_path, "w", encoding="utf-8") as f:
             front_url, next_url = caculate_front_next_url(flat_paths, file_path, md_dir_name)
+            # 生成引用信息的JavaScript数据
+            reference_section = generate_reference_section(file_path, md_dir_name, directory_tree)
+            # 将引用信息嵌入到JavaScript中
+            if reference_section:
+                reference_js = f"""
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {{
+                    var markdownBody = document.querySelector('.markdown-body');
+                    var giscusDiv = markdownBody.querySelector('.giscus');
+                    var referenceHtml = `{reference_section}`;
+                    
+                    if (giscusDiv) {{
+                        giscusDiv.insertAdjacentHTML('beforebegin', referenceHtml);
+                    }} else {{
+                        markdownBody.insertAdjacentHTML('beforeend', referenceHtml);
+                    }}
+                    
+                    // 添加选项卡切换功能
+                    setTimeout(function() {{
+                        var tabButtons = document.querySelectorAll('.references-tab-btn');
+                        var tabPanes = document.querySelectorAll('.references-tab-pane');
+                        
+                        tabButtons.forEach(function(button) {{
+                            button.addEventListener('click', function() {{
+                                var targetTab = this.getAttribute('data-tab');
+                                
+                                // 移除所有active类
+                                tabButtons.forEach(btn => btn.classList.remove('active'));
+                                tabPanes.forEach(pane => pane.classList.remove('active'));
+                                
+                                // 添加active类到当前选中的选项卡
+                                this.classList.add('active');
+                                var targetPane = document.getElementById(targetTab);
+                                if (targetPane) {{
+                                    targetPane.classList.add('active');
+                                }}
+                            }});
+                        }});
+                    }}, 100);
+                }});
+                </script>
+                """
+                markdown_html_with_refs = markdown_html + reference_js
+            else:
+                markdown_html_with_refs = markdown_html
             # print(html_path,front_url,next_url)
             final_html = url_replace(html_template, front_url, next_url, "ab")
-            f.write(final_html.replace("html-scope", markdown_html))
+            f.write(final_html.replace("html-scope", markdown_html_with_refs))

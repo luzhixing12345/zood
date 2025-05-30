@@ -968,3 +968,138 @@ body.lb-disable-scrolling {
     /* background-position-x: left;
     background-size: 100% 2px; */
 }
+
+/* 引用部分样式 */
+.references-tabs-container {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
+.markdown-dark .references-tabs-container {
+    border-color: #30363d;
+    background-color: #0d1117;
+}
+
+/* 选项卡导航 */
+.references-tabs-nav {
+    display: flex;
+    background-color: #f6f8fa;
+    border-bottom: 1px solid #e1e4e8;
+}
+
+.markdown-dark .references-tabs-nav {
+    background-color: #21262d;
+    border-bottom-color: #30363d;
+}
+
+.references-tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: none;
+    color: #656d76;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.markdown-dark .references-tab-btn {
+    color: #8b949e;
+}
+
+.references-tab-btn:hover {
+    color: #24292f;
+    background-color: #f3f4f6;
+}
+
+.markdown-dark .references-tab-btn:hover {
+    color: #f0f6fc;
+    background-color: #30363d;
+}
+
+.references-tab-btn.active {
+    color: #0969da;
+    border-bottom-color: #0969da;
+    background-color: #ffffff;
+}
+
+.markdown-dark .references-tab-btn.active {
+    color: #58a6ff;
+    border-bottom-color: #58a6ff;
+    background-color: #0d1117;
+}
+
+/* 选项卡内容 */
+.references-tabs-content {
+    position: relative;
+}
+
+.references-tab-pane {
+    display: none;
+    padding: 20px;
+}
+
+.references-tab-pane.active {
+    display: block;
+}
+
+.reference-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.reference-list li {
+    margin-bottom: 8px;
+    padding: 12px 16px;
+    background-color: #f6f8fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.markdown-dark .reference-list li {
+    background-color: #21262d;
+    border-color: #30363d;
+}
+
+.reference-list li:hover {
+    background-color: #ffffff;
+    border-color: #0969da;
+    transform: translateX(4px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.markdown-dark .reference-list li:hover {
+    background-color: #30363d;
+    border-color: #58a6ff;
+}
+
+.reference-list a {
+    text-decoration: none;
+    color: #0969da;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.markdown-dark .reference-list a {
+    color: #58a6ff;
+}
+
+.reference-list a:hover {
+    text-decoration: none;
+    color: #0969da;
+}
+
+.markdown-dark .reference-list a:hover {
+    color: #58a6ff;
+}
