@@ -7,6 +7,7 @@ from .util import *
 import time
 import webbrowser
 import errno
+import sys
 
 start_time = 0
 ARROW_CHAR = "➜  "
@@ -162,5 +163,8 @@ def start_http_server(config, port=36001):
                     break
         except KeyboardInterrupt:
             print("\nServer is shutting down...")
-
-        exit()# 等待服务器线程退出
+        finally:
+            httpd.shutdown()  # 停止服务器
+            httpd.server_close()  # 关闭服务器socket
+            server_thread.join(timeout=1)  # 等待服务器线程结束,设置超时时间为1秒
+            sys.exit(0)  # 使用sys.exit(0)正常退出

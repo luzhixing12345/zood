@@ -40,7 +40,7 @@ def chdir_md(md_dir_name):
         if parent_dir == current_dir:
             # 如果到达根目录仍未找到,返回 None
             print(f"找不到 {md_dir_name}")
-            exit()
+            sys.exit(1)
 
         # 更新当前目录为上级目录
         current_dir = parent_dir
@@ -76,7 +76,7 @@ def parse_markdown(config: DIR_TREE):
                 if not os.path.exists(file_path):
                     zood_info("找不到文件" + file_path)
                     print("如手动删除md文件请同步更新 dir.yml")
-                    exit(1)
+                    sys.exit(1)
                 else:
                     try:
                         with open(file_path, "r", encoding="utf-8") as f:
@@ -92,7 +92,7 @@ def parse_markdown(config: DIR_TREE):
                         sys.stderr = sys.__stderr__
                         traceback.print_exc()
                         zood_info(f"欢迎反馈错误信息到 https://github.com/luzhixing12345/zood/issues/new, 感谢您的支持")
-                        exit()
+                        sys.exit(1)
                         markdown_html = ""
 
                     markdown_htmls[file_path] = markdown_html
@@ -117,6 +117,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
 
     global CURRENT_FILE_PATH, REFERENCE_GRAPH
     CURRENT_FILE_PATH = file_path
+    file_path = file_path.replace(os.sep, "/")
 
     # 初始化当前文件的引用列表
     if file_path not in REFERENCE_GRAPH:
@@ -147,6 +148,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
         if not url.startswith("http") and local_url.endswith(".md"):
             if not os.path.exists(local_url):
                 zood_info(f"[!] 文件 {file_path} 引用不存在的文件 {local_url}", "red")
+                sys.exit(1)
             else:
                 # 记录引用关系
                 normalized_target = local_url.replace(os.sep, "/")
@@ -233,7 +235,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
                     if append_text == "?" or append_text == "??":
                         zood_info(f"请根据提示信息进行高亮定位 file: {file_path}", "green")
                         show_highlight_position_info(parse_result.parser, show_token_id=append_text == "??")
-                        exit()
+                        sys.exit()
                     else:
                         highlight_lines, highlight_tokens = parse_highlight_info(append_text)
                     exception = parse_result.error
@@ -241,7 +243,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
                     exception = e
                     print(f"解析错误: {file_path}: {exception}")
                     print(f'```{language}\n{block.input["code"]}\n```')
-                    exit()
+                    sys.exit()
 
                 block.input["code"] = parse_result.parser.to_html(
                     highlight_lines=highlight_lines, highlight_tokens=highlight_tokens
@@ -264,7 +266,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
 
 def generate_reference_section(current_file_path: str, md_dir_name: str, directory_tree) -> str:
     """
-    生成本文引用和本文被引用的HTML部分，使用选项卡形式
+    生成本文引用和本文被引用的HTML部分,使用选项卡形式
     """
     global REFERENCE_GRAPH
 
@@ -280,7 +282,7 @@ def generate_reference_section(current_file_path: str, md_dir_name: str, directo
         if normalized_current in target_files:
             references_in.append(source_file)
 
-    # 如果没有任何引用关系，返回空字符串
+    # 如果没有任何引用关系,返回空字符串
     if not references_out and not references_in:
         return ""
 
@@ -292,7 +294,7 @@ def generate_reference_section(current_file_path: str, md_dir_name: str, directo
         actual_dir = md_dir_name if dir_name == "." else dir_name
         for file_name in files:
             file_path = os.path.join(actual_dir, file_name + ".md").replace(os.sep, "/")
-            # 简单使用文件名作为标题，你也可以从markdown中提取实际标题
+            # 简单使用文件名作为标题,你也可以从markdown中提取实际标题
             title = file_name.replace("_", " ").replace("-", " ")
             file_to_title[file_path] = title
 
@@ -361,7 +363,7 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
     index_README_path = os.path.join(md_dir_name, ".", "README.md")
     if not os.path.exists(index_README_path):
         zood_info(f"您需要保留 {md_dir_name}/README.md 作为首页")
-        exit()
+        sys.exit()
 
     if os.path.exists(html_dir_name):
         remove_directory(html_dir_name)
