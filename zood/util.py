@@ -181,8 +181,7 @@ def get_dir_tree(directory_tree, md_dir_name):
             tree_html += treeItem(dir_name, first_dir_url_link, sub_tree=sub_tree_html)
 
     # print(tree_html)
-    # 添加loading类，避免页面加载时的闪烁效果
-    return f'<div class="dir-tree loading">{tree_html}</div>'
+    return f'<div class="dir-tree">{tree_html}</div>'
 
 
 def treeItem(name, dir_url_link, sub_tree=False):
