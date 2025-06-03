@@ -8,6 +8,7 @@ from .zood import *
 from .extensions import update_PYPI_package, update_vsce_package
 from .server import start_http_server, set_start_time
 
+
 def main():
     parser = argparse.ArgumentParser(description="zood: web page documentation & comment generation documentation")
     parser.add_argument("cmd", type=str, nargs="*", help="initialize docs template")
@@ -144,6 +145,9 @@ def main():
         with open(os.path.join(os.path.dirname(__file__), "config", "error.log"), "r", encoding="utf-8") as f:
             print(f.read())
 
+    elif args.cmd[0] == "list":
+        list_files(md_dir_name, config)
+
     else:
         zood_info(f"未找到指令 zood {args.cmd[0]}")
         show_help_info()
@@ -154,13 +158,14 @@ def show_help_info():
     print("{:<20}初始化仓库".format("  zood init"))
     print("{:<20}创建A目录下的B文件".format("  zood new A B"))
     print("{:<20}创建根目录下的A文件".format("  zood new A"))
+    print("{:<20}启动 http 服务器".format("  zood -o"))
+    print("{:<20}更新配置文件".format("  zood -s"))
+    print("{:<20}列出所有文件(tree格式)".format("  zood list"))
     print("{:<20}更新dir.yml顺序".format("  zood update"))
     print("{:<20}生成docs/目录".format("  zood -g"))
     print("{:<20}删除docs/目录".format("  zood clean"))
     print("{:<20}获取配置文件".format("  zood config"))
     print("{:<20}输出错误信息".format("  zood log"))
-    print("{:<20}更新配置文件".format("  zood -s"))
-    print("{:<20}启动 http 服务器".format("  zood -o"))
 
     print("\n其他:")
     print("{:<25}更新PYPI库版本\n".format("  zood poetry <choice>"))

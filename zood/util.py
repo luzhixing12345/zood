@@ -5,6 +5,7 @@ import subprocess
 from typing import Dict, List, NewType
 import syntaxlight
 from importlib.metadata import version
+import datetime
 
 DIR_TREE = NewType("DIR_TREE", Dict[str, List[Dict[str, str]]])
 zood_error_info = []
@@ -282,3 +283,313 @@ def show_highlight_position_info(parser: syntaxlight.Parser, show_token_id=False
 # 清屏
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
+
+
+def list_files(md_dir_name: str, config: dict):
+    """
+    列出 md-docs 目录下的所有文件，类似 tree 命令的格式
+    """
+    current_dir = os.getcwd()
+
+    # 检查 md 目录是否存在
+    md_path = os.path.join(current_dir, md_dir_name)
+    if not os.path.exists(md_path):
+        zood_info(f"未找到 {md_dir_name} 目录")
+        return
+
+    # 显示目录标题
+    print(f"\033[1;34m{md_dir_name}/\033[0m")
+
+    # 显示 markdown 文件结构
+    _show_markdown_structure(md_path, "", config)
+
+
+def _show_directory_tree(base_path: str, md_dir_name: str, config: dict, prefix: str = "", is_last: bool = True):
+    """
+    递归显示目录树
+    """
+    items = []
+
+    # 收集要显示的项目
+    for item in os.listdir(base_path):
+        item_path = os.path.join(base_path, item)
+
+        # 跳过隐藏文件和不需要显示的目录
+        if item.startswith(".") and item not in [".gitignore", ".github"]:
+            continue
+
+        # 跳过一些常见的不需要显示的目录
+        if item in ["__pycache__", ".pytest_cache", "node_modules", ".vscode"]:
+            continue
+
+        items.append((item, item_path))
+
+    # 按照类型和名称排序：目录在前，文件在后，名称字母序
+    items.sort(key=lambda x: (not os.path.isdir(x[1]), x[0].lower()))
+
+    for i, (item, item_path) in enumerate(items):
+        is_last_item = i == len(items) - 1
+
+        # 确定树形结构的符号
+        if is_last_item:
+            current_prefix = "└── "
+            next_prefix = prefix + "    "
+        else:
+            current_prefix = "├── "
+            next_prefix = prefix + "│   "
+
+        # 获取文件/目录信息
+        if os.path.isdir(item_path):
+            # 获取目录中的文件数量
+            try:
+                dir_count = len([f for f in os.listdir(item_path) if not f.startswith(".") and f != "__pycache__"])
+                count_info = f" ({dir_count} items)" if dir_count > 0 else " (empty)"
+            except PermissionError:
+                count_info = " (permission denied)"
+
+            print(f"{prefix}{current_prefix}\033[1;34m{item}/\033[0m\033[90m{count_info}\033[0m")
+
+            # 特殊处理 md_dir_name 目录，显示其中的 markdown 文件结构
+            if item == md_dir_name:
+                _show_markdown_structure(item_path, next_prefix, config)
+            # 对于其他重要目录，递归显示（但限制深度）
+            elif item in ["docs", "src", "lib", "tests", "examples"] and prefix.count("│") < 2:
+                _show_directory_tree(item_path, md_dir_name, config, next_prefix, is_last_item)
+
+        else:
+            # 显示文件
+            try:
+                if item.endswith(".md"):
+                    # 对于markdown文件，显示修改时间
+                    time_info = _format_relative_time(item_path)
+                else:
+                    # 对于其他文件，显示大小
+                    file_size = os.path.getsize(item_path)
+                    time_info = _format_file_size(file_size)
+            except (OSError, PermissionError):
+                time_info = "?"
+
+            # 根据文件类型设置颜色
+            file_color = _get_file_color(item)
+            print(f"{prefix}{current_prefix}{file_color}{item}\033[0m \033[90m({time_info})\033[0m")
+
+
+def _show_markdown_structure(md_path: str, prefix: str, config: dict):
+    """
+    显示 markdown 目录的结构，优先基于 dir.yml 文件，否则直接显示目录结构
+    """
+    dir_yml_path = os.path.join(md_path, "dir.yml")
+
+    if os.path.exists(dir_yml_path):
+        try:
+            dir_yml = load_yml(dir_yml_path)
+
+            # 按照 dir.yml 的结构显示，保持原有顺序
+            dir_items = list(dir_yml.items())
+            for idx, (dir_name, files) in enumerate(dir_items):
+                is_last_dir = idx == len(dir_items) - 1
+                dir_prefix = "└── " if is_last_dir else "├── "
+
+                if dir_name == ".":
+                    # 根目录下的文件，按照 dir.yml 中的顺序排序
+                    if files:
+                        # 按照文件在 dir.yml 中定义的顺序值排序
+                        sorted_files = sorted(files, key=lambda x: list(x.values())[0] if isinstance(x, dict) else 0)
+
+                        for i, file_info in enumerate(sorted_files):
+                            if isinstance(file_info, dict):
+                                file_name = list(file_info.keys())[0]
+                                file_path = os.path.join(md_path, f"{file_name}.md")
+                                if os.path.exists(file_path):
+                                    file_time = _format_relative_time(file_path)
+                                    is_last_file = (i == len(sorted_files) - 1) and is_last_dir
+                                    file_prefix = "└── " if is_last_file else "├── "
+                                    print(
+                                        f"{prefix}{file_prefix}\033[92m{file_name}.md\033[0m \033[90m({file_time})\033[0m"
+                                    )
+                else:
+                    # 子目录
+                    sub_dir_path = os.path.join(md_path, dir_name)
+                    if os.path.exists(sub_dir_path):
+                        file_count = len(files) if files else 0
+                        print(
+                            f"{prefix}{dir_prefix}\033[1;34m{dir_name}/\033[0m\033[90m ({file_count} md files)\033[0m"
+                        )
+
+                        # 显示子目录中的文件，按照 dir.yml 中的顺序
+                        next_prefix = prefix + ("    " if is_last_dir else "│   ")
+                        if files:
+                            # 按照文件在 dir.yml 中定义的顺序值排序
+                            sorted_files = sorted(
+                                files, key=lambda x: list(x.values())[0] if isinstance(x, dict) else 0
+                            )
+
+                            for i, file_info in enumerate(sorted_files):
+                                if isinstance(file_info, dict):
+                                    file_name = list(file_info.keys())[0]
+                                    file_path = os.path.join(sub_dir_path, f"{file_name}.md")
+                                    if os.path.exists(file_path):
+                                        file_time = _format_relative_time(file_path)
+                                        is_last_file = i == len(sorted_files) - 1
+                                        file_prefix = "└── " if is_last_file else "├── "
+                                        print(
+                                            f"{next_prefix}{file_prefix}\033[92m{file_name}.md\033[0m \033[90m({file_time})\033[0m"
+                                        )
+
+        except Exception as e:
+            print(f"{prefix}├── \033[91mError reading dir.yml: {str(e)}\033[0m")
+            # 出错时回退到直接显示目录结构
+            _show_directory_files(md_path, prefix)
+    else:
+        # 如果没有 dir.yml，直接显示目录结构
+        _show_directory_files(md_path, prefix)
+
+
+def _show_directory_files(base_path: str, prefix: str = ""):
+    """
+    直接显示目录中的文件结构（不依赖dir.yml）
+    """
+    items = []
+
+    # 收集所有项目
+    try:
+        for item in os.listdir(base_path):
+            item_path = os.path.join(base_path, item)
+
+            # 跳过隐藏文件和配置文件
+            if item.startswith(".") or item in ["_config.yml", "dir.yml"]:
+                continue
+
+            items.append((item, item_path))
+    except PermissionError:
+        print(f"{prefix}├── \033[91m(permission denied)\033[0m")
+        return
+
+    # 排序：目录在前，文件在后
+    items.sort(key=lambda x: (not os.path.isdir(x[1]), x[0].lower()))
+
+    for i, (item, item_path) in enumerate(items):
+        is_last_item = i == len(items) - 1
+        current_prefix = "└── " if is_last_item else "├── "
+        next_prefix = prefix + ("    " if is_last_item else "│   ")
+
+        if os.path.isdir(item_path):
+            # 统计目录中的 .md 文件数量
+            try:
+                md_files = [f for f in os.listdir(item_path) if f.endswith(".md") and not f.startswith(".")]
+                file_count = len(md_files)
+                count_info = f" ({file_count} md files)" if file_count > 0 else " (empty)"
+            except PermissionError:
+                count_info = " (permission denied)"
+
+            print(f"{prefix}{current_prefix}\033[1;34m{item}/\033[0m\033[90m{count_info}\033[0m")
+
+            # 递归显示子目录（限制深度为1层）
+            if prefix.count("│") < 1:
+                _show_directory_files(item_path, next_prefix)
+        else:
+            # 显示文件
+            try:
+                if item.endswith(".md"):
+                    # 对于markdown文件，显示修改时间
+                    time_info = _format_relative_time(item_path)
+                else:
+                    # 对于其他文件，显示大小
+                    file_size = os.path.getsize(item_path)
+                    time_info = _format_file_size(file_size)
+            except (OSError, PermissionError):
+                time_info = "?"
+
+            file_color = _get_file_color(item)
+            print(f"{prefix}{current_prefix}{file_color}{item}\033[0m \033[90m({time_info})\033[0m")
+
+
+def _format_file_size(size_bytes: int) -> str:
+    """
+    格式化文件大小显示
+    """
+    if size_bytes < 1024:
+        return f"{size_bytes}B"
+    elif size_bytes < 1024 * 1024:
+        return f"{size_bytes // 1024}KB"
+    elif size_bytes < 1024 * 1024 * 1024:
+        return f"{size_bytes // (1024 * 1024)}MB"
+    else:
+        return f"{size_bytes // (1024 * 1024 * 1024)}GB"
+
+
+def _format_relative_time(file_path: str) -> str:
+    """
+    格式化文件的相对修改时间显示
+    """
+    try:
+        # 获取文件的最后修改时间
+        mtime = os.path.getmtime(file_path)
+        file_time = datetime.datetime.fromtimestamp(mtime)
+        current_time = datetime.datetime.now()
+
+        # 计算时间差
+        time_diff = current_time - file_time
+        total_seconds = int(time_diff.total_seconds())
+
+        if total_seconds < 60:
+            return "刚刚"
+        elif total_seconds < 3600:  # 1小时内
+            minutes = total_seconds // 60
+            return f"{minutes}分钟前"
+        elif total_seconds < 86400:  # 24小时内
+            hours = total_seconds // 3600
+            return f"{hours}小时前"
+        elif total_seconds < 604800:  # 7天内
+            days = total_seconds // 86400
+            return f"{days}天前"
+        elif total_seconds < 2592000:  # 30天内
+            weeks = total_seconds // 604800
+            return f"{weeks}周前"
+        elif total_seconds < 31536000:  # 12个月内
+            months = total_seconds // 2592000
+            return f"{months}个月前"
+        else:
+            # 超过12个月，显示具体日期
+            return file_time.strftime("%Y-%m-%d")
+
+    except (OSError, PermissionError):
+        return "未知"
+
+
+def _get_file_color(filename: str) -> str:
+    """
+    根据文件扩展名返回对应的颜色代码
+    """
+    ext = os.path.splitext(filename)[1].lower()
+
+    color_map = {
+        # 文档文件
+        ".md": "\033[92m",  # 绿色
+        ".txt": "\033[97m",  # 白色
+        ".pdf": "\033[91m",  # 红色
+        ".doc": "\033[94m",  # 蓝色
+        ".docx": "\033[94m",  # 蓝色
+        # 代码文件
+        ".py": "\033[93m",  # 黄色
+        ".js": "\033[93m",  # 黄色
+        ".ts": "\033[94m",  # 蓝色
+        ".html": "\033[96m",  # 青色
+        ".css": "\033[96m",  # 青色
+        ".json": "\033[93m",  # 黄色
+        ".yml": "\033[95m",  # 品红色
+        ".yaml": "\033[95m",  # 品红色
+        ".toml": "\033[95m",  # 品红色
+        # 图片文件
+        ".png": "\033[95m",  # 品红色
+        ".jpg": "\033[95m",  # 品红色
+        ".jpeg": "\033[95m",  # 品红色
+        ".gif": "\033[95m",  # 品红色
+        ".svg": "\033[95m",  # 品红色
+        # 可执行文件
+        ".exe": "\033[91m",  # 红色
+        ".sh": "\033[92m",  # 绿色
+        ".bat": "\033[92m",  # 绿色
+    }
+
+    return color_map.get(ext, "\033[97m")  # 默认白色
