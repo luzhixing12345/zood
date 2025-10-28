@@ -236,5 +236,11 @@ A&#x27; -&gt; aA&#x27; | bA&#x27; | ε</code></pre><h3 id="h3-12">间接左递�
             </script>
             <script type="text/javascript" src="../../../js/dir_tree_toggle.js"></script><script type="text/javascript" src="../../../js/global_js_configuration.js"></script>
 </body>
+<script>
+    const ws = new WebSocket("ws://127.0.0.1:8765");
+    ws.onmessage = (event) => {
+        if (event.data === "reload") location.reload();
+    };
+</script>
 
 </html>

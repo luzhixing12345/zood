@@ -8,10 +8,51 @@ import time
 import webbrowser
 import errno
 import sys
+import time
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+import asyncio
+import websockets
+import threading
+
 
 start_time = 0
 ARROW_CHAR = "➜  "
+DEBOUNCE_INTERVAL = 2.0  # 防抖时间（秒）
 
+# 监控文件变化的处理器
+class FileListenHandler(FileSystemEventHandler):
+    def __init__(self):
+        super().__init__()
+        self.last_modified = {}    # {filepath: timestamp}
+        self.timers = {}           # {filepath: threading.Timer}
+
+    def on_modified(self, event):
+        if event.is_directory:
+            return
+        filepath = event.src_path
+        now = time.time()
+
+        # 如果已有定时器，取消掉旧的
+        if filepath in self.timers:
+            self.timers[filepath].cancel()
+
+        # 设置一个新的延时执行任务
+        timer = threading.Timer(DEBOUNCE_INTERVAL, self._handle_stable_change, args=[filepath])
+        self.timers[filepath] = timer
+        timer.start()
+        self.last_modified[filepath] = now
+
+    def _handle_stable_change(self, filepath):
+        """防抖后真正触发的处理函数"""
+        print(f"{filepath} 文件修改，开始重新生成文档...")
+        config = get_zood_config()
+        generate_web_docs(config)
+        asyncio.run(notify_clients())
+        # 去掉一行打印
+        sys.stdout.write("\033[F")   # 光标上移一行 (Cursor up one line)
+        sys.stdout.write("\033[K")   # 清除该行 (Erase to end of line)
+        sys.stdout.flush()
 
 def set_start_time():
     global start_time
@@ -27,7 +68,27 @@ def is_wsl():
         # 如果没有该文件,说明不是 WSL 环境
         return False
 
+clients = set()
+async def handler(websocket, path):
+    clients.add(websocket)
+    try:
+        await websocket.wait_closed()
+    finally:
+        clients.remove(websocket)
 
+async def notify_clients():
+    if clients:
+        # print("Notifying clients to reload...")
+        await asyncio.gather(*[ws.send("reload") for ws in clients])
+
+async def ws_main():
+    async with websockets.serve(handler, "localhost", 8765):
+        # print("✅ WebSocket server started at ws://localhost:8765")
+        await asyncio.Future()  # 永远不会完成，用于保持运行
+
+def start_ws_server():
+    asyncio.run(ws_main())
+    
 class SilentHTTPRequestHandler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         # 重写这个方法来抑制日志输出
@@ -133,6 +194,16 @@ def start_http_server(config, port=36001):
                     return
                 else:
                     raise
+
+    path = os.path.join(os.getcwd(), config["markdown_folder"])
+    event_handler = FileListenHandler()
+    observer = Observer()
+    observer.schedule(event_handler, path, recursive=True)  # recursive=True 表示递归监控子目录
+    observer.start()
+    
+    start_ws_server_thread = threading.Thread(target=start_ws_server)
+    start_ws_server_thread.daemon = True
+    start_ws_server_thread.start()
 
     # 创建 HTTP 服务器
     with HTTPServer(("", port), SilentHTTPRequestHandler) as httpd:
