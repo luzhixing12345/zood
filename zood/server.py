@@ -24,35 +24,34 @@ DEBOUNCE_INTERVAL = 2.0  # 防抖时间（秒）
 class FileListenHandler(FileSystemEventHandler):
     def __init__(self):
         super().__init__()
-        self.last_modified = {}    # {filepath: timestamp}
-        self.timers = {}           # {filepath: threading.Timer}
+        self.timer = None
 
     def on_modified(self, event):
         if event.is_directory:
             return
         filepath = event.src_path
-        now = time.time()
 
         # 如果已有定时器，取消掉旧的
-        if filepath in self.timers:
-            self.timers[filepath].cancel()
+        if self.timer:
+            self.timer.cancel()
 
         # 设置一个新的延时执行任务
         timer = threading.Timer(DEBOUNCE_INTERVAL, self._handle_stable_change, args=[filepath])
-        self.timers[filepath] = timer
+        self.timer = timer
         timer.start()
-        self.last_modified[filepath] = now
 
     def _handle_stable_change(self, filepath):
         """防抖后真正触发的处理函数"""
-        print(f"{filepath} 文件修改，开始重新生成文档...")
+        self.timer = None
+        print("正在刷新文档...")
         config = get_zood_config()
         generate_web_docs(config)
         asyncio.run(notify_clients())
-        # 去掉一行打印
         sys.stdout.write("\033[F")   # 光标上移一行 (Cursor up one line)
         sys.stdout.write("\033[K")   # 清除该行 (Erase to end of line)
+        info("\n\n    ")
         sys.stdout.flush()
+
 
 def set_start_time():
     global start_time
@@ -69,7 +68,7 @@ def is_wsl():
         return False
 
 clients = set()
-async def handler(websocket, path):
+async def handler(websocket, *path):
     clients.add(websocket)
     try:
         await websocket.wait_closed()
