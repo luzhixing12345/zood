@@ -49,7 +49,7 @@ class FileListenHandler(FileSystemEventHandler):
         asyncio.run(notify_clients())
         sys.stdout.write("\033[F")   # 光标上移一行 (Cursor up one line)
         sys.stdout.write("\033[K")   # 清除该行 (Erase to end of line)
-        info("\n\n    ")
+        sys.stdout.write("    ")
         sys.stdout.flush()
 
 
