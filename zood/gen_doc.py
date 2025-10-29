@@ -366,7 +366,7 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
         sys.exit()
 
     if os.path.exists(html_dir_name):
-        shutil.rmtree(html_dir_name)
+        robust_rmtree(html_dir_name)
     os.makedirs(os.path.join(html_dir_name, "articles"))
     os.makedirs(os.path.join(html_dir_name, "js"))
     os.makedirs(os.path.join(html_dir_name, "css"))
