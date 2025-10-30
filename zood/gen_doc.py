@@ -202,8 +202,8 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
         for tag, (icon, color, bg_color) in built_in_tags.items():
             if content.startswith(f"<p>{tag}"):
                 content = content.replace(
-                    tag,
-                    f'<div style="color: {color};"><img class="icon-{icon}" loading="lazy" src="../../../img/{icon}.svg" alt="{tag}"> {icon.upper()} </div>',
+                    f"<p>{tag}",
+                    f'<div style="color: {color};"><img class="icon-{icon}" loading="lazy" src="../../../img/{icon}.svg" alt="{tag}"> {icon.upper()} </div><p>',
                     1,
                 )
                 # change blockquote border-left color

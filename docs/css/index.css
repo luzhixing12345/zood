@@ -428,11 +428,13 @@ ol>li>ul>li {
     display: flex;
     justify-content: left;
     margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .markdown-body blockquote p {
     margin-bottom: 5px;
     margin-top: 5px;
+    margin-left: 5px;
 }
 
 .changeMode {
