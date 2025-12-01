@@ -129,6 +129,14 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
     def pic_to_html(self: MarkdownParser.Block):
         word: str = self.input["word"]
         url: str = self.input["url"]
+        if word.endswith("|mid"):
+            word = word[:-4]
+            pic_size = "middle"
+        elif word.endswith("|small"):
+            word = word[:-6]
+            pic_size = "small"
+        else:
+            pic_size = "big"
         # 判断一下是否是本地图片
         local_url = os.path.normpath(os.path.join(os.path.dirname(file_path), unquote(url)))
         if not url.startswith("http") and os.path.exists(local_url):
@@ -138,7 +146,8 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
             # 默认 master 分支
             server_url = github_repo_url.replace("github.com", "raw.githubusercontent.com") + "/master/"
             url = server_url + local_url
-        return f'<a data-lightbox="example-1" href="{url}"><img loading="lazy" src="{url}" alt="{word}"></a>'
+        
+        return f'<a data-lightbox="example-1" href="{url}"><img loading="lazy" src="{url}" alt="{word}" class="pic-{pic_size}"></a>'
 
     def ref_to_html(self: MarkdownParser.Block):
         global CURRENT_FILE_PATH, REFERENCE_GRAPH

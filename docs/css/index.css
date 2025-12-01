@@ -352,6 +352,16 @@ ol>li>ul>li {
     border-radius: 5px;
 }
 
+.markdown-body .pic-small {
+    max-width: 40%;
+    max-height: 300px;
+}
+
+.markdown-body .pic-middle {
+    max-width: 60%;
+    max-height: 400px;
+}
+
 .markdown-body pre {
     position: relative;
 }
