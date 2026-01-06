@@ -146,7 +146,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
             # 默认 master 分支
             server_url = github_repo_url.replace("github.com", "raw.githubusercontent.com") + "/master/"
             url = server_url + local_url
-        
+
         return f'<a data-lightbox="example-1" href="{url}"><img loading="lazy" src="{url}" alt="{word}" class="pic-{pic_size}"></a>'
 
     def ref_to_html(self: MarkdownParser.Block):
@@ -340,7 +340,9 @@ def generate_reference_section(current_file_path: str, md_dir_name: str, directo
             if "/" not in ref_path:
                 ref_path = f"{md_dir_name}/{ref_path}"
             ref_url = f"../../{ref_path}"
-            html_parts.append(f'<li><a href="{ref_url}">📄 {title}</a></li>')
+            html_parts.append(
+                f'<li><a href="{ref_url}"><span class="reference-icon" aria-hidden="true"></span><span class="reference-title">{title}</span></a></li>'
+            )
         html_parts.append("</ul>")
         html_parts.append("</div>")
 
@@ -356,7 +358,9 @@ def generate_reference_section(current_file_path: str, md_dir_name: str, directo
             if "/" not in ref_path:
                 ref_path = f"{md_dir_name}/{ref_path}"
             ref_url = f"../../{ref_path}"
-            html_parts.append(f'<li><a href="{ref_url}">📄 {title}</a></li>')
+            html_parts.append(
+                f'<li><a href="{ref_url}"><span class="reference-icon" aria-hidden="true"></span><span class="reference-title">{title}</span></a></li>'
+            )
         html_parts.append("</ul>")
         html_parts.append("</div>")
 
