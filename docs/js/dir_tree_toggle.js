@@ -92,7 +92,7 @@ function initDirTreeToggle() {
 }
 
 var current_path = window.location.pathname;
-console.log(current_path);
+// console.log(current_path);
 var dir_tree_path = current_path + "../../../dir-tree.html";
 var is_index = false;
 
@@ -102,7 +102,7 @@ if (current_path.includes("index.html")) {
     is_index = true;
 }
 
-console.log(dir_tree_path);
+// console.log(dir_tree_path);
 // read embed html body and move to body
 fetch(dir_tree_path)
     .then(res => res.text())
