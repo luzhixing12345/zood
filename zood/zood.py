@@ -129,6 +129,9 @@ def get_custom_options(config, keys):
 def zood_js_options(config):
     js_scope = ""
     html_dir_name = config["html_folder"]
+    
+    # dir-tree must be loaded before other js
+    js_scope += insert_js_code("dir_tree_toggle", html_dir_name)
 
     if config["options"]["enable_next_front"]:
         js_code = insert_js_code("enable_next_front", html_dir_name)
@@ -203,7 +206,6 @@ mermaid.initialize({ startOnLoad: true });\
             """
             js_scope += js_code
 
-    js_scope += insert_js_code("dir_tree_toggle", html_dir_name)
     js_scope += insert_js_code("global_js_configuration", html_dir_name)
 
     return js_scope

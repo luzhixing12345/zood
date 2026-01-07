@@ -402,6 +402,9 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
 
     # 目录树
     dir_tree_html = get_dir_tree(directory_tree, md_dir_name)
+    dir_tree_path = os.path.join(html_dir_name, "dir-tree.html")
+    with open(dir_tree_path, "w", encoding="utf-8") as f:
+        f.write(dir_tree_html)
     front_url, next_url = caculate_front_next_url(flat_paths, index_README_path, md_dir_name)
     github_icon = get_github_icon(config["options"]["enable_github"])
 
@@ -422,10 +425,7 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
     with open(index_html_path, "w", encoding="utf-8") as f:
         index_html_template = html_template.replace("../../.", "")
         next_url = next_url.replace("../..", "./articles")
-        index_dir_tree_html = dir_tree_html.replace("../..", "./articles")
         index_html_template = index_html_template.replace("../..", "./articles")
-
-        index_html_template = index_html_template.replace("directory-tree-scope", index_dir_tree_html)
         index_html_template = index_html_template.replace("github-icon", github_icon)
         index_html_template = url_replace(index_html_template, front_url, next_url, "ab")
 
@@ -434,7 +434,7 @@ def generate_docs(directory_tree, markdown_htmls: Dict[str, str], config: DIR_TR
         index_markdown_html = re.sub(r"../../../img/([a-zA-Z0-9_-]+)\.svg", r"img/\1.svg", index_markdown_html)
         f.write(index_html_template.replace("html-scope", index_markdown_html))
 
-    html_template = html_template.replace("directory-tree-scope", dir_tree_html)
+    # html_template = html_template.replace("directory-tree-scope", dir_tree_html)
     html_template = html_template.replace("github-icon", github_icon)
     for file_path, markdown_html in markdown_htmls.items():
         dir_name = file_path.split(os.sep)[1]
