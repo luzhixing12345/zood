@@ -57,6 +57,7 @@ function initDirTreeToggle() {
             }
         });
         var links = dirTree.querySelectorAll("a");
+        var currentUrl = window.location.href.slice(0, -1);
         links.forEach(function (link) {
             if (link.href === currentUrl) {
                 // 检查这个链接是否是一级目录链接(即父元素li下面有ul子元素)

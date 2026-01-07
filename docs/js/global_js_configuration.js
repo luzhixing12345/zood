@@ -18,9 +18,6 @@ var giscus = document.createElement('div');
 giscus.setAttribute('class', 'giscus');
 markdown_part.appendChild(giscus);
 
-var currentUrl = window.location.href.slice(0, -1);
-
-
 // 如果保存的主题存在,则设置当前主题为保存的主题
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme !== null) {
