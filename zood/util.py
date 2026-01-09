@@ -10,7 +10,7 @@ import time
 
 DIR_TREE = NewType("DIR_TREE", Dict[str, List[Dict[str, str]]])
 zood_error_info = []
-
+WEBSOCKET_PORT = 8765
 
 def get_github_repo_url() -> str:
     """

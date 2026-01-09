@@ -2,7 +2,7 @@ import shutil
 import os
 from .util import *
 import re
-
+from . import util
 
 def init_zood(md_dir_name):
     # 初始化 zood 文件
@@ -207,6 +207,16 @@ mermaid.initialize({ startOnLoad: true });\
             js_scope += js_code
 
     js_scope += insert_js_code("global_js_configuration", html_dir_name)
+    ws_js_code = '''
+<script>
+    const ws = new WebSocket("ws://127.0.0.1:WS_PORT");
+    ws.onmessage = (event) => {
+        if (event.data === "reload") location.reload();
+    };
+</script>
+    '''
+    ws_js_code = ws_js_code.replace("WS_PORT", str(util.WEBSOCKET_PORT))
+    js_scope += ws_js_code
 
     return js_scope
 

@@ -14,7 +14,7 @@ from watchdog.events import FileSystemEventHandler
 import asyncio
 import websockets
 import threading
-
+from . import util
 
 start_time = 0
 ARROW_CHAR = "➜  "
@@ -81,12 +81,26 @@ async def notify_clients():
         await asyncio.gather(*[ws.send("reload") for ws in clients])
 
 async def ws_main():
-    async with websockets.serve(handler, "localhost", 8765):
+    async with websockets.serve(handler, "localhost", util.WEBSOCKET_PORT):
         # print("✅ WebSocket server started at ws://localhost:8765")
         await asyncio.Future()  # 永远不会完成，用于保持运行
 
 def start_ws_server():
     asyncio.run(ws_main())
+    
+def find_available_ws_port():
+    port = util.WEBSOCKET_PORT
+    while True:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(("localhost", port))
+                util.WEBSOCKET_PORT = port
+                # print(f"✅ WebSocket server will use port {port}")
+                return
+            except socket.error:
+                port += 1
+        if port > 65535:
+            raise RuntimeError("No available ports for WebSocket server.")
     
 class SilentHTTPRequestHandler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
@@ -200,6 +214,7 @@ def start_http_server(config, port=36001):
     observer.schedule(event_handler, path, recursive=True)  # recursive=True 表示递归监控子目录
     observer.start()
     
+    find_available_ws_port()
     start_ws_server_thread = threading.Thread(target=start_ws_server)
     start_ws_server_thread.daemon = True
     start_ws_server_thread.start()
@@ -215,8 +230,11 @@ def start_http_server(config, port=36001):
         server_thread.start()
         end_time = time.time()
 
+        url = f"http://127.0.0.1:{port}/docs/index.html"
         if not is_wsl():
-            webbrowser.open(f"http://127.0.0.1:{port}/docs/index.html")
+            webbrowser.open(url)
+        else:
+            os.system(f'cmd.exe /c start "" "{url}"')
 
         try:
             while True:

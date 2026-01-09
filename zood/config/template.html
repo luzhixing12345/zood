@@ -20,11 +20,5 @@
     <div class="zood"><a class="" href="https://github.com/luzhixing12345/zood" target="_blank">zood</a></div>
     js-scope
 </body>
-<script>
-    const ws = new WebSocket("ws://127.0.0.1:8765");
-    ws.onmessage = (event) => {
-        if (event.data === "reload") location.reload();
-    };
-</script>
 
 </html>
