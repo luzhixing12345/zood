@@ -101,10 +101,9 @@ var is_index = false;
 // root path is like "/klinux/"
 // not root path is like "'/klinux/articles/%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B/%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8/'"
 
-// if '/' exist more than 2
+// if '/' exist more than 2, it is not root path
 if (current_path.match(/\//g).length === 2) {
     dir_tree_path = current_path + "/../dir-tree.html";
-    // console.log(dir_tree_path);
     is_index = true;
 }
 
