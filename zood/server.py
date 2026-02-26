@@ -168,7 +168,7 @@ def get_ip_address():
 def show_server_info(time, port: int):
     info("\n    ")
     info(f"ZOOD v{get_version()}", "green")
-    info(f"  ready in {time} ms")
+    info(f"  ready in {round(time, 2)} s")
     info("\n\n    ")
     info(ARROW_CHAR, "green")
     info("Local:  ", "strong")
@@ -231,15 +231,16 @@ def start_http_server(config, port=36001):
         end_time = time.time()
 
         url = f"http://127.0.0.1:{port}/docs/index.html"
-        if not is_wsl():
-            webbrowser.open(url)
-        else:
-            os.system(f'cmd.exe /c start "" "{url}"')
+
+        if is_wsl():
+            # set env BROWSER=/usr/bin/wslview
+            os.environ["BROWSER"] = "/usr/bin/wslview"
+        webbrowser.open(url)
 
         try:
             while True:
-                clear_screen()
-                show_server_info((int((end_time - start_time) * 1000)), port)
+                # clear_screen()
+                show_server_info(end_time - start_time, port)
                 show_error_info()
                 command = input()
                 if command.lower() == "r":
