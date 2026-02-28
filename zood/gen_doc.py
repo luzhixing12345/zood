@@ -7,6 +7,7 @@ import sys
 import syntaxlight
 import types
 import traceback
+from tqdm import tqdm
 from .util import *
 from .zood import (
     parse_config,
@@ -64,8 +65,26 @@ def parse_markdown(config: DIR_TREE):
     markdown_parser = MarkdownParser.Markdown()
 
     # 将错误信息重定向到 error.log 中
+    # 计算总文件数（不修改原有循环结构）
+    total_files = 0
+    for _, files in dir_yml.items():
+        total_files += len(files)
+
     with open(os.path.join(os.path.dirname(__file__), "config", "error.log"), "w", encoding="utf-8") as error_log:
         sys.stderr = error_log
+        # 全局文件进度条，输出到真实终端
+        try:
+            # 自定义格式：去掉速率/ETA，只显示进度条、计数、耗时和后缀（用于显示当前文件）
+            files_progress = tqdm(
+                total=total_files,
+                desc="处理文件",
+                unit="file",
+                file=sys.__stderr__,
+                leave=True,
+                bar_format="{l_bar}{bar}| {n}/{total} [{elapsed}] {postfix}",
+            )
+        except Exception:
+            files_progress = None
 
         github_repo_url = get_github_repo_url()
         for dir_name, files in dir_yml.items():
@@ -97,7 +116,32 @@ def parse_markdown(config: DIR_TREE):
 
                     markdown_htmls[file_path] = markdown_html
                     file_names.append(file_name)
+                    # 更新全局文件进度并在后缀显示当前处理的文件路径
+                    if files_progress is not None:
+                        try:
+                            files_progress.set_postfix_str(f"正在处理: {file_path}")
+                            files_progress.update(1)
+                        except Exception:
+                            pass
             directory_tree.append({dir_name: file_names})
+
+        # 关闭进度条并清除终端上的进度行
+        if files_progress is not None:
+            try:
+                # 清除进度条的显示行
+                try:
+                    files_progress.clear()
+                except Exception:
+                    pass
+                files_progress.close()
+                # 确保终端上的残留行被覆盖（写入回车）
+                try:
+                    sys.__stderr__.write("\033[F\033[K")
+                    sys.__stderr__.flush()
+                except Exception:
+                    pass
+            except Exception:
+                pass
 
     # 恢复错误信息重定向
     sys.stderr = sys.__stderr__
@@ -107,6 +151,7 @@ def parse_markdown(config: DIR_TREE):
         zood_info(f"代码段解析出现 {TOTAL_ERROR_NUMBER} 处错误, 已跳过高亮解析, 使用 zood log 查看错误信息")
 
     return directory_tree, markdown_htmls
+
 
 built_in_icon_svgs = {
     "note": '<svg xmlns="http://www.w3.org/2000/svg" width="1.8em" height="1.8em" viewBox="0 0 24 24"><g fill="none" stroke="#0969da"><path stroke-linecap="round" stroke-linejoin="round" d="M11 10.5h.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h.5m-1-7h.01"/><path d="M13.39 19.879A8 8 0 1 0 10.61 4.12a8 8 0 0 0 2.78 15.758Z"/></g></svg>',
@@ -125,6 +170,7 @@ built_in_tags = {
     "[!CAUTION]": ("caution", "#d1242f", "#f7e5e6"),
     "[!QUESTION]": ("question", "#f08833", "#ffefe3"),
 }
+
 
 def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_repo_url: str, md_dir_name: str):
     """
@@ -200,7 +246,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
             content += block.to_html()
 
         # check if content start with bullet list
-        
+
         # > [!NOTE]
         # > Highlights information that users should take into account, even when skimming.
 
