@@ -5,7 +5,6 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from .gen_doc import generate_web_docs
 from .util import *
 import time
-import webbrowser
 import errno
 import sys
 import time
@@ -232,10 +231,10 @@ def start_http_server(config, port=36001):
 
         url = f"http://127.0.0.1:{port}/docs/index.html"
 
-        if is_wsl():
-            # set env BROWSER=/usr/bin/wslview
-            os.environ["BROWSER"] = "/usr/bin/wslview"
-        webbrowser.open(url)
+        # if is_wsl():
+        #     # set env BROWSER=/usr/bin/wslview
+        #     os.environ["BROWSER"] = "/usr/bin/wslview"
+        # webbrowser.open(url)
 
         try:
             while True:
