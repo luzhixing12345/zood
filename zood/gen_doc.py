@@ -230,6 +230,7 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
                     REFERENCE_GRAPH[normalized_source].append(normalized_target)
 
             local_url = local_url[len(md_dir_name) : -3].lstrip("\\").lstrip("/")
+            local_url = local_url.replace("\\", "/")
             # 如果 url 没有父目录, 加上 md_dir_name
             if not os.path.dirname(local_url):
                 local_url = os.path.join(md_dir_name, local_url)

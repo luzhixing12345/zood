@@ -213,7 +213,6 @@ def start_http_server(config, port=36001):
     observer.schedule(event_handler, path, recursive=True)  # recursive=True 表示递归监控子目录
     observer.start()
     
-    find_available_ws_port()
     start_ws_server_thread = threading.Thread(target=start_ws_server)
     start_ws_server_thread.daemon = True
     start_ws_server_thread.start()

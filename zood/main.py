@@ -6,7 +6,7 @@ from .util import *
 from .gen_doc import generate_web_docs, chdir_md
 from .zood import *
 from .extensions import update_PYPI_package, update_vsce_package
-from .server import start_http_server, set_start_time
+from .server import start_http_server, set_start_time, find_available_ws_port
 
 
 def main():
@@ -39,6 +39,7 @@ def main():
     if args.open:
         set_start_time()
         chdir_md(md_dir_name)
+        find_available_ws_port()
         generate_web_docs(config)
         start_http_server(config, args.port)
         return
