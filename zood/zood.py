@@ -198,7 +198,8 @@ mermaid.initialize({ startOnLoad: true });\
     js_scope += insert_js_code("global_js_configuration", html_dir_name)
     ws_js_code = '''
 <script>
-    const ws = new WebSocket("ws://127.0.0.1:WS_PORT");
+    const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
+    const ws = new WebSocket(`${wsProtocol}://${window.location.hostname}:WS_PORT`);
     ws.onmessage = (event) => {
         if (event.data === "reload") location.reload();
     };

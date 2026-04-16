@@ -80,7 +80,7 @@ async def notify_clients():
         await asyncio.gather(*[ws.send("reload") for ws in clients])
 
 async def ws_main():
-    async with websockets.serve(handler, "localhost", util.WEBSOCKET_PORT):
+    async with websockets.serve(handler, "0.0.0.0", util.WEBSOCKET_PORT):
         # print("✅ WebSocket server started at ws://localhost:8765")
         await asyncio.Future()  # 永远不会完成，用于保持运行
 
@@ -92,7 +92,7 @@ def find_available_ws_port():
     while True:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             try:
-                s.bind(("localhost", port))
+                s.bind(("", port))
                 util.WEBSOCKET_PORT = port
                 # print(f"✅ WebSocket server will use port {port}")
                 return
@@ -124,7 +124,7 @@ class SilentHTTPRequestHandler(SimpleHTTPRequestHandler):
 def check_port_available(port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         try:
-            s.bind(("localhost", port))
+            s.bind(("", port))
             return True
         except socket.error as e:
             return False
@@ -199,7 +199,7 @@ def start_http_server(config, port=36001):
         # check if port is available
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             try:
-                s.bind(("localhost", port))
+                s.bind(("", port))
             except socket.error as e:
                 if e.errno == errno.EADDRINUSE:
                     print(f"Port {port} is already in use. Please choose another port.")
