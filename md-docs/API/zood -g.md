@@ -13,10 +13,10 @@ hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 
 本文档用于记录
 
-- gem5的编译和使用
-- gem5源码阅读
-- cxl的gem5实现
-- cxl驱动实现
+- gem5 的编译和使用
+- gem5 源码阅读
+- cxl 的 gem5 实现
+- cxl 驱动实现
 
 ```c {2-5}
 # define A

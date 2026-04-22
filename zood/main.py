@@ -5,7 +5,7 @@ import shutil
 from .util import *
 from .gen_doc import generate_web_docs, chdir_md
 from .zood import *
-from .extensions import update_PYPI_package, update_vsce_package
+from .extensions import update_PYPI_package, update_vsce_package, format_markdown
 from .server import start_http_server, set_start_time, find_available_ws_port
 
 
@@ -18,6 +18,7 @@ def main():
     parser.add_argument("-o", "--open", action="store_true", help="start http server")
     parser.add_argument("-p", "--port", type=int, help="http server port", default=36001)
     parser.add_argument("-v", "--version", action="store_true", help="show version")
+    parser.add_argument("-f", "--format", action="store_true", help="format markdown files")
     args = parser.parse_args()
 
     config = get_zood_config()  # 获取配置信息
@@ -50,7 +51,28 @@ def main():
             zood_info("已更新全局配置文件 _config.yml", color="green")
         else:
             print("未找到", local_config_path)
+        return
 
+    if args.format:
+        chdir_md(md_dir_name)
+        formatted_files = 0
+        formateed_files_names = []
+        for root, _, files in os.walk(md_dir_name):
+            for file_name in files:
+                if file_name.lower().endswith(".md"):
+                    file_path = os.path.join(root, file_name)
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        source = f.read()
+                    formatted = format_markdown(source)
+                    if formatted != source:
+                        with open(file_path, "w", encoding="utf-8") as f:
+                            f.write(formatted)
+                        formatted_files += 1
+                        formateed_files_names.append(file_path)
+        if formatted_files > 0:
+            zood_info(f"已格式化 {formatted_files} 个 markdown 文件", color="green")
+            for name in formateed_files_names:
+                print("  " + name)
         return
 
     if len(args.cmd) == 0 or args.cmd[0] == "help":
@@ -166,6 +188,7 @@ def show_help_info():
     print("{:<20}生成docs/目录".format("  zood -g"))
     print("{:<20}删除docs/目录".format("  zood clean"))
     print("{:<20}获取配置文件".format("  zood config"))
+    print("{:<20}格式化所有 markdown 文件".format("  zood -f"))
     print("{:<20}输出错误信息".format("  zood log"))
 
     print("\n其他:")
