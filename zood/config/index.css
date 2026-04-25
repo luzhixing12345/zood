@@ -964,12 +964,15 @@ body.lb-disable-scrolling {
 /* 选项卡导航 */
 .references-tabs-nav {
     display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
     background-color: #f6f8fa;
     border-bottom: 1px solid #e1e4e8;
 }
 
 .references-tab-btn {
-    flex: 1;
+    flex: 0 0 auto;
     padding: 12px 16px;
     border: none;
     background: none;
@@ -1019,7 +1022,7 @@ body.lb-disable-scrolling {
 
 .reference-list a {
     text-decoration: none;
-    color: #0969da;
+    color: #24292f;
     font-weight: 500;
     display: inline-flex;
     align-items: center;
@@ -1037,7 +1040,7 @@ body.lb-disable-scrolling {
     transform: none;
     box-shadow: none;
     text-decoration: none;
-    color: #0969da;
+    color: #24292f;
 }
 
 .reference-icon {

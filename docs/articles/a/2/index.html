@@ -237,7 +237,7 @@ A&#x27; -&gt; aA&#x27; | bA&#x27; | ε</code></pre><h3 id="h3-12">间接左递�
             <script type="text/javascript" src="../../../js/global_js_configuration.js"></script>
 <script>
     const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const ws = new WebSocket(`${wsProtocol}://${window.location.hostname}:8765`);
+    const ws = new WebSocket(`${wsProtocol}://${window.location.hostname}:8766`);
     ws.onmessage = (event) => {
         if (event.data === "reload") location.reload();
     };
