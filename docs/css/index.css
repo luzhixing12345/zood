@@ -524,9 +524,7 @@ ol>li>ul>li {
 }
 
 .dir-tree>ul>li {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    display: block;
 }
 
 .dir-tree ul li a {
@@ -550,6 +548,7 @@ ol>li>ul>li {
     overflow: hidden;
     transform-origin: top;
     margin-left: 0;
+    margin-top: 6px;
     padding-left: 0;
     border-left: 0;
     transition: transform 0.2s ease, opacity 0.2s ease, margin 0.2s ease;
@@ -619,7 +618,6 @@ ol>li>ul>li {
     color: var(--dir-accent) !important;
     background: var(--dir-accent-soft);
     border-bottom: 0;
-    box-shadow: inset 2px 0 0 var(--dir-accent);
     padding-bottom: 7px;
 }
 
@@ -628,7 +626,6 @@ ol>li>ul>li {
     color: var(--dir-accent) !important;
     background: var(--dir-accent-soft);
     border-bottom: 0;
-    box-shadow: inset 2px 0 0 var(--dir-accent);
     padding-bottom: 7px;
 }
 
@@ -1014,6 +1011,10 @@ body.lb-disable-scrolling {
 
 .dir-tree>ul>li:has(>ul)>a:hover {
     font-weight: 700;
+}
+
+.dir-tree>ul>li:not(:has(>ul))>a:hover {
+    font-weight: 600;
 }
 
 /* 引用部分样式 */
