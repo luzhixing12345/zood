@@ -507,13 +507,13 @@ ol>li>ul>li {
     position: relative;
 }
 
-.dir-tree>ul+ul {
+.dir-tree>ul:has(>li>ul)+ul:has(>li>ul) {
     position: relative;
     margin-top: 18px;
     padding-top: 14px;
 }
 
-.dir-tree>ul+ul::before {
+.dir-tree>ul:has(>li>ul)+ul:has(>li>ul)::before {
     content: "";
     position: absolute;
     top: 0;
@@ -521,6 +521,10 @@ ol>li>ul>li {
     right: 10px;
     height: 1px;
     background: #d8dee9;
+}
+
+.dir-tree>ul:not(:has(>li>ul)) {
+    margin-bottom: 5px;
 }
 
 .dir-tree>ul>li {
