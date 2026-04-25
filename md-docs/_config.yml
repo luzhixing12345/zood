@@ -74,7 +74,7 @@ options:
   # giscus app 已安装,否则访客将无法评论和回应.
   # Discussions 功能已在你的仓库中启用.
   enable_comment:
-    enable: true
+    enable: false
     repoid: "R_kgDOIBOHmA"
     categoryid: "DIC_kwDOIBOHmM4CgFxe"
 

@@ -9,7 +9,7 @@
         Document
     </title>
     <link rel='stylesheet' href=./css/index.css />
-    <link rel='stylesheet' href=./css/bnf.css /><link rel='stylesheet' href=./css/c.css /><link rel='stylesheet' href=./css/json.css /><link rel='stylesheet' href=./css/lua.css /><link rel='stylesheet' href=./css/python.css /><link rel='stylesheet' href=./css/shell.css /><link rel='stylesheet' href=./css/toml.css /><link rel='stylesheet' href=./css/txt.css /><link rel='stylesheet' href=./css/xml.css /><link rel='stylesheet' href=./css/yaml.css />
+    <link rel='stylesheet' href=./css/bnf.css /><link rel='stylesheet' href=./css/c.css /><link rel='stylesheet' href=./css/json.css /><link rel='stylesheet' href=./css/lua.css /><link rel='stylesheet' href=./css/python.css /><link rel='stylesheet' href=./css/shell.css /><link rel='stylesheet' href=./css/toml.css /><link rel='stylesheet' href=./css/xml.css /><link rel='stylesheet' href=./css/yaml.css />
     <link rel="icon" href="https://raw.githubusercontent.com/learner-lu/picbed/master/logo.png">
 </head>
 
@@ -18,16 +18,10 @@
     <div class="header-navigator"><ul><li><a href="#h1-0">zood</a><ul><li><a href="#h2-1">changelog</a></li></ul></li></ul></div><div class='markdown-body'><h1 id="h1-0">zood</h1><p>zood 网页文档生成的 python 库, 可以将本地 Markdown 文件转为 Web 网页</p><p>zood 的页面风格更倾向于纯文档内容而非博客, 您可利用 Github Pages 为每一个仓库部署单独的网页文档</p><p>zood 基于 <a href="https://github.com/luzhixing12345/MarkdownParser" target="_blank">MarkdownParser</a> 完成 Markdown 文件的解析和转换</p><p>您可前往 <a href="https://www.bilibili.com/video/BV1dK411r77d" target="_blank">【项目分享】zood:项目文档生成工具</a> 浏览一个相关视频介绍</p><h2 id="h2-1">changelog</h2><ul><li>2026/02/26: 代码块复制按钮改为内联 SVG（copy/copy-success）并支持横向滚动时固定在右上角；引用区 reference-icon 与 Quote 内置标签（NOTE/TIP/IMPORTANT/WARNING/CAUTION/QUESTION）图标改为内联 SVG（不再依赖 <code>img/*.svg</code>）；移除 change_mode/next_front 相关脚本与暗色主题分支并清理对应静态资源；优化 server 启动信息显示与 WSL 浏览器打开方式</li></ul><ul><li>2026/01/12: 修复 github pages 上根页面路径判断错误导致页面显示出错的问题</li></ul><ul><li>2026/01/09: 支持 zood 服务器多开，分配不同的 websocket 端口</li></ul><ul><li>2026/01/07: 分离 dir-tree 结构保存为单独的 html 文件</li></ul></div>
     <div id="dir-tree-placeholder"></div>
     <div class="zood"><a class="" href="https://github.com/luzhixing12345/zood" target="_blank">zood</a></div>
-    <script type="text/javascript" src="./js/dir_tree_toggle.js"></script><script type="text/javascript" src="./js/copy_code.js"></script><script type="text/javascript" src="./js/navigator.js"></script><script type="text/javascript" src="./js/picture_preview.js"></script>
-            <script src="https://giscus.app/client.js" data-repo="luzhixing12345/zood" 
-            data-repo-id="R_kgDOIBOHmA" data-category="Q&A" data-category-id="DIC_kwDOIBOHmM4CgFxe" data-mapping="pathname" data-strict="0"
-            data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom"
-            data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async>
-            </script>
-            <script type="text/javascript" src="./js/global_js_configuration.js"></script>
+    <script type="text/javascript" src="./js/dir_tree_toggle.js"></script><script type="text/javascript" src="./js/copy_code.js"></script><script type="text/javascript" src="./js/navigator.js"></script><script type="text/javascript" src="./js/picture_preview.js"></script><script type="text/javascript" src="./js/global_js_configuration.js"></script>
 <script>
     const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const ws = new WebSocket(`${wsProtocol}://${window.location.hostname}:8766`);
+    const ws = new WebSocket(`${wsProtocol}://${window.location.hostname}:8765`);
     ws.onmessage = (event) => {
         if (event.data === "reload") location.reload();
     };
