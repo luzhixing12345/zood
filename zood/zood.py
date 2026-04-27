@@ -166,7 +166,7 @@ mermaid.initialize({ startOnLoad: true });\
         <script>
             MathJax = {
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']]
+                inlineMath: [['$', '$']]
             }
             };
             </script>
