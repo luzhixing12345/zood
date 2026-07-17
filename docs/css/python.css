@@ -52,6 +52,11 @@ pre[class*="language-python"] .Token.ELSE,
 pre[class*="language-python"] .Token.FOR,
 pre[class*="language-python"] .Token.WHILE,
 pre[class*="language-python"] .Token.ELIF,
+pre[class*="language-python"] .Token.ASYNC,
+pre[class*="language-python"] .Token.AWAIT,
+pre[class*="language-python"] .Token.SOFT_CASE,
+pre[class*="language-python"] .Token.SOFT_MATCH,
+pre[class*="language-python"] .Token.SOFT_TYPE,
 pre[class*="language-python"] .Token.RETURN,
 pre[class*="language-python"] .Token.BREAK,
 pre[class*="language-python"] .Token.IN,
@@ -91,13 +96,26 @@ pre[class*="language-python"] .Token.DEF {
 
 pre[class*="language-python"] .Token.ClassName,
 pre[class*="language-python"] .Token.ClassInstantiation,
-pre[class*="language-python"] .Token.ImportLibName {
+pre[class*="language-python"] .Token.FunctionArgType,
+pre[class*="language-python"] .Token.FunctionReturnType,
+pre[class*="language-python"] .Token.ImportLibName,
+pre[class*="language-python"] .Token.Typedefine {
     color: #4EC9B0;
 }
 
 pre[class*="language-python"] .Token.FunctionName,
-pre[class*="language-python"] .Token.FunctionCall {
+pre[class*="language-python"] .Token.FunctionCall,
+pre[class*="language-python"] .Token.ImportLibFunction {
     color: #DCDCAA;
+}
+
+pre[class*="language-python"] .Token.FunctionArgName {
+    color: #88D6FE;
+    font-style: italic;
+}
+
+pre[class*="language-python"] .Token.STR.Format {
+    color: #CE9178;
 }
 
 pre[class*="language-python"] .Token.INT,

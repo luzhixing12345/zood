@@ -20,6 +20,31 @@ LANGUAGE_USED = set()
 TOTAL_ERROR_NUMBER = 0
 CODE_BLOCK_NUMBER = 1
 
+TOKEN_SPAN_PATTERN = re.compile(r'<span class="([^"]*)">(.*?)</span>', re.DOTALL)
+
+
+def remove_leading_whitespace_highlight(code_html: str) -> str:
+    """Do not apply line highlighting to indentation before the first token."""
+    at_line_start = True
+
+    def update_span(match: re.Match) -> str:
+        nonlocal at_line_start
+        classes = match.group(1).split()
+        content = match.group(2)
+
+        if at_line_start and "HighlightLine" in classes and "SPACE" in classes:
+            classes.remove("HighlightLine")
+
+        if "\n" in content:
+            trailing_content = content.rsplit("\n", 1)[1]
+            at_line_start = not trailing_content or trailing_content.isspace()
+        elif content and not content.isspace():
+            at_line_start = False
+
+        return f'<span class="{" ".join(classes)}">{content}</span>'
+
+    return TOKEN_SPAN_PATTERN.sub(update_span, code_html)
+
 # 添加全局变量来跟踪引用关系
 REFERENCE_GRAPH = {}  # 存储文档间的引用关系 {source_file: [target_files]}
 CURRENT_FILE_PATH = ""  # 当前正在处理的文件路径
@@ -315,8 +340,10 @@ def markdown_tree_preprocess(tree: MarkdownParser.Block, file_path: str, github_
                     print(f'```{language}\n{block.input["code"]}\n```')
                     sys.exit()
 
-                block.input["code"] = parse_result.parser.to_html(
-                    highlight_lines=highlight_lines, highlight_tokens=highlight_tokens
+                block.input["code"] = remove_leading_whitespace_highlight(
+                    parse_result.parser.to_html(
+                        highlight_lines=highlight_lines, highlight_tokens=highlight_tokens
+                    )
                 )
                 block.to_html = types.MethodType(code_to_html, block)
                 LANGUAGE_USED.add(language)

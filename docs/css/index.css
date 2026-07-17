@@ -585,6 +585,7 @@ ol>li>ul>li {
 
 .dir-tree ul ul li a:hover {
     color: #000;
+    font-weight: 500;
 }
 
 .dir-tree>ul>li:has(>ul)>a {
@@ -1008,7 +1009,6 @@ body.lb-disable-scrolling {
 }
 
 .dir-tree a:hover {
-    font-weight: inherit;
     color: #000;
     background-color: #f6f8ff;
 }

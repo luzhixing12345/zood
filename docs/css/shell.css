@@ -47,6 +47,10 @@ pre[class*="language-shell"] .Token.Keyword {
     color: #C586C0;
 }
 
+pre[class*="language-shell"] .Token.Variant {
+    color: #88D6FE;
+}
+
 pre[class*="language-shell"] .Token.OPTION {
     color: #C1CCCC;
 }
@@ -60,6 +64,11 @@ pre[class*="language-shell"] .Token.Control {
 }
 
 pre[class*="language-shell"] .Token.Url {
+    border-bottom: 1px solid #C1CCCC;
+}
+
+pre[class*="language-shell"] .Token.IpAddress {
+    color: #A2CEA8;
     border-bottom: 1px solid #C1CCCC;
 }
 
