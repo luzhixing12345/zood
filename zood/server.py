@@ -7,6 +7,8 @@ from .util import *
 import time
 import errno
 import sys
+from contextlib import redirect_stdout
+from io import StringIO
 import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -21,9 +23,10 @@ DEBOUNCE_INTERVAL = 2.0  # 防抖时间（秒）
 
 # 监控文件变化的处理器
 class FileListenHandler(FileSystemEventHandler):
-    def __init__(self):
+    def __init__(self, refresh_output_line_count=0):
         super().__init__()
         self.timer = None
+        self.refresh_output_line_count = refresh_output_line_count
 
     def on_modified(self, event):
         if event.is_directory:
@@ -42,14 +45,32 @@ class FileListenHandler(FileSystemEventHandler):
     def _handle_stable_change(self, filepath):
         """防抖后真正触发的处理函数"""
         self.timer = None
-        print("正在刷新文档...")
         config = get_zood_config()
-        generate_web_docs(config)
+        self.refresh_output_line_count = _generate_docs_with_refresh_status(
+            config, self.refresh_output_line_count
+        )
         asyncio.run(notify_clients())
-        sys.stdout.write("\033[F")   # 光标上移一行 (Cursor up one line)
-        sys.stdout.write("\033[K")   # 清除该行 (Erase to end of line)
-        sys.stdout.write("    ")
+
+
+def _generate_docs_with_refresh_status(config, previous_output_line_count=0):
+    """生成文档，并在保留生成日志的前提下清除临时刷新提示。"""
+    for _ in range(previous_output_line_count):
+        sys.stdout.write("\033[F\033[K")
+
+    print("正在刷新文档...", flush=True)
+    generated_output = StringIO()
+
+    try:
+        with redirect_stdout(generated_output):
+            generate_web_docs(config)
+    finally:
+        # 生成期间的输出先暂存，因此这里上移一行清除的一定是刷新提示。
+        output = generated_output.getvalue()
+        sys.stdout.write("\033[F\033[K")
+        sys.stdout.write(output)
         sys.stdout.flush()
+
+    return output.count("\n")
 
 
 def set_start_time():
@@ -190,7 +211,7 @@ def show_server_info(time, port: int):
     info("\n\n    ")
 
 
-def start_http_server(config, port=36001):
+def start_http_server(config, port=36001, refresh_output_line_count=0):
     # 切换到指定的目录
     directory = os.path.join(os.getcwd(), config["html_folder"])
     if port is None or not check_port_available(port):
@@ -208,7 +229,7 @@ def start_http_server(config, port=36001):
                     raise
 
     path = os.path.join(os.getcwd(), config["markdown_folder"])
-    event_handler = FileListenHandler()
+    event_handler = FileListenHandler(refresh_output_line_count)
     observer = Observer()
     observer.schedule(event_handler, path, recursive=True)  # recursive=True 表示递归监控子目录
     observer.start()

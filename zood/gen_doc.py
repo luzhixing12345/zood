@@ -80,6 +80,9 @@ def generate_web_docs(config: DIR_TREE):
 
 
 def parse_markdown(config: DIR_TREE):
+    global TOTAL_ERROR_NUMBER
+    TOTAL_ERROR_NUMBER = 0
+
     current_dir = os.getcwd()
     md_dir_name = config["markdown_folder"]
     dir_yml_path = os.path.join(current_dir, md_dir_name, "dir.yml")
@@ -171,7 +174,6 @@ def parse_markdown(config: DIR_TREE):
     # 恢复错误信息重定向
     sys.stderr = sys.__stderr__
 
-    global TOTAL_ERROR_NUMBER
     if TOTAL_ERROR_NUMBER != 0:
         zood_info(f"代码段解析出现 {TOTAL_ERROR_NUMBER} 处错误, 已跳过高亮解析, 使用 zood log 查看错误信息")
 

@@ -6,7 +6,12 @@ from .util import *
 from .gen_doc import generate_web_docs, chdir_md
 from .zood import *
 from .extensions import update_PYPI_package, update_vsce_package, format_markdown
-from .server import start_http_server, set_start_time, find_available_ws_port
+from .server import (
+    _generate_docs_with_refresh_status,
+    find_available_ws_port,
+    set_start_time,
+    start_http_server,
+)
 
 
 def main():
@@ -41,8 +46,8 @@ def main():
         set_start_time()
         chdir_md(md_dir_name)
         find_available_ws_port()
-        generate_web_docs(config)
-        start_http_server(config, args.port)
+        refresh_output_line_count = _generate_docs_with_refresh_status(config)
+        start_http_server(config, args.port, refresh_output_line_count)
         return
 
     if args.save:
