@@ -28,7 +28,36 @@
     C --&gt; E[Edit Definition]
     E --&gt; B
     D --&gt; F[Save Image and Code]
-    F --&gt; B</code></pre><h2 id="h2-5">代码高亮</h2><pre class="language-Markdown"><code># 高亮 5 - 7 行
+    F --&gt; B</code></pre><pre class="language-mermaid"><code>sequenceDiagram
+    participant SDK
+    participant API as CubeAPI
+    participant Master as CubeMaster
+    participant Let as Cubelet
+    participant CTD as containerd
+    participant Shim as CubeShim
+    participant VMM as Hypervisor
+
+    SDK-&gt;&gt;API: POST /sandboxes/{id}/pause
+    API-&gt;&gt;Master: POST /cube/sandbox/update action=pause
+    Master-&gt;&gt;Master: 从 cache/proxy map 定位 host
+    Master-&gt;&gt;Let: UpdateCubeSandbox(action=pause)
+    Let-&gt;&gt;Let: 获取 sandboxLifecycleLocks[id]
+    Let-&gt;&gt;Let: RUNNING -&gt; PAUSING，执行 pre-stop
+    Let-&gt;&gt;CTD: Task.Pause(pod_scope=id)
+    CTD-&gt;&gt;Shim: ttrpc pause
+    Shim-&gt;&gt;Shim: 校验 Normal 且无活动 exec
+    Shim-&gt;&gt;Shim: 断开 agent/监控/日志
+    Shim-&gt;&gt;VMM: VmPauseToSnapshot(path)
+    VMM-&gt;&gt;VMM: pause -&gt; snapshot -&gt; delete VM
+    VMM--&gt;&gt;Shim: VmShutdown event
+    Shim--&gt;&gt;Let: pause success
+    Let-&gt;&gt;Let: PAUSING -&gt; PAUSED，SyncByID
+    Let--&gt;&gt;Master: success
+    Master--&gt;&gt;API: success
+    Master-&gt;&gt;Redis: 发布 state=paused 事件
+    API--&gt;&gt;SDK: 204
+    SDK-&gt;&gt;API: GET detail（默认轮询）
+    API--&gt;&gt;SDK: state=paused</code></pre><h2 id="h2-5">代码高亮</h2><pre class="language-Markdown"><code># 高亮 5 - 7 行
 # ```c{5-7}</code></pre><pre class="language-c"><code><span class="Token COMMENT">// 注释信息</span><span class="Token LF">
 </span><span class="Token HASH">#</span><span class="Token Keyword Preprocess ControlLine INCLUDE">include</span><span class="Token Keyword Preprocess ControlLine SPACE"> </span><span class="Token HeaderName ControlLine BraceDepth-0 LANGLE_BRACE">&lt;</span><span class="Token String HeaderName STRING">linux/init.h</span><span class="Token HeaderName ControlLine BraceDepth-0 RANGLE_BRACE">&gt;</span><span class="Token LF">
 </span><span class="Token HASH">#</span><span class="Token Keyword Preprocess ControlLine INCLUDE">include</span><span class="Token Keyword Preprocess ControlLine SPACE"> </span><span class="Token HeaderName ControlLine BraceDepth-0 LANGLE_BRACE">&lt;</span><span class="Token String HeaderName STRING">linux/module.h</span><span class="Token HeaderName ControlLine BraceDepth-0 RANGLE_BRACE">&gt;</span><span class="Token LF">

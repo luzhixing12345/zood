@@ -328,6 +328,15 @@ ol>li>ul>li {
     max-height: 400px;
 }
 
+.markdown-body .mermaid {
+    text-align: center;
+}
+
+.markdown-body .mermaid svg {
+    display: block;
+    margin: 0 auto;
+}
+
 .markdown-body pre {
     position: relative;
 }
@@ -713,7 +722,7 @@ ol>li>ul>li {
     white-space: nowrap;
     /*禁止文字折行*/
     list-style: none;
-    max-height: 50%;
+    max-height: 80%;
     overflow: auto;
     border-left: 2px solid #e0e0e0;
     /* 添加左侧灰色竖线 */

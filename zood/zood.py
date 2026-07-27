@@ -150,15 +150,20 @@ def zood_js_options(config):
         js_scope += js_code
 
     if config["options"]["enable_mermaid"]:
-        js_code = "<script type=\"module\">\
-const codeBlocks = document.querySelectorAll('.language-mermaid');\
-codeBlocks.forEach(codeBlock => {\
-    codeBlock.classList.remove('language-mermaid');\
-    codeBlock.classList.add('mermaid');\
-});\
-import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';\
-mermaid.initialize({ startOnLoad: true });\
-</script>"
+        js_code = """
+<script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
+    document.querySelectorAll('pre.language-mermaid').forEach(codeBlock => {
+        const mermaidContainer = document.createElement('div');
+        mermaidContainer.className = 'mermaid';
+        mermaidContainer.textContent = codeBlock.textContent;
+        codeBlock.replaceWith(mermaidContainer);
+    });
+
+    mermaid.initialize({ startOnLoad: true });
+</script>
+"""
         js_scope += js_code
 
     if config["options"]["enable_latex"]:
