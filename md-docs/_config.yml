@@ -57,7 +57,7 @@ options:
   enable_picture_preview: true
 
   # 支持 mermaid
-  enable_mermaid: false
+  enable_mermaid: true
 
   # 使用 github 图标
   enable_github: true
